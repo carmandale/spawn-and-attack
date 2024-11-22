@@ -1,46 +1,43 @@
 import SwiftUI
 
 struct CircleProgressView: View {
+    @Binding var hits: Int
+    private let maxHits: Int = 10
     @State private var progress: CGFloat = 0
-    @State private var number: CGFloat = 0
-    
-    let duration: Double = 5.0
-    let targetNumber: CGFloat = 10
+    @State private var lineWidth: CGFloat = 12
+    @State private var fontSize: CGFloat = 75
     
     var body: some View {
         ZStack {
-            // Background circle
+            // // Background with glass effect
+            // RoundedRectangle(cornerRadius: 15)
+            //     .fill(.clear)
+            //     .frame(width: 160, height: 160)
+            
             Circle()
-                .stroke(lineWidth: 20)
+                .stroke(lineWidth: lineWidth)
                 .opacity(0.2)
                 .foregroundColor(.gray)
+                .frame(width: 120, height: 120)
             
-            // Progress circle
             Circle()
-                .trim(from: 0, to: progress)
-                .stroke(style: StrokeStyle(lineWidth: 20, lineCap: .round))
+                .trim(from: 0, to: CGFloat(hits) / CGFloat(maxHits))
+                .stroke(style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
                 .foregroundColor(.blue)
                 .rotationEffect(.degrees(-90))
-                .animation(.linear(duration: duration), value: progress)
+                .animation(.linear(duration: 0.5), value: hits)
+                .frame(width: 120, height: 120)
             
-            // Number display
-            Text("\(Int(number))")
-                .font(.system(size: 50, weight: .bold))
-                .animation(.linear(duration: duration), value: number)
+            Text("\(hits)")
+                .font(.system(size: fontSize, weight: .bold))
         }
-        .padding(40)
-        .onAppear {
-            // Start the animations
-            withAnimation {
-                progress = 1.0
-                number = targetNumber
-            }
-        }
+        .frame(width: 160, height: 160)
+        .padding(30)
     }
 }
 
 struct CircleProgressView_Previews: PreviewProvider {
     static var previews: some View {
-        CircleProgressView()
+        CircleProgressView(hits: .constant(5))
     }
 }
