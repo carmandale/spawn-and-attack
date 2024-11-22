@@ -20,7 +20,7 @@ struct SpawnAndAttrackApp: App {
         .windowStyle(.volumetric)
 
         ImmersiveSpace(id: appModel.immersiveSpaceID) {
-            ImmersiveView()
+            CurvedPathView()
                 .environment(appModel)
                 .onAppear {
                     appModel.immersiveSpaceState = .open

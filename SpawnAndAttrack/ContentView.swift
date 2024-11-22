@@ -1,46 +1,35 @@
-//
-//  ContentView.swift
-//  SpawnAndAttrack
-//
-//  Created by Dale Carman on 11/19/24.
-//
-
 import SwiftUI
 import RealityKit
-import RealityKitContent
 
 struct ContentView: View {
+    @Environment(AppModel.self) private var model
+    @State private var showImmersiveSpace = false
+    @State private var immersiveSpaceIsShown = false
 
-    @State private var enlarge = false
+    @Environment(\.openImmersiveSpace) var openImmersiveSpace
+    @Environment(\.dismissImmersiveSpace) var dismissImmersiveSpace
 
     var body: some View {
-        RealityView { content in
-            // Add the initial RealityKit content
-            if let scene = try? await Entity(named: "Scene", in: realityKitContentBundle) {
-                content.add(scene)
-            }
-        } update: { content in
-            // Update the RealityKit content when SwiftUI state changes
-            if let scene = content.entities.first {
-                let uniformScale: Float = enlarge ? 1.4 : 1.0
-                scene.transform.scale = [uniformScale, uniformScale, uniformScale]
-            }
+        VStack {
+            Toggle("Show Immersive Space", isOn: $showImmersiveSpace)
+                .toggleStyle(.button)
+                .padding()
         }
-        .gesture(TapGesture().targetedToAnyEntity().onEnded { _ in
-            enlarge.toggle()
-        })
-        .toolbar {
-            ToolbarItemGroup(placement: .bottomOrnament) {
-                VStack (spacing: 12) {
-                    Button {
-                        enlarge.toggle()
-                    } label: {
-                        Text(enlarge ? "Reduce RealityView Content" : "Enlarge RealityView Content")
+        .onChange(of: showImmersiveSpace) { _, shouldShow in
+            Task {
+                if shouldShow {
+                    switch await openImmersiveSpace(id: model.immersiveSpaceID) {
+                    case .opened:
+                        immersiveSpaceIsShown = true
+                    case .error, .userCancelled:
+                        fallthrough
+                    @unknown default:
+                        immersiveSpaceIsShown = false
+                        showImmersiveSpace = false
                     }
-                    .animation(.none, value: 0)
-                    .fontWeight(.semibold)
-
-                    ToggleImmersiveSpaceButton()
+                } else if immersiveSpaceIsShown {
+                    await dismissImmersiveSpace()
+                    immersiveSpaceIsShown = false
                 }
             }
         }
