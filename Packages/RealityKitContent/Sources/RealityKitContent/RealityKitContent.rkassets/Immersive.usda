@@ -9,7 +9,7 @@ reorder rootPrims = ["Root", "GridMaterial"]
 
 def Xform "Root"
 {
-    reorder nameChildren = ["Sphere_Left", "Sphere_Right", "GridMaterial", "cancerCell_left", "cancerCell_right"]
+    reorder nameChildren = ["Sphere_Left", "Sphere_Right", "GridMaterial", "cancerCell_left", "cancerCell_right", "CancerCellDeath_left", "CancerCellDeath_right"]
     def Xform "cancerCell_left" (
         active = true
     )
@@ -26,6 +26,15 @@ def Xform "Root"
             quatf xformOp:orient = (1, 0, 0, 0)
             float3 xformOp:scale = (0.7180964, 0.7180964, 0.7180964)
             uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            over "AnimationLibrary"
+            {
+                over "default_subtree_animation"
+                {
+                    uniform bool looping = 1
+                    uniform string name = "default subtree animation"
+                }
+            }
         }
 
         def RealityKitComponent "InputTarget"
@@ -50,6 +59,37 @@ def Xform "Root"
                 {
                     float3 position = (-0.002369091, 0.004051864, -0.009352863)
                 }
+            }
+        }
+
+        def RealityKitComponent "RCP_BehaviorsContainer"
+        {
+            rel behaviors = </Root/cancerCell_left/OnNotification>
+            uniform token info:id = "RCP.BehaviorsContainer"
+        }
+
+        def Preliminary_Behavior "OnNotification"
+        {
+            rel actions = </Root/cancerCell_left/OnNotification/Action>
+            uniform bool exclusive
+            rel triggers = </Root/cancerCell_left/OnNotification/Trigger>
+
+            def Preliminary_Trigger "Trigger"
+            {
+                rel affectedObjects = </Root/cancerCell_left>
+                string identifier = "cancerDeathLeft"
+                token info:id = "Notification"
+            }
+
+            def Preliminary_Action "Action"
+            {
+                rel affectedObjects = </Root>
+                rel animationLibraryKey = </Root/CancerCellDeath_left>
+                rel animationLibraryKeyOverrideKey = </Root/cancerCell_left/OnNotification/Trigger>
+                token info:id = "PlayTimeline"
+                int loops = 0
+                int performCount = 1
+                token type = "serial"
             }
         }
     }
@@ -97,6 +137,107 @@ def Xform "Root"
                 {
                     float3 position = (-0.00110282, 0.0018861592, -0.0043538213)
                 }
+            }
+        }
+
+        def RealityKitComponent "AnimationLibrary"
+        {
+            token info:id = "RealityKit.AnimationLibrary"
+        }
+
+        def RealityKitComponent "RCP_BehaviorsContainer"
+        {
+            rel behaviors = </Root/cancerCell_right/OnNotification>
+            uniform token info:id = "RCP.BehaviorsContainer"
+        }
+
+        def Preliminary_Behavior "OnNotification"
+        {
+            rel actions = </Root/cancerCell_right/OnNotification/Action>
+            uniform bool exclusive
+            rel triggers = </Root/cancerCell_right/OnNotification/Trigger>
+
+            def Preliminary_Trigger "Trigger"
+            {
+                rel affectedObjects = </Root/cancerCell_right>
+                string identifier = "cancerDeathRight"
+                token info:id = "Notification"
+            }
+
+            def Preliminary_Action "Action"
+            {
+                rel affectedObjects = </Root>
+                rel animationLibraryKey = </Root/CancerCellDeath_right>
+                rel animationLibraryKeyOverrideKey = </Root/cancerCell_right/OnNotification/Trigger>
+                token info:id = "PlayTimeline"
+                int loops = 0
+                int performCount = 1
+                token type = "serial"
+            }
+        }
+    }
+
+    def RealityKitTimeline "CancerCellDeath_left"
+    {
+        def RealityKitTrack "Track"
+        {
+            def RealityKitAction "Animation"
+            {
+                string actionKind = "animation"
+                string animation = "default subtree animation"
+                int blendLayer = 500
+                double duration = 0.3333333432674408
+                uniform token info:id = "0AAE719E-6040-47BC-BCB9-4121D7419DE1"
+                bool separateAnimatedValue = 1
+                double startTime = 0.052120615604867575
+                rel target = </Root/cancerCell_left/cancerCell_complex>
+
+                def RealityKitStruct "handoffType"
+                {
+                }
+            }
+
+            def RealityKitAction "Disable_Entity"
+            {
+                string actionKind = "disable"
+                double duration = 0
+                uniform token info:id = "E3F4F23B-E6B5-4D6F-9E04-B7708EE71B3D"
+                double startTime = 0.3854539589723084
+                rel target = </Root/cancerCell_left>
+            }
+        }
+    }
+
+    def RealityKitTimeline "CancerCellDeath_right"
+    {
+        float2 ui:nodegraph:node:pos = (20, 20)
+        int ui:nodegraph:node:stackingOrder = 1
+
+        def RealityKitTrack "Track"
+        {
+            def RealityKitAction "Animation"
+            {
+                string actionKind = "animation"
+                string animation = "default subtree animation"
+                int blendLayer = 500
+                double duration = 0.3333333432674408
+                uniform token info:id = "0AAE719E-6040-47BC-BCB9-4121D7419DE1"
+                bool separateAnimatedValue = 1
+                double startTime = 0.052120615604867575
+                rel target = </Root/cancerCell_right/cancerCell_complex>
+
+                def RealityKitStruct "handoffType"
+                {
+                }
+            }
+
+            def RealityKitAction "Disable_Entity"
+            {
+                string actionKind = "disable"
+                double duration = 0
+                uniform token info:id = "E3F4F23B-E6B5-4D6F-9E04-B7708EE71B3D"
+                double startTime = 0.3854539589723084
+                rel target = </Root/cancerCell_right>
             }
         }
     }

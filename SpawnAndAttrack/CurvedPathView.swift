@@ -11,6 +11,9 @@ import RealityKitContent
 
 struct CurvedPathView: View {
     @Environment(AppModel.self) private var appModel
+    @Environment(\.realityKitScene) var scene
+    let rknt = "RealityKit.NotificationTrigger"
+    
     @State private var rootEntity: Entity?
     @State private var adcEntity: Entity?
     @State private var leftCellHits: Int = 0
@@ -197,14 +200,20 @@ struct CurvedPathView: View {
         // Increment hit counter when animation completes
         DispatchQueue.main.asyncAfter(deadline: .now() + totalDuration) {
             print("Target entity name: \(targetEntity.name)")
-            let isLeft = attachmentCellMap[targetEntity] ?? false
+            let isLeft = self.attachmentCellMap[targetEntity] ?? false
             print("Is left cell? \(isLeft)")
             if isLeft {
-                leftCellHits = min(leftCellHits + 1, 18)
-                print("Left cell hit: \(leftCellHits)")
+                self.leftCellHits = min(self.leftCellHits + 1, 18)
+                print("Left cell hit: \(self.leftCellHits)")
+                if self.leftCellHits == 18 {
+                    self.triggerCancerDeath(isLeft: true)
+                }
             } else {
-                rightCellHits = min(rightCellHits + 1, 18)
-                print("Right cell hit: \(rightCellHits)")
+                self.rightCellHits = min(self.rightCellHits + 1, 18)
+                print("Right cell hit: \(self.rightCellHits)")
+                if self.rightCellHits == 18 {
+                    self.triggerCancerDeath(isLeft: false)
+                }
             }
             // Attach ADC to the attachment point
             adc.position = .zero
@@ -219,6 +228,16 @@ struct CurvedPathView: View {
                 adc.move(to: transform, relativeTo: nil, duration: stepDuration, timingFunction: .linear)
             }
         }
+    }
+    
+    private func triggerCancerDeath(isLeft: Bool) {
+        guard let scene = scene else { return }
+        let identifier = isLeft ? "cancerDeathLeft" : "cancerDeathRight"
+        let notification = Notification(name: .init(rknt),
+                                    userInfo: ["\(rknt).Scene" : scene,
+                                          "\(rknt).Identifier" : identifier])
+        NotificationCenter.default.post(notification)
+        print("Triggered cancer death animation for \(isLeft ? "left" : "right") cell")
     }
 }
 

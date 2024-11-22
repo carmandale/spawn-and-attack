@@ -16,6 +16,82 @@
       [
         "1D572CEB-057A-41C3-B575-04C37501A3C0",
         "Root",
+        "Timeline",
+        "Track"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "1D572CEB-057A-41C3-B575-04C37501A3C0",
+        "Root",
+        "CancerCellDeath_left",
+        "Track"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "1D572CEB-057A-41C3-B575-04C37501A3C0",
+        "Root",
+        "cancerCell_left",
+        "cancerCell_complex"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "1D572CEB-057A-41C3-B575-04C37501A3C0",
+        "Root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "1D572CEB-057A-41C3-B575-04C37501A3C0",
+        "Root",
+        "CancerCellDeath_right",
+        "Track"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "1D572CEB-057A-41C3-B575-04C37501A3C0",
+        "Root",
+        "CancerCellDeath_left"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "1D572CEB-057A-41C3-B575-04C37501A3C0",
+        "Root",
+        "cancerCell_right",
+        "cancerCell_complex"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "1D572CEB-057A-41C3-B575-04C37501A3C0",
+        "Root",
+        "CancerCellDeath_right"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "1D572CEB-057A-41C3-B575-04C37501A3C0",
+        "Root",
         "cancerCell_left"
       ],
       {
@@ -26,14 +102,6 @@
         "1D572CEB-057A-41C3-B575-04C37501A3C0",
         "Root",
         "cancerCell_right"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "1D572CEB-057A-41C3-B575-04C37501A3C0",
-        "Root"
       ],
       {
         "isExpanded" : true,
@@ -58,8 +126,8 @@
       [
         "25C36807-02FB-40AE-8F10-A63952F9AAB4",
         "root",
-        "body",
-        "Antigens"
+        "CancerDeath",
+        "Track"
       ],
       {
         "isExpanded" : true,
@@ -68,26 +136,6 @@
       [
         "25C36807-02FB-40AE-8F10-A63952F9AAB4",
         "root"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "25C36807-02FB-40AE-8F10-A63952F9AAB4",
-        "root",
-        "body",
-        "Antigens",
-        "Cube_178_011"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "25C36807-02FB-40AE-8F10-A63952F9AAB4",
-        "root",
-        "body"
       ],
       {
         "isExpanded" : true,

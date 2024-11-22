@@ -20,10 +20,13 @@ xcuserdata/
 
 # Swift Package Manager
 .build/
-Packages/
 Package.pins
 Package.resolved
 *.xcodeproj
+
+# Allow RealityKitContent package
+!Packages/RealityKitContent/
+!Packages/RealityKitContent/**/*
 
 # CocoaPods
 Pods/
