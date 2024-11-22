@@ -16,16 +16,6 @@
       [
         "1D572CEB-057A-41C3-B575-04C37501A3C0",
         "Root",
-        "Timeline",
-        "Track"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "1D572CEB-057A-41C3-B575-04C37501A3C0",
-        "Root",
         "CancerCellDeath_left",
         "Track"
       ],
@@ -36,8 +26,8 @@
       [
         "1D572CEB-057A-41C3-B575-04C37501A3C0",
         "Root",
-        "cancerCell_left",
-        "cancerCell_complex"
+        "CancerCellDeath_right",
+        "Track"
       ],
       {
         "isExpanded" : true,
@@ -54,8 +44,18 @@
       [
         "1D572CEB-057A-41C3-B575-04C37501A3C0",
         "Root",
-        "CancerCellDeath_right",
-        "Track"
+        "CancerCellDeath_left",
+        "Track2"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "1D572CEB-057A-41C3-B575-04C37501A3C0",
+        "Root",
+        "cancerCell_left",
+        "cancerCell_complex"
       ],
       {
         "isExpanded" : true,
@@ -83,15 +83,6 @@
       [
         "1D572CEB-057A-41C3-B575-04C37501A3C0",
         "Root",
-        "CancerCellDeath_right"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "1D572CEB-057A-41C3-B575-04C37501A3C0",
-        "Root",
         "cancerCell_left"
       ],
       {
@@ -102,6 +93,35 @@
         "1D572CEB-057A-41C3-B575-04C37501A3C0",
         "Root",
         "cancerCell_right"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "1D572CEB-057A-41C3-B575-04C37501A3C0",
+        "Root",
+        "CancerCellDeath_right"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "1D572CEB-057A-41C3-B575-04C37501A3C0",
+        "Root",
+        "Timeline",
+        "Track"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "1D572CEB-057A-41C3-B575-04C37501A3C0",
+        "Root",
+        "CancerCellDeath_right",
+        "Track2"
       ],
       {
         "isExpanded" : true,
@@ -171,6 +191,16 @@
     "objectMetadataList" : [
       [
         "7E5548F0-FD98-43E0-BBE8-B93E37A1BFCE",
+        "root",
+        "body",
+        "Cube_178_015"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "7E5548F0-FD98-43E0-BBE8-B93E37A1BFCE",
         "root"
       ],
       {
@@ -190,25 +220,6 @@
       [
         "7E5548F0-FD98-43E0-BBE8-B93E37A1BFCE",
         "root",
-        "body"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "7E5548F0-FD98-43E0-BBE8-B93E37A1BFCE",
-        "root",
-        "body",
-        "Cube_178_015"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "7E5548F0-FD98-43E0-BBE8-B93E37A1BFCE",
-        "root",
         "body",
         "Cube_008_037",
         "Cube_008_037"
@@ -216,6 +227,15 @@
       {
         "disallowsFraming" : false,
         "isExpanded" : false,
+        "isLocked" : false
+      },
+      [
+        "7E5548F0-FD98-43E0-BBE8-B93E37A1BFCE",
+        "root",
+        "body"
+      ],
+      {
+        "isExpanded" : true,
         "isLocked" : false
       }
     ]

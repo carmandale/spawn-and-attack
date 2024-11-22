@@ -35,13 +35,10 @@ struct CurvedPathView: View {
             // Load the immersive content if available
             if let immersiveContentEntity = try? await Entity(named: "Immersive", in: realityKitContentBundle) {
                 root.addChild(immersiveContentEntity)
-                print("Immersive content loaded")
                 
                 // Find and setup left cancer cell
                 if let leftCell = immersiveContentEntity.findEntity(named: "cancerCell_left") {
-                    print("Found left cancer cell")
                     if let leftMeter = attachments.entity(for: "leftMeter") {
-                        print("Left meter attachment found")
                         leftMeter.position = [0, 0.5, 0]
                         leftCell.addChild(leftMeter)
                     }
@@ -49,20 +46,13 @@ struct CurvedPathView: View {
                     // Find all attachment points for left cell
                     findAttachmentPoints(in: leftCell) { points in
                         leftCellAttachPoints = points
-                        print("Found \(points.count) attachment points for left cell")
-                        // Map all left cell attachment points
                         points.forEach { attachmentCellMap[$0] = true }
-                        for point in points {
-                            print("Left cell attachment point: \(point.name)")
-                        }
                     }
                 }
                 
                 // Find and setup right cancer cell
                 if let rightCell = immersiveContentEntity.findEntity(named: "cancerCell_right") {
-                    print("Found right cancer cell")
                     if let rightMeter = attachments.entity(for: "rightMeter") {
-                        print("Right meter attachment found")
                         rightMeter.position = [0, 0.5, 0]
                         rightCell.addChild(rightMeter)
                     }
@@ -70,12 +60,7 @@ struct CurvedPathView: View {
                     // Find all attachment points for right cell
                     findAttachmentPoints(in: rightCell) { points in
                         rightCellAttachPoints = points
-                        print("Found \(points.count) attachment points for right cell")
-                        // Map all right cell attachment points
                         points.forEach { attachmentCellMap[$0] = false }
-                        for point in points {
-                            print("Right cell attachment point: \(point.name)")
-                        }
                     }
                 }
             }
@@ -83,9 +68,6 @@ struct CurvedPathView: View {
             // Load the ADC entity
             if let adc = try? await Entity(named: "ADC-spawn", in: realityKitContentBundle) {
                 adcEntity = adc
-                print("ADC entity loaded successfully in RealityView setup.")
-            } else {
-                print("Failed to load ADC entity.")
             }
         } update: { content, attachments in
             // Updates handled by root entity
@@ -101,7 +83,6 @@ struct CurvedPathView: View {
             SpatialTapGesture()
                 .targetedToAnyEntity()
                 .onEnded { value in
-                    print("Tap gesture recognized")
                     handleTap(on: value.entity)
                 }
         )
@@ -111,15 +92,10 @@ struct CurvedPathView: View {
         var points: [Entity] = []
         
         func recursiveSearch(_ entity: Entity) {
-            // Print the current entity name for debugging
-            print("Searching entity: \(entity.name)")
-            
-            // Check all children recursively
+            if entity.name.starts(with: "attach_") {
+                points.append(entity)
+            }
             for child in entity.children {
-                if child.name.lowercased().contains("attach") {
-                    print("Found attachment point: \(child.name)")
-                    points.append(child)
-                }
                 recursiveSearch(child)
             }
         }
@@ -137,16 +113,10 @@ struct CurvedPathView: View {
     }
     
     private func handleTap(on entity: Entity) {
-        print("Handling tap on entity: \(entity.name)")
-        
         let isLeftCell = entity.name.contains("left")
-        guard let attachPoint = getAvailableAttachPoint(isLeft: isLeftCell) else {
-            print("No available attachment points")
-            return
-        }
+        guard let attachPoint = getAvailableAttachPoint(isLeft: isLeftCell) else { return }
         
         let worldPosition = attachPoint.convert(position: .zero, to: nil)
-        print("Target position: \(worldPosition)")
         
         // Generate random point for spawn position
         let spawnPoint = SIMD3<Float>(
@@ -164,18 +134,15 @@ struct CurvedPathView: View {
     }
     
     private func spawnAndAnimateCubeWithCurvedPath(from start: SIMD3<Float>, to end: SIMD3<Float>, targetEntity: Entity) {
-        guard let root = rootEntity, let adcTemplate = adcEntity else {
-            print("Root entity or ADC template not available.")
-            return
-        }
+        guard let root = rootEntity, let adcTemplate = adcEntity else { return }
         
         // Clone the preloaded entity to avoid reusing the same instance
         let adc = adcTemplate.clone(recursive: true)
         root.addChild(adc)
         
-        // Set initial position
+        // Set initial position and start drone sound
         adc.position = start
-        print("Spawned ADC at position: \(start)")
+        setupAndPlayDroneSound(for: adc)
         
         // Calculate the path parameters
         let distance = length(end - start)
@@ -199,25 +166,24 @@ struct CurvedPathView: View {
         
         // Increment hit counter when animation completes
         DispatchQueue.main.asyncAfter(deadline: .now() + totalDuration) {
-            print("Target entity name: \(targetEntity.name)")
             let isLeft = self.attachmentCellMap[targetEntity] ?? false
-            print("Is left cell? \(isLeft)")
             if isLeft {
                 self.leftCellHits = min(self.leftCellHits + 1, 18)
-                print("Left cell hit: \(self.leftCellHits)")
                 if self.leftCellHits == 18 {
                     self.triggerCancerDeath(isLeft: true)
                 }
             } else {
                 self.rightCellHits = min(self.rightCellHits + 1, 18)
-                print("Right cell hit: \(self.rightCellHits)")
                 if self.rightCellHits == 18 {
                     self.triggerCancerDeath(isLeft: false)
                 }
             }
-            // Attach ADC to the attachment point
+            
+            // Stop drone sound and play attach sound
+            adc.stopAllAudio()
             adc.position = .zero
             targetEntity.addChild(adc)
+            self.playAttachSound(for: targetEntity)
         }
         
         for i in 0..<positions.count {
@@ -230,6 +196,46 @@ struct CurvedPathView: View {
         }
     }
     
+    private func setupAndPlayDroneSound(for entity: Entity) {
+        // Configure looping for drone sound
+        let configuration = AudioFileResource.Configuration(shouldLoop: true)
+        
+        // Load the audio source and set its configuration
+        guard let audio = try? AudioFileResource.load(
+            named: "Drones_01",
+            configuration: configuration
+        ) else { return }
+        
+        // Add spatial audio component with forward directivity
+        entity.spatialAudio = SpatialAudioComponent(
+            gain: .init(-10),           // Slightly reduced overall volume
+            directLevel: .init(-3),     // Strong direct signal for localization
+            reverbLevel: .init(-15),    // Lower reverb for more directional feel
+            directivity: .beam(focus: 0.7)  // Focused beam for ADC sound
+        )
+        
+        // Start playing the drone sound
+        entity.playAudio(audio)
+    }
+    
+    private func playAttachSound(for entity: Entity) {
+        // Load the audio source
+        guard let audio = try? AudioFileResource.load(
+            named: "Sonic_Pulse_Hit_01"
+        ) else { return }
+        
+        // Add spatial audio component with beam directivity
+        entity.spatialAudio = SpatialAudioComponent(
+            gain: .init(-5),            // Louder than drone but not too loud
+            directLevel: .init(-3),     // Clear direct signal
+            reverbLevel: .init(-10),    // Moderate reverb for impact feel
+            directivity: .beam(focus: 0)  // Zero focus makes it omnidirectional
+        )
+        
+        // Play the attach sound once
+        entity.playAudio(audio)
+    }
+    
     private func triggerCancerDeath(isLeft: Bool) {
         guard let scene = scene else { return }
         let identifier = isLeft ? "cancerDeathLeft" : "cancerDeathRight"
@@ -237,7 +243,6 @@ struct CurvedPathView: View {
                                     userInfo: ["\(rknt).Scene" : scene,
                                           "\(rknt).Identifier" : identifier])
         NotificationCenter.default.post(notification)
-        print("Triggered cancer death animation for \(isLeft ? "left" : "right") cell")
     }
 }
 

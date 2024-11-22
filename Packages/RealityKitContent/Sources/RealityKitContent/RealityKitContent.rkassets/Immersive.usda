@@ -9,12 +9,12 @@ reorder rootPrims = ["Root", "GridMaterial"]
 
 def Xform "Root"
 {
-    reorder nameChildren = ["Sphere_Left", "Sphere_Right", "GridMaterial", "cancerCell_left", "cancerCell_right", "CancerCellDeath_left", "CancerCellDeath_right"]
+    reorder nameChildren = ["cancerCell_left", "cancerCell_right", "CancerCellDeath_left", "CancerCellDeath_right", "Distortion_Wave_01_wav", "LeftAudio", "RightAudio"]
     def Xform "cancerCell_left" (
         active = true
     )
     {
-        reorder nameChildren = ["cancerCell_complex", "InputTarget", "Collider", "Transform_2"]
+        reorder nameChildren = ["cancerCell_complex", "InputTarget", "Collider", "RCP_BehaviorsContainer", "OnNotification", "AudioLibrary", "Transform"]
         float3 xformOp:translate = (-0.5, 1.5, -1.74219)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
@@ -92,12 +92,24 @@ def Xform "Root"
                 token type = "serial"
             }
         }
+
+        def RealityKitComponent "AudioLibrary"
+        {
+            uniform token info:id = "RealityKit.AudioLibrary"
+
+            def RealityKitDict "resources"
+            {
+                string[] keys = ["Distortion_Wave_01.wav"]
+                rel values = </Root/Distortion_Wave_01_wav>
+            }
+        }
     }
 
     def Xform "cancerCell_right" (
         active = true
     )
     {
+        reorder nameChildren = ["cancerCell_complex", "InputTarget", "Collider", "AnimationLibrary", "RCP_BehaviorsContainer", "OnNotification", "Transform"]
         quatf xformOp:orient = (1, 0, 0, 0)
         float3 xformOp:scale = (1, 1, 1)
         float3 xformOp:translate = (0.5, 1.5, -1.5)
@@ -179,6 +191,7 @@ def Xform "Root"
 
     def RealityKitTimeline "CancerCellDeath_left"
     {
+        reorder nameChildren = ["Track", "Track2"]
         def RealityKitTrack "Track"
         {
             def RealityKitAction "Animation"
@@ -206,10 +219,29 @@ def Xform "Root"
                 rel target = </Root/cancerCell_left>
             }
         }
+
+        def RealityKitTrack "Track2"
+        {
+            def RealityKitAction "Play_Audio"
+            {
+                string actionKind = "audio"
+                string audioResourceName = "Distortion_Wave_01_wav"
+                bool controlPlayback = 1
+                double duration = 10.2901875
+                uniform token info:id = "3CD023D5-F3F4-481B-B7FB-3485E06EE346"
+                double startTime = 0
+                rel target = </Root/LeftAudio>
+
+                def RealityKitStruct "handoffType"
+                {
+                }
+            }
+        }
     }
 
     def RealityKitTimeline "CancerCellDeath_right"
     {
+        reorder nameChildren = ["Track", "Track2"]
         float2 ui:nodegraph:node:pos = (20, 20)
         int ui:nodegraph:node:stackingOrder = 1
 
@@ -240,6 +272,78 @@ def Xform "Root"
                 rel target = </Root/cancerCell_right>
             }
         }
+
+        def RealityKitTrack "Track2"
+        {
+            def RealityKitAction "Play_Audio"
+            {
+                string actionKind = "audio"
+                string audioResourceName = "Dramatic_Hit_Cinematic_01.wav"
+                bool controlPlayback = 1
+                double duration = 20.774041666666665
+                uniform token info:id = "53418480-A3EA-4B26-9D7C-70150688C6A0"
+                double startTime = 0
+                rel target = </Root/RightAudio>
+
+                def RealityKitStruct "handoffType"
+                {
+                }
+            }
+        }
+    }
+
+    def RealityKitAudioFile "Distortion_Wave_01_wav"
+    {
+        uniform asset file = @Audio/Distortion_Wave_01.wav@
+        uniform bool shouldLoop = 0
+    }
+
+    def Xform "LeftAudio" (
+        active = true
+    )
+    {
+        quatf xformOp:orient = (1, 0, 0, 0)
+        float3 xformOp:scale = (1, 1, 1)
+        float3 xformOp:translate = (-0.5, 1.5, -1.74219)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def RealityKitComponent "AudioLibrary"
+        {
+            uniform token info:id = "RealityKit.AudioLibrary"
+
+            def RealityKitDict "resources"
+            {
+                string[] keys = ["Distortion_Wave_01_wav"]
+                rel values = </Root/Distortion_Wave_01_wav>
+            }
+        }
+    }
+
+    def Xform "RightAudio" (
+        active = true
+    )
+    {
+        quatf xformOp:orient = (1, 0, 0, 0)
+        float3 xformOp:scale = (1, 1, 1)
+        float3 xformOp:translate = (0.5, 1.5, -1.5)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def RealityKitComponent "AudioLibrary"
+        {
+            uniform token info:id = "RealityKit.AudioLibrary"
+
+            def RealityKitDict "resources"
+            {
+                string[] keys = ["Dramatic_Hit_Cinematic_01.wav"]
+                rel values = </Root/Dramatic_Hit_Cinematic_01_wav>
+            }
+        }
+    }
+
+    def RealityKitAudioFile "Dramatic_Hit_Cinematic_01_wav"
+    {
+        uniform asset file = @Audio/Dramatic_Hit_Cinematic_01.wav@
+        uniform bool shouldLoop = 0
     }
 }
 
