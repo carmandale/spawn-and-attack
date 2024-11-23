@@ -6,12 +6,21 @@
 //
 
 import SwiftUI
+import RealityKitContent
 
 @main
 struct SpawnAndAttrackApp: App {
 
     @State private var appModel = AppModel()
-
+    
+    init() {
+        /// register components
+        RealityKitContent.AttachmentPoint.registerComponent()
+        
+        /// register systems
+        RealityKitContent.AttachmentSystem.registerSystem()
+    }
+    
     var body: some Scene {
         WindowGroup {
             ContentView()

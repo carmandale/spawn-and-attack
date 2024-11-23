@@ -1,7 +1,9 @@
 {
-  "advancedEditorSelectedIdentifier" : "BehaviorsPluginID",
+  "advancedEditorSelectedIdentifier" : "ProjectBrowser",
   "openSceneRelativePaths" : [
-    "Immersive.usda"
+    "Immersive.usda",
+    "Assets\/cancerCell_complex.usd",
+    "ADC-spawn.usda"
   ],
   "recentIdentifiers" : {
     "1D572CEB-057A-41C3-B575-04C37501A3C0" : [
@@ -14,6 +16,9 @@
 
     ],
     "3CD69C7C-DB10-4FEF-95BD-BEF05412DB44" : [
+
+    ],
+    "E2AD027D-0D91-4F9B-B113-E36E1C293338" : [
 
     ]
   },
@@ -242,6 +247,28 @@
     ],
     "25C36807-02FB-40AE-8F10-A63952F9AAB4" : [
       {
+        "date" : 754003369.460466,
+        "title" : "Untitled",
+        "transform" : [
+          0.9986591,
+          3.0245497e-09,
+          0.0517703,
+          0,
+          0.025680719,
+          0.8682932,
+          -0.49538603,
+          0,
+          -0.044951808,
+          0.49605122,
+          0.8671289,
+          0,
+          -0.13522491,
+          1.5012528,
+          2.6147432,
+          1
+        ]
+      },
+      {
         "date" : 753990114.576168,
         "title" : "Untitled",
         "transform" : [
@@ -419,10 +446,34 @@
           1
         ]
       }
+    ],
+    "E2AD027D-0D91-4F9B-B113-E36E1C293338" : [
+      {
+        "date" : 754003725.8163,
+        "title" : "Untitled",
+        "transform" : [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0.7071069,
+          -0.70710677,
+          0,
+          0,
+          0.70710677,
+          0.7071069,
+          0,
+          0,
+          2.2650237,
+          2.2650242,
+          1
+        ]
+      }
     ]
   },
   "sceneViewportBackgroundColors" : {
 
   },
-  "selectedSceneRelativePath" : "Immersive.usda"
+  "selectedSceneRelativePath" : "ADC-spawn.usda"
 }

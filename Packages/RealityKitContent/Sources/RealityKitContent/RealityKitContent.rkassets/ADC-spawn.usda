@@ -31,5 +31,44 @@ def Xform "Root"
             }
         }
     }
+
+    def RealityKitCustomComponent "RealityKitContent_AudioComponent"
+    {
+        string attachSound = "Sonic_Pulse_Hit_01"
+        string droneSound = "Drones_01"
+        uniform token info:id = "RealityKitContent.AudioComponent"
+    }
+
+    def RealityKitComponent "AudioLibrary"
+    {
+        uniform token info:id = "RealityKit.AudioLibrary"
+
+        def RealityKitDict "resources"
+        {
+            string[] keys = ["Drones_01.wav", "Sonic_Pulse_Hit_01.wav"]
+            rel values = [
+                </Root/Drones_01_wav>,
+                </Root/Sonic_Pulse_Hit_01_wav>,
+            ]
+        }
+    }
+
+    def RealityKitComponent "SpatialAudio"
+    {
+        uniform token info:id = "RealityKit.SpatialAudio"
+        float rolloffFactor = 0
+    }
+
+    def RealityKitAudioFile "Drones_01_wav"
+    {
+        uniform asset file = @Audio/Drones_01.wav@
+        uniform bool shouldLoop = 0
+    }
+
+    def RealityKitAudioFile "Sonic_Pulse_Hit_01_wav"
+    {
+        uniform asset file = @Audio/Sonic_Pulse_Hit_01.wav@
+        uniform bool shouldLoop = 0
+    }
 }
 
