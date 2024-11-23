@@ -43,7 +43,25 @@ Please maintain a professional and authoritative tone, providing in-depth explan
 Here is the developer's question or challenge:
 
 <developer_input>
-{{user_input}}
+{{I'm working on a visionOS Cancer Cell Targeting Game that models antibody-drug conjugate interactions. We've begun restructuring our codebase to use RealityKit-native patterns, particularly around timing and state management.
+
+Current status:
+- Updated PROMPT.md and PLAN.md with correct RealityKit patterns
+- Started implementing ADCStateComponent with proper timing
+- Need to complete the ECS restructuring before moving to performance optimization
+
+Next immediate steps:
+1. Complete the ADC system implementation using RealityKit patterns
+2. Implement entity pooling for ADCs
+3. Update state transitions to use deltaTime
+4. Verify basic functionality
+
+Please review @PROMPT.md  and @PLAN.md  then help me complete the ECS restructuring, starting with the ADC system implementation.
+
+1. Review projects in @[REF.md]  
+2. Update ADCStateComponent based on SwiftSplash pattern 
+3. Implement ADCSystem following BOTAnist pattern 
+4. Add entity pooling with proper lifecycle management}}
 </developer_input>
 
 Before proceeding, please confirm your understanding of the developer's input to ensure alignment.

@@ -9,16 +9,16 @@ import SwiftUI
 import RealityKitContent
 
 @main
+@MainActor
 struct SpawnAndAttrackApp: App {
 
     @State private var appModel = AppModel()
     
     init() {
-        /// register components
-        RealityKitContent.AttachmentPoint.registerComponent()
-        
-        /// register systems
-        RealityKitContent.AttachmentSystem.registerSystem()
+        Task { @MainActor in
+            // Configure RealityKit content
+            await configureRealityKitContent()
+        }
     }
     
     var body: some Scene {

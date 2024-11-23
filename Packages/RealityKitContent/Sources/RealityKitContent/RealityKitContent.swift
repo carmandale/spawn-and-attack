@@ -5,6 +5,12 @@ import RealityKit
 public let realityKitContentBundle = Bundle.module
 
 /// Configure RealityKit content
+@MainActor
 public func configureRealityKitContent() {
-    AttachmentPoint.registerComponent()
+    // Register components first
+    AttachmentComponent.registerComponent()
+    AttachmentStateComponent.registerComponent()
+    
+    // Then register systems
+    AttachmentSystem.registerSystem()
 }

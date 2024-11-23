@@ -48,6 +48,11 @@ def Xform "Root"
                             {
                                 bool isLeft = 1
                             }
+
+                            over "RealityKitContent_AttachmentComponent"
+                            {
+                                bool isLeft = 1
+                            }
                         }
                     }
 
@@ -56,6 +61,11 @@ def Xform "Root"
                         over "attach_13"
                         {
                             over "RealityKitContent_AttachmentPoint"
+                            {
+                                bool isLeft = 1
+                            }
+
+                            over "RealityKitContent_AttachmentComponent"
                             {
                                 bool isLeft = 1
                             }
@@ -70,6 +80,11 @@ def Xform "Root"
                             {
                                 bool isLeft = 1
                             }
+
+                            over "RealityKitContent_AttachmentComponent"
+                            {
+                                bool isLeft = 1
+                            }
                         }
                     }
 
@@ -78,6 +93,11 @@ def Xform "Root"
                         over "attach_15"
                         {
                             over "RealityKitContent_AttachmentPoint"
+                            {
+                                bool isLeft = 1
+                            }
+
+                            over "RealityKitContent_AttachmentComponent"
                             {
                                 bool isLeft = 1
                             }
@@ -92,6 +112,11 @@ def Xform "Root"
                             {
                                 bool isLeft = 1
                             }
+
+                            over "RealityKitContent_AttachmentComponent"
+                            {
+                                bool isLeft = 1
+                            }
                         }
                     }
 
@@ -100,6 +125,11 @@ def Xform "Root"
                         over "attach_17"
                         {
                             over "RealityKitContent_AttachmentPoint"
+                            {
+                                bool isLeft = 1
+                            }
+
+                            over "RealityKitContent_AttachmentComponent"
                             {
                                 bool isLeft = 1
                             }
@@ -114,6 +144,11 @@ def Xform "Root"
                             {
                                 bool isLeft = 1
                             }
+
+                            over "RealityKitContent_AttachmentComponent"
+                            {
+                                bool isLeft = 1
+                            }
                         }
                     }
 
@@ -122,6 +157,11 @@ def Xform "Root"
                         over "attach_1"
                         {
                             over "RealityKitContent_AttachmentPoint"
+                            {
+                                bool isLeft = 1
+                            }
+
+                            over "RealityKitContent_AttachmentComponent"
                             {
                                 bool isLeft = 1
                             }
@@ -136,6 +176,11 @@ def Xform "Root"
                             {
                                 bool isLeft = 1
                             }
+
+                            over "RealityKitContent_AttachmentComponent"
+                            {
+                                bool isLeft = 1
+                            }
                         }
                     }
 
@@ -144,6 +189,11 @@ def Xform "Root"
                         over "attach_3"
                         {
                             over "RealityKitContent_AttachmentPoint"
+                            {
+                                bool isLeft = 1
+                            }
+
+                            over "RealityKitContent_AttachmentComponent"
                             {
                                 bool isLeft = 1
                             }
@@ -158,6 +208,11 @@ def Xform "Root"
                             {
                                 bool isLeft = 1
                             }
+
+                            over "RealityKitContent_AttachmentComponent"
+                            {
+                                bool isLeft = 1
+                            }
                         }
                     }
 
@@ -166,6 +221,11 @@ def Xform "Root"
                         over "attach_5"
                         {
                             over "RealityKitContent_AttachmentPoint"
+                            {
+                                bool isLeft = 1
+                            }
+
+                            over "RealityKitContent_AttachmentComponent"
                             {
                                 bool isLeft = 1
                             }
@@ -180,6 +240,11 @@ def Xform "Root"
                             {
                                 bool isLeft = 1
                             }
+
+                            over "RealityKitContent_AttachmentComponent"
+                            {
+                                bool isLeft = 1
+                            }
                         }
                     }
 
@@ -188,6 +253,11 @@ def Xform "Root"
                         over "attach_7"
                         {
                             over "RealityKitContent_AttachmentPoint"
+                            {
+                                bool isLeft = 1
+                            }
+
+                            over "RealityKitContent_AttachmentComponent"
                             {
                                 bool isLeft = 1
                             }
@@ -202,6 +272,11 @@ def Xform "Root"
                             {
                                 bool isLeft = 1
                             }
+
+                            over "RealityKitContent_AttachmentComponent"
+                            {
+                                bool isLeft = 1
+                            }
                         }
                     }
 
@@ -210,6 +285,11 @@ def Xform "Root"
                         over "attach_9"
                         {
                             over "RealityKitContent_AttachmentPoint"
+                            {
+                                bool isLeft = 1
+                            }
+
+                            over "RealityKitContent_AttachmentComponent"
                             {
                                 bool isLeft = 1
                             }
@@ -224,6 +304,11 @@ def Xform "Root"
                             {
                                 bool isLeft = 1
                             }
+
+                            over "RealityKitContent_AttachmentComponent"
+                            {
+                                bool isLeft = 1
+                            }
                         }
                     }
 
@@ -232,6 +317,11 @@ def Xform "Root"
                         over "attach_11"
                         {
                             over "RealityKitContent_AttachmentPoint"
+                            {
+                                bool isLeft = 1
+                            }
+
+                            over "RealityKitContent_AttachmentComponent"
                             {
                                 bool isLeft = 1
                             }
