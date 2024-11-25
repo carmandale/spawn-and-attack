@@ -8,22 +8,18 @@
 import SwiftUI
 import RealityKit
 import RealityKitContent
+import Combine
 
 struct CurvedPathView: View {
     @Environment(AppModel.self) private var appModel
     @Environment(\.realityKitScene) var scene
-    let rknt = "RealityKit.NotificationTrigger"
     
     @State private var rootEntity: Entity?
     @State private var adcEntity: Entity?
-    @State private var leftCellHits: Int = 0
-    @State private var rightCellHits: Int = 0
     
-    // Track available attachment points
-    @State private var leftCellAttachPoints: [Entity] = []
-    @State private var rightCellAttachPoints: [Entity] = []
-    @State private var usedAttachPoints: Set<Entity> = []
-    @State private var attachmentCellMap: [Entity: Bool] = [:] // true for left, false for right
+    // Store event subscriptions
+    @State private var adcHitSubscription: EventSubscription?
+    @State private var adcPathCompletedSubscription: EventSubscription?
     
     var body: some View {
         RealityView { content, attachments in
@@ -32,84 +28,85 @@ struct CurvedPathView: View {
             content.add(root)
             rootEntity = root
             
-            // Load the immersive content if available
-            if let immersiveContentEntity = try? await Entity(named: "Immersive", in: realityKitContentBundle) {
-                root.addChild(immersiveContentEntity)
-                
-                // Find and setup left cancer cell
-                if let leftCell = immersiveContentEntity.findEntity(named: "cancerCell_left") {
+            // Load and spawn cancer cells
+            Task {
+                do {
+                    // Load the template
+                    let cancerCellTemplate = try await Entity(named: "CancerCell-spawn", in: realityKitContentBundle)
+                    print("\n=== Loading Cancer Cells ===")
+                    
+                    // Create first cell (clone of template)
+                    let cell1 = cancerCellTemplate.clone(recursive: true)
+                    cell1.name = "cancer_cell_1"
+                    cell1.position = [-0.5, 1.5, -1.5]
+                    print("\n=== Cancer Cell 1 Component Hierarchy ===")
+                    inspectEntityHierarchy(cell1, level: 0)
+                    
+                    // Add meter to first cell
                     if let leftMeter = attachments.entity(for: "leftMeter") {
-                        leftMeter.position = [0, 0.5, 0]
-                        leftCell.addChild(leftMeter)
+                        leftMeter.position = [0, 1.0, 0]
+                        cell1.addChild(leftMeter)
                     }
                     
-                    // Find all attachment points for left cell
-                    findAttachmentPoints(in: leftCell) { points in
-                        leftCellAttachPoints = points
-                        points.forEach { attachmentCellMap[$0] = true }
-                    }
-                }
-                
-                // Find and setup right cancer cell
-                if let rightCell = immersiveContentEntity.findEntity(named: "cancerCell_right") {
+                    root.addChild(cell1)
+                    print("\nCell 1 loaded at position:", cell1.position)
+                    print("Cell 1 components:", cell1.components.map { type(of: $0) })
+                    
+                    // Create second cell (clone of template)
+                    let cell2 = cancerCellTemplate.clone(recursive: true)
+                    cell2.name = "cancer_cell_2"
+                    cell2.position = [0.5, 1.5, -1.5]
+                    print("\n=== Cancer Cell 2 Component Hierarchy ===")
+                    inspectEntityHierarchy(cell2, level: 0)
+                    
+                    // Add meter to second cell
                     if let rightMeter = attachments.entity(for: "rightMeter") {
-                        rightMeter.position = [0, 0.5, 0]
-                        rightCell.addChild(rightMeter)
+                        rightMeter.position = [0, 2.0, 0]
+                        cell2.addChild(rightMeter)
                     }
                     
-                    // Find all attachment points for right cell
-                    findAttachmentPoints(in: rightCell) { points in
-                        rightCellAttachPoints = points
-                        points.forEach { attachmentCellMap[$0] = false }
-                    }
+                    root.addChild(cell2)
+                    print("\nCell 2 loaded at position:", cell2.position)
+                    print("Cell 2 components:", cell2.components.map { type(of: $0) })
+                    
+                    print("\nScene hierarchy:")
+                    inspectEntityHierarchy(root, level: 0)
+                } catch {
+                    print("Error loading cancer cells:", error)
                 }
             }
             
             // Load the ADC entity
             if let adc = try? await Entity(named: "ADC-spawn", in: realityKitContentBundle) {
                 print("\n=== Initial ADC Template Load ===")
-                
-                // Find the inner Root with audio resources
-                if let innerRoot = adc.children.first,
-                   let audioLib = innerRoot.components[AudioLibraryComponent.self] {
-                    
-                    print("Found audio library with resources:", audioLib.resources.keys)
-                    
-                    // Create our own AudioLibraryComponent with those resources
-                    var newAudioLib = AudioLibraryComponent()
-                    
-                    // Transfer the resources
-                    for (name, resource) in audioLib.resources {
-                        newAudioLib.resources[name] = resource
-                    }
-                    
-                    // Add to our main entity
-                    adc.components[AudioLibraryComponent.self] = newAudioLib
-                    
-                    // Also transfer the spatial audio component if it exists
-                    if let spatialAudio = innerRoot.components[SpatialAudioComponent.self] {
-                        adc.components[SpatialAudioComponent.self] = spatialAudio
-                    }
-                    
-                    print("Transferred audio resources to top-level entity")
-                }
-                
-                print("ADC entity loaded")
-                print("Entity name:", adc.name)
-                print("Entity children:", adc.children.map { $0.name })
-                print("Components:", adc.components.map { type(of: $0) })
-                print("\nRecursive entity inspection:")
                 inspectEntityHierarchy(adc, level: 0)
-                adcEntity = adc
+                
+                // Store the inner Root entity that has the audio components as our template
+                if let innerRoot = adc.children.first {
+                    adcEntity = innerRoot
+                    print("ADC entity loaded (using inner Root with audio)")
+                    print("Entity name:", innerRoot.name)
+                    print("Components:", innerRoot.components.map { type(of: $0) })
+                }
             }
         } update: { content, attachments in
-            // Updates handled by root entity
-        } attachments: {
-            Attachment(id: "leftMeter") {
-                CircleProgressView(hits: $leftCellHits)
+            // Update hit counts from components
+            if let immersiveContent = content.entities.first?.children.first {
+                for cell in findCancerCells(in: immersiveContent) {
+                    if let component = cell.components[CancerCellComponent.self] {
+//                        hitTracker.updateHitCount(for: cell, count: component.hitCount)
+                    }
+                }
             }
-            Attachment(id: "rightMeter") {
-                CircleProgressView(hits: $rightCellHits)
+        } attachments: {
+            // Create progress views for all cancer cells
+            ForEach(findCancerCells(in: rootEntity?.children.first?.children.first), id: \.id) { cell in
+                Attachment(id: String(cell.id)) {
+                   CircleProgressView(hits: .init(
+                       get: { hitTracker.getHitCount(for: cell) },
+                       set: { _ in /* Read-only binding */ }
+                   ))
+                }
             }
         }
         .gesture(
@@ -121,12 +118,13 @@ struct CurvedPathView: View {
         )
     }
     
-    private func findAttachmentPoints(in entity: Entity, completion: @escaping ([Entity]) -> Void) {
-        var points: [Entity] = []
+    private func findCancerCells(in entity: Entity?) -> [Entity] {
+        guard let entity = entity else { return [] }
+        var cells: [Entity] = []
         
         func recursiveSearch(_ entity: Entity) {
-            if entity.components[AttachmentPoint.self] != nil {
-                points.append(entity)
+            if entity.name.contains("cancerCell") {
+                cells.append(entity)
             }
             for child in entity.children {
                 recursiveSearch(child)
@@ -134,42 +132,29 @@ struct CurvedPathView: View {
         }
         
         recursiveSearch(entity)
-        completion(points)
-    }
-    
-    private func getAvailableAttachPoint(isLeft: Bool) -> Entity? {
-        print("\nLooking for attachment point (isLeft: \(isLeft))")
-        guard let scene = scene else {
-            print("No scene available")
-            return nil
-        }
-        print("Scene found")
-        
-        let point = AttachmentSystem.getAvailablePoint(in: scene, isLeft: isLeft)
-        if let point = point {
-            print("Found available point: \(point.name)")
-            AttachmentSystem.markPointAsOccupied(point)
-            print("Marked point as occupied")
-        } else {
-            print("No available points found")
-        }
-        return point
+        return cells
     }
     
     private func handleTap(on entity: Entity) {
         print("Tapped entity: \(entity.name)")
         
-        let isLeftCell = entity.name.contains("left")
-        print("Is left cell: \(isLeftCell)")
+        guard let scene = scene else {
+            print("No scene available")
+            return
+        }
         
-        guard let attachPoint = getAvailableAttachPoint(isLeft: isLeftCell) else {
+        // Get the tapped position in world space
+        let worldPosition = entity.position(relativeTo: nil)
+        
+        // Find nearest available attachment point
+        guard let attachPoint = AttachmentSystem.getAvailablePoint(in: scene, nearPosition: worldPosition) else {
             print("No available attach point found")
             return
         }
         print("Found attach point: \(attachPoint.name)")
         
-        let worldPosition = attachPoint.convert(position: .zero, to: nil)
-        print("World position: \(worldPosition)")
+        let attachWorldPosition = attachPoint.convert(position: .zero, to: nil)
+        print("Attachment point world position: \(attachWorldPosition)")
         
         // Generate random point for spawn position
         let spawnPoint = SIMD3<Float>(
@@ -182,7 +167,7 @@ struct CurvedPathView: View {
         // Use the attachment point's world position as the target
         spawnAndAnimateCubeWithCurvedPath(
             from: spawnPoint,
-            to: worldPosition,
+            to: attachWorldPosition,
             targetEntity: attachPoint
         )
     }
@@ -192,32 +177,20 @@ struct CurvedPathView: View {
         
         // Clone the preloaded entity to avoid reusing the same instance
         let adc = adcTemplate.clone(recursive: true)
-        print("\n=== Cloned ADC Entity ===")
-        print("Components after clone:", adc.components.map { type(of: $0) })
-        if let audioLib = adc.components[AudioLibraryComponent.self] {
-            print("Audio Library Found in Clone:")
-            print("- Available resources:", audioLib.resources.keys)
-            print("- Drone sound exists:", audioLib.resources["Drones_01.wav"] != nil)
-            print("- Attach sound exists:", audioLib.resources["Sonic_Pulse_Hit_01.wav"] != nil)
-        } else {
-            print("WARNING: No AudioLibraryComponent found in cloned ADC")
-        }
+        
+        // Initial setup
+        adc.position = start
         root.addChild(adc)
         
-        // Set initial position and start drone sound
-        adc.position = start
-        setupAndPlayDroneSound(for: adc)
-        
-        // Calculate the path parameters
-        let distance = length(end - start)
-        let arcHeight = distance * 0.375 / 2.0
-        let slalomWidth = distance * 0.2 / 2.0
-        
-        let numSteps = 120
-        let totalDuration: TimeInterval = 1.0
-        let stepDuration = totalDuration / Double(numSteps)
-        
+        // Calculate path points
+        let numSteps = 60
+        let arcHeight: Float = 0.3
+        let slalomWidth: Float = 0.2
+        let stepDuration: TimeInterval = 0.03
+        let totalDuration = TimeInterval(numSteps) * stepDuration
         var positions: [SIMD3<Float>] = []
+        
+        // Generate curved path points
         for i in 0...numSteps {
             let p = Float(i) / Float(numSteps)
             let basePoint = mix(start, end, t: p)
@@ -228,29 +201,23 @@ struct CurvedPathView: View {
             positions.append(i == numSteps ? end : position)
         }
         
-        // Increment hit counter when animation completes
+        // Animation complete handler
         DispatchQueue.main.asyncAfter(deadline: .now() + totalDuration) {
-            let isLeft = self.attachmentCellMap[targetEntity] ?? false
-            if isLeft {
-                self.leftCellHits = min(self.leftCellHits + 1, 18)
-                if self.leftCellHits == 18 {
-                    self.triggerCancerDeath(isLeft: true)
-                }
-            } else {
-                self.rightCellHits = min(self.rightCellHits + 1, 18)
-                if self.rightCellHits == 18 {
-                    self.triggerCancerDeath(isLeft: false)
-                }
-            }
-            
             // Stop drone sound and play attach sound
             adc.stopAllAudio()
             adc.position = .zero
             targetEntity.addChild(adc)
-            self.playAttachSound(for: targetEntity)
+            
+            // Play attach sound
+            playAttachSound(for: targetEntity)
             
             // Mark the attachment point as occupied
             AttachmentSystem.markPointAsOccupied(targetEntity)
+            
+            // Update cancer cell state
+            if let cellEntity = self.findCancerCell(from: targetEntity) {
+                self.handleCellHit(cellEntity, adc: adc)
+            }
         }
         
         for i in 0..<positions.count {
@@ -260,6 +227,27 @@ struct CurvedPathView: View {
                 transform.translation = positions[i]
                 adc.move(to: transform, relativeTo: nil, duration: stepDuration, timingFunction: .linear)
             }
+        }
+    }
+    
+    private func findCancerCell(from entity: Entity) -> Entity? {
+        var current: Entity? = entity
+        while let parent = current?.parent {
+            if parent.name.contains("cancerCell") {
+                return parent
+            }
+            current = parent
+        }
+        return nil
+    }
+    
+    private func inspectEntityHierarchy(_ entity: Entity, level: Int) {
+        let indent = String(repeating: "  ", count: level)
+        print("\(indent)Entity: \(entity.name)")
+        print("\(indent)Components: \(entity.components.map { type(of: $0) })")
+        
+        for child in entity.children {
+            inspectEntityHierarchy(child, level: level + 1)
         }
     }
     
@@ -299,39 +287,44 @@ struct CurvedPathView: View {
         parentADC.playAudio(audioResource)
     }
     
-    private func triggerCancerDeath(isLeft: Bool) {
-        guard let scene = scene else { return }
-        let identifier = isLeft ? "cancerDeathLeft" : "cancerDeathRight"
-        let notification = Notification(name: .init(rknt),
-                                    userInfo: ["\(rknt).Scene" : scene,
-                                          "\(rknt).Identifier" : identifier])
-        NotificationCenter.default.post(notification)
+    private func handleADCHit(_ event: GameEvents.ADCHit) {
+        handleCellHit(event.cell, adc: event.adc)
     }
     
-    private func inspectEntityHierarchy(_ entity: Entity, level: Int) {
-        let indent = String(repeating: "  ", count: level)
-        print("\(indent)Entity: \(entity.name)")
-        print("\(indent)Components: \(entity.components.map { type(of: $0) })")
-        
-        // Special handling for ModelComponent
-        if let modelComponent = entity.components[ModelComponent.self] {
-            print("\(indent)Model Component Materials:", modelComponent.materials.count)
-            for (index, material) in modelComponent.materials.enumerated() {
-                print("\(indent)  Material \(index): \(type(of: material))")
+    private func handleCellHit(_ cell: Entity, adc: Entity) {
+        if var component = cell.components[CancerCellComponent.self] {
+            component.hitCount += 1
+            cell.components[CancerCellComponent.self] = component
+            
+            // Update hit tracker and game state
+//            hitTracker.updateHitCount(for: cell, count: component.hitCount)
+//            appModel.totalHits += 1
+//            appModel.incrementScore()
+//            
+//            // Check if cell should be destroyed
+//            if component.hitCount >= 3 { // TODO: Make this configurable
+//                destroyCancerCell(cell)
+//                appModel.cellsDestroyed += 1
+//                appModel.incrementScore(by: 5) // Bonus points for destroying
             }
         }
-        
-        // Special handling for AudioLibraryComponent
-        if let audioLib = entity.components[AudioLibraryComponent.self] {
-            print("\(indent)Audio Library Resources:", audioLib.resources.keys)
+    }
+    
+    private func destroyCancerCell(_ cell: Entity) {
+        // Fade out animation
+        if var modelComponent = cell.components[ModelComponent.self] {
+            var material = PhysicallyBasedMaterial()
+            material.baseColor = .init(tint: .white.withAlphaComponent(0))
+            modelComponent.materials = [material]
+            cell.components[ModelComponent.self] = modelComponent
         }
         
-        print("\(indent)Children count: \(entity.children.count)")
-        for child in entity.children {
-            inspectEntityHierarchy(child, level: level + 1)
+        // Remove after delay
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            cell.removeFromParent()
         }
     }
-}
+
 
 //#Preview(immersionStyle: .mixed) {
 //    CurvedPathView()

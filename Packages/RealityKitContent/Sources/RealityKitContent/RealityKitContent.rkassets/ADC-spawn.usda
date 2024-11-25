@@ -70,5 +70,10 @@ def Xform "Root"
         uniform asset file = @Audio/Sonic_Pulse_Hit_01.wav@
         uniform bool shouldLoop = 0
     }
+
+    def RealityKitCustomComponent "RealityKitContent_ADCComponent"
+    {
+        uniform token info:id = "RealityKitContent.ADCComponent"
+    }
 }
 

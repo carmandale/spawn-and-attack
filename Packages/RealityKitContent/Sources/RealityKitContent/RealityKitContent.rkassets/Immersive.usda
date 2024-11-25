@@ -9,7 +9,7 @@ reorder rootPrims = ["Root", "GridMaterial"]
 
 def Xform "Root"
 {
-    reorder nameChildren = ["cancerCell_left", "cancerCell_right", "CancerCellDeath_left", "CancerCellDeath_right", "Distortion_Wave_01_wav", "LeftAudio", "RightAudio"]
+    reorder nameChildren = ["cancerCell_left", "cancerCell_right", "Distortion_Wave_01_wav", "LeftAudio", "RightAudio", "Dramatic_Hit_Cinematic_01_wav", "cancerCell_complex"]
     def Xform "cancerCell_left" (
         active = true
     )
@@ -17,229 +17,6 @@ def Xform "Root"
         reorder nameChildren = ["cancerCell_complex", "InputTarget", "Collider", "RCP_BehaviorsContainer", "OnNotification", "AudioLibrary", "Transform"]
         float3 xformOp:translate = (-0.5, 1.5, -1.74219)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-        def "cancerCell_complex" (
-            active = true
-            references = @Assets/cancerCell_complex.usd@
-        )
-        {
-            quatf xformOp:orient = (1, 0, 0, 0)
-            float3 xformOp:scale = (0.7180964, 0.7180964, 0.7180964)
-            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-            over "AnimationLibrary"
-            {
-                over "default_subtree_animation"
-                {
-                    uniform bool looping = 1
-                    uniform string name = "default subtree animation"
-                }
-            }
-
-            over "body"
-            {
-                over "Antigens"
-                {
-                    over "Cube_178_011"
-                    {
-                        over "attach_12"
-                        {
-                            over "RealityKitContent_AttachmentPoint"
-                            {
-                                bool isLeft = 1
-                            }
-                        }
-                    }
-
-                    over "Cube_178_012"
-                    {
-                        over "attach_13"
-                        {
-                            over "RealityKitContent_AttachmentPoint"
-                            {
-                                bool isLeft = 1
-                            }
-                        }
-                    }
-
-                    over "Cube_178_013"
-                    {
-                        over "attach_14"
-                        {
-                            over "RealityKitContent_AttachmentPoint"
-                            {
-                                bool isLeft = 1
-                            }
-                        }
-                    }
-
-                    over "Cube_178_014"
-                    {
-                        over "attach_15"
-                        {
-                            over "RealityKitContent_AttachmentPoint"
-                            {
-                                bool isLeft = 1
-                            }
-                        }
-                    }
-
-                    over "Cube_178_015"
-                    {
-                        over "attach_16"
-                        {
-                            over "RealityKitContent_AttachmentPoint"
-                            {
-                                bool isLeft = 1
-                            }
-                        }
-                    }
-
-                    over "Cube_178_016"
-                    {
-                        over "attach_17"
-                        {
-                            over "RealityKitContent_AttachmentPoint"
-                            {
-                                bool isLeft = 1
-                            }
-                        }
-                    }
-
-                    over "Cube_178_017"
-                    {
-                        over "attach_18"
-                        {
-                            over "RealityKitContent_AttachmentPoint"
-                            {
-                                bool isLeft = 1
-                            }
-                        }
-                    }
-
-                    over "Cube_178"
-                    {
-                        over "attach_1"
-                        {
-                            over "RealityKitContent_AttachmentPoint"
-                            {
-                                bool isLeft = 1
-                            }
-                        }
-                    }
-
-                    over "Cube_178_001"
-                    {
-                        over "attach_2"
-                        {
-                            over "RealityKitContent_AttachmentPoint"
-                            {
-                                bool isLeft = 1
-                            }
-                        }
-                    }
-
-                    over "Cube_178_002"
-                    {
-                        over "attach_3"
-                        {
-                            over "RealityKitContent_AttachmentPoint"
-                            {
-                                bool isLeft = 1
-                            }
-                        }
-                    }
-
-                    over "Cube_178_003"
-                    {
-                        over "attach_4"
-                        {
-                            over "RealityKitContent_AttachmentPoint"
-                            {
-                                bool isLeft = 1
-                            }
-                        }
-                    }
-
-                    over "Cube_178_004"
-                    {
-                        over "attach_5"
-                        {
-                            over "RealityKitContent_AttachmentPoint"
-                            {
-                                bool isLeft = 1
-                            }
-                        }
-                    }
-
-                    over "Cube_178_005"
-                    {
-                        over "attach_6"
-                        {
-                            over "RealityKitContent_AttachmentPoint"
-                            {
-                                bool isLeft = 1
-                            }
-                        }
-                    }
-
-                    over "Cube_178_006"
-                    {
-                        over "attach_7"
-                        {
-                            over "RealityKitContent_AttachmentPoint"
-                            {
-                                bool isLeft = 1
-                            }
-                        }
-                    }
-
-                    over "Cube_178_007"
-                    {
-                        over "attach_8"
-                        {
-                            over "RealityKitContent_AttachmentPoint"
-                            {
-                                bool isLeft = 1
-                            }
-                        }
-                    }
-
-                    over "Cube_178_008"
-                    {
-                        over "attach_9"
-                        {
-                            over "RealityKitContent_AttachmentPoint"
-                            {
-                                bool isLeft = 1
-                            }
-                        }
-                    }
-
-                    over "Cube_178_009"
-                    {
-                        over "attach_10"
-                        {
-                            over "RealityKitContent_AttachmentPoint"
-                            {
-                                bool isLeft = 1
-                            }
-                        }
-                    }
-
-                    over "Cube_178_010"
-                    {
-                        over "attach_11"
-                        {
-                            over "RealityKitContent_AttachmentPoint"
-                            {
-                                bool isLeft = 1
-                            }
-                        }
-                    }
-                }
-            }
-        }
 
         def RealityKitComponent "InputTarget"
         {
@@ -309,193 +86,6 @@ def Xform "Root"
         }
     }
 
-    def Xform "cancerCell_right" (
-        active = true
-    )
-    {
-        reorder nameChildren = ["cancerCell_complex", "InputTarget", "Collider", "AnimationLibrary", "RCP_BehaviorsContainer", "OnNotification", "Transform"]
-        quatf xformOp:orient = (1, 0, 0, 0)
-        float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (0.5, 1.5, -1.5)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-        def "cancerCell_complex" (
-            active = true
-            references = @Assets/cancerCell_complex.usd@
-        )
-        {
-            float2 ui:nodegraph:node:pos = (20, 20)
-            int ui:nodegraph:node:stackingOrder = 1
-            quatf xformOp:orient = (1, 0, 0, 0)
-            float3 xformOp:scale = (0.33427775, 0.33427775, 0.33427775)
-            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-        }
-
-        def RealityKitComponent "InputTarget"
-        {
-            uniform token info:id = "RealityKit.InputTarget"
-        }
-
-        def RealityKitComponent "Collider"
-        {
-            uint group = 1
-            uniform token info:id = "RealityKit.Collider"
-            uint mask = 4294967295
-            token type = "Default"
-
-            def RealityKitStruct "Shape"
-            {
-                float3 extent = (0.26842695, 0.30121982, 0.26363438)
-                float radius = 0.12
-                token shapeType = "Sphere"
-
-                def RealityKitStruct "pose"
-                {
-                    float3 position = (-0.00110282, 0.0018861592, -0.0043538213)
-                }
-            }
-        }
-
-        def RealityKitComponent "AnimationLibrary"
-        {
-            token info:id = "RealityKit.AnimationLibrary"
-        }
-
-        def RealityKitComponent "RCP_BehaviorsContainer"
-        {
-            rel behaviors = </Root/cancerCell_right/OnNotification>
-            uniform token info:id = "RCP.BehaviorsContainer"
-        }
-
-        def Preliminary_Behavior "OnNotification"
-        {
-            rel actions = </Root/cancerCell_right/OnNotification/Action>
-            uniform bool exclusive
-            rel triggers = </Root/cancerCell_right/OnNotification/Trigger>
-
-            def Preliminary_Trigger "Trigger"
-            {
-                rel affectedObjects = </Root/cancerCell_right>
-                string identifier = "cancerDeathRight"
-                token info:id = "Notification"
-            }
-
-            def Preliminary_Action "Action"
-            {
-                rel affectedObjects = </Root>
-                rel animationLibraryKey = </Root/CancerCellDeath_right>
-                rel animationLibraryKeyOverrideKey = </Root/cancerCell_right/OnNotification/Trigger>
-                token info:id = "PlayTimeline"
-                int loops = 0
-                int performCount = 1
-                token type = "serial"
-            }
-        }
-    }
-
-    def RealityKitTimeline "CancerCellDeath_left"
-    {
-        reorder nameChildren = ["Track", "Track2"]
-        def RealityKitTrack "Track"
-        {
-            def RealityKitAction "Animation"
-            {
-                string actionKind = "animation"
-                string animation = "default subtree animation"
-                int blendLayer = 500
-                double duration = 0.3333333432674408
-                uniform token info:id = "0AAE719E-6040-47BC-BCB9-4121D7419DE1"
-                bool separateAnimatedValue = 1
-                double startTime = 0.052120615604867575
-                rel target = </Root/cancerCell_left/cancerCell_complex>
-
-                def RealityKitStruct "handoffType"
-                {
-                }
-            }
-
-            def RealityKitAction "Disable_Entity"
-            {
-                string actionKind = "disable"
-                double duration = 0
-                uniform token info:id = "E3F4F23B-E6B5-4D6F-9E04-B7708EE71B3D"
-                double startTime = 0.3854539589723084
-                rel target = </Root/cancerCell_left>
-            }
-        }
-
-        def RealityKitTrack "Track2"
-        {
-            def RealityKitAction "Play_Audio"
-            {
-                string actionKind = "audio"
-                string audioResourceName = "Distortion_Wave_01_wav"
-                bool controlPlayback = 1
-                double duration = 10.2901875
-                uniform token info:id = "3CD023D5-F3F4-481B-B7FB-3485E06EE346"
-                double startTime = 0
-                rel target = </Root/LeftAudio>
-
-                def RealityKitStruct "handoffType"
-                {
-                }
-            }
-        }
-    }
-
-    def RealityKitTimeline "CancerCellDeath_right"
-    {
-        reorder nameChildren = ["Track", "Track2"]
-        float2 ui:nodegraph:node:pos = (20, 20)
-        int ui:nodegraph:node:stackingOrder = 1
-
-        def RealityKitTrack "Track"
-        {
-            def RealityKitAction "Animation"
-            {
-                string actionKind = "animation"
-                string animation = "default subtree animation"
-                int blendLayer = 500
-                double duration = 0.3333333432674408
-                uniform token info:id = "0AAE719E-6040-47BC-BCB9-4121D7419DE1"
-                bool separateAnimatedValue = 1
-                double startTime = 0.052120615604867575
-                rel target = </Root/cancerCell_right/cancerCell_complex>
-
-                def RealityKitStruct "handoffType"
-                {
-                }
-            }
-
-            def RealityKitAction "Disable_Entity"
-            {
-                string actionKind = "disable"
-                double duration = 0
-                uniform token info:id = "E3F4F23B-E6B5-4D6F-9E04-B7708EE71B3D"
-                double startTime = 0.3854539589723084
-                rel target = </Root/cancerCell_right>
-            }
-        }
-
-        def RealityKitTrack "Track2"
-        {
-            def RealityKitAction "Play_Audio"
-            {
-                string actionKind = "audio"
-                string audioResourceName = "Dramatic_Hit_Cinematic_01.wav"
-                bool controlPlayback = 1
-                double duration = 20.774041666666665
-                uniform token info:id = "53418480-A3EA-4B26-9D7C-70150688C6A0"
-                double startTime = 0
-                rel target = </Root/RightAudio>
-
-                def RealityKitStruct "handoffType"
-                {
-                }
-            }
-        }
-    }
-
     def RealityKitAudioFile "Distortion_Wave_01_wav"
     {
         uniform asset file = @Audio/Distortion_Wave_01.wav@
@@ -548,6 +138,240 @@ def Xform "Root"
     {
         uniform asset file = @Audio/Dramatic_Hit_Cinematic_01.wav@
         uniform bool shouldLoop = 0
+    }
+
+    def "cancerCell_complex" (
+        active = true
+        references = @Assets/cancerCell_complex.usd@
+    )
+    {
+        quatf xformOp:orient = (1, 0, 0, 0)
+        float3 xformOp:scale = (0.7180964, 0.7180964, 0.7180964)
+        float3 xformOp:translate = (-0.5, 1.5, -1.74219)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        over "AnimationLibrary"
+        {
+            over "default_subtree_animation"
+            {
+                uniform bool looping = 1
+                uniform string name = "default subtree animation"
+            }
+        }
+
+        over "body"
+        {
+            over "Antigens"
+            {
+                over "Cube_178_011"
+                {
+                    over "attach_12"
+                    {
+                        over "RealityKitContent_AttachmentPoint"
+                        {
+                            bool isLeft = 1
+                        }
+                    }
+                }
+
+                over "Cube_178_012"
+                {
+                    over "attach_13"
+                    {
+                        over "RealityKitContent_AttachmentPoint"
+                        {
+                            bool isLeft = 1
+                        }
+                    }
+                }
+
+                over "Cube_178_013"
+                {
+                    over "attach_14"
+                    {
+                        over "RealityKitContent_AttachmentPoint"
+                        {
+                            bool isLeft = 1
+                        }
+                    }
+                }
+
+                over "Cube_178_014"
+                {
+                    over "attach_15"
+                    {
+                        over "RealityKitContent_AttachmentPoint"
+                        {
+                            bool isLeft = 1
+                        }
+                    }
+                }
+
+                over "Cube_178_015"
+                {
+                    over "attach_16"
+                    {
+                        over "RealityKitContent_AttachmentPoint"
+                        {
+                            bool isLeft = 1
+                        }
+                    }
+                }
+
+                over "Cube_178_016"
+                {
+                    over "attach_17"
+                    {
+                        over "RealityKitContent_AttachmentPoint"
+                        {
+                            bool isLeft = 1
+                        }
+                    }
+                }
+
+                over "Cube_178_017"
+                {
+                    over "attach_18"
+                    {
+                        over "RealityKitContent_AttachmentPoint"
+                        {
+                            bool isLeft = 1
+                        }
+                    }
+                }
+
+                over "Cube_178"
+                {
+                    over "attach_1"
+                    {
+                        over "RealityKitContent_AttachmentPoint"
+                        {
+                            bool isLeft = 1
+                        }
+                    }
+                }
+
+                over "Cube_178_001"
+                {
+                    over "attach_2"
+                    {
+                        over "RealityKitContent_AttachmentPoint"
+                        {
+                            bool isLeft = 1
+                        }
+                    }
+                }
+
+                over "Cube_178_002"
+                {
+                    over "attach_3"
+                    {
+                        over "RealityKitContent_AttachmentPoint"
+                        {
+                            bool isLeft = 1
+                        }
+                    }
+                }
+
+                over "Cube_178_003"
+                {
+                    over "attach_4"
+                    {
+                        over "RealityKitContent_AttachmentPoint"
+                        {
+                            bool isLeft = 1
+                        }
+                    }
+                }
+
+                over "Cube_178_004"
+                {
+                    over "attach_5"
+                    {
+                        over "RealityKitContent_AttachmentPoint"
+                        {
+                            bool isLeft = 1
+                        }
+                    }
+                }
+
+                over "Cube_178_005"
+                {
+                    over "attach_6"
+                    {
+                        over "RealityKitContent_AttachmentPoint"
+                        {
+                            bool isLeft = 1
+                        }
+                    }
+                }
+
+                over "Cube_178_006"
+                {
+                    over "attach_7"
+                    {
+                        over "RealityKitContent_AttachmentPoint"
+                        {
+                            bool isLeft = 1
+                        }
+                    }
+                }
+
+                over "Cube_178_007"
+                {
+                    over "attach_8"
+                    {
+                        over "RealityKitContent_AttachmentPoint"
+                        {
+                            bool isLeft = 1
+                        }
+                    }
+                }
+
+                over "Cube_178_008"
+                {
+                    over "attach_9"
+                    {
+                        over "RealityKitContent_AttachmentPoint"
+                        {
+                            bool isLeft = 1
+                        }
+                    }
+                }
+
+                over "Cube_178_009"
+                {
+                    over "attach_10"
+                    {
+                        over "RealityKitContent_AttachmentPoint"
+                        {
+                            bool isLeft = 1
+                        }
+                    }
+                }
+
+                over "Cube_178_010"
+                {
+                    over "attach_11"
+                    {
+                        over "RealityKitContent_AttachmentPoint"
+                        {
+                            bool isLeft = 1
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    def "cancerCell_complex_1" (
+        active = true
+        prepend references = @Assets/cancerCell_complex.usd@
+    )
+    {
+        float3 xformOp:scale = (1, 1, 1)
+        float3 xformOp:translate = (1.6872958, 1.5, -3.7838914)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
     }
 }
 

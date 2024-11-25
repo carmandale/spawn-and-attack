@@ -16,6 +16,7 @@ struct SpawnAndAttrackApp: App {
     init() {
         /// register components
         RealityKitContent.AttachmentPoint.registerComponent()
+        RealityKitContent.CancerCellComponent.registerComponent()
         
         /// register systems
         RealityKitContent.AttachmentSystem.registerSystem()

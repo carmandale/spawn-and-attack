@@ -15,65 +15,9 @@
     "objectMetadataList" : [
       [
         "1D572CEB-057A-41C3-B575-04C37501A3C0",
-        "Root"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "1D572CEB-057A-41C3-B575-04C37501A3C0",
-        "Root",
-        "CancerCellDeath_right",
-        "Track2"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "1D572CEB-057A-41C3-B575-04C37501A3C0",
         "Root",
         "CancerCellDeath_left",
         "Track2"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "1D572CEB-057A-41C3-B575-04C37501A3C0",
-        "Root",
-        "CancerCellDeath_left"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "1D572CEB-057A-41C3-B575-04C37501A3C0",
-        "Root",
-        "CancerCellDeath_right",
-        "Track"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "1D572CEB-057A-41C3-B575-04C37501A3C0",
-        "Root",
-        "CancerCellDeath_left",
-        "Track"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "1D572CEB-057A-41C3-B575-04C37501A3C0",
-        "Root",
-        "CancerCellDeath_right"
       ],
       {
         "isExpanded" : true,
@@ -88,11 +32,121 @@
       {
         "isExpanded" : true,
         "isLocked" : false
+      },
+      [
+        "1D572CEB-057A-41C3-B575-04C37501A3C0",
+        "Root",
+        "cancerCell_left",
+        "cancerCell_complex",
+        "body",
+        "Antigens",
+        "Cube_178_011"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "1D572CEB-057A-41C3-B575-04C37501A3C0",
+        "Root",
+        "CancerCellDeath_left",
+        "Track"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "1D572CEB-057A-41C3-B575-04C37501A3C0",
+        "Root",
+        "cancerCell_left",
+        "cancerCell_complex",
+        "body",
+        "Antigens"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "1D572CEB-057A-41C3-B575-04C37501A3C0",
+        "Root",
+        "CancerCellDeath_right",
+        "Track"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "1D572CEB-057A-41C3-B575-04C37501A3C0",
+        "Root",
+        "cancerCell_complex_1"
+      ],
+      {
+        "isExpanded" : false,
+        "isLocked" : false
+      },
+      [
+        "1D572CEB-057A-41C3-B575-04C37501A3C0",
+        "Root",
+        "cancerCell_left"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "1D572CEB-057A-41C3-B575-04C37501A3C0",
+        "Root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "1D572CEB-057A-41C3-B575-04C37501A3C0",
+        "Root",
+        "cancerCell_complex"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "1D572CEB-057A-41C3-B575-04C37501A3C0",
+        "Root",
+        "CancerCellDeath_right",
+        "Track2"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "1D572CEB-057A-41C3-B575-04C37501A3C0",
+        "Root",
+        "cancerCell_left",
+        "cancerCell_complex",
+        "body"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
       }
     ]
   },
   "220C04E5-242E-4BBB-82A0-77AFE2744F74" : {
     "objectMetadataList" : [
+      [
+        "220C04E5-242E-4BBB-82A0-77AFE2744F74",
+        "Root",
+        "cancerCell_complex"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
       [
         "220C04E5-242E-4BBB-82A0-77AFE2744F74",
         "Root"
@@ -108,9 +162,8 @@
       [
         "25C36807-02FB-40AE-8F10-A63952F9AAB4",
         "root",
-        "body",
-        "Antigens",
-        "Cube_178_001"
+        "cancerCellDeath",
+        "Track"
       ],
       {
         "isExpanded" : true,
@@ -121,125 +174,7 @@
         "root",
         "body",
         "Antigens",
-        "Cube_178_014"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "25C36807-02FB-40AE-8F10-A63952F9AAB4",
-        "root",
-        "body",
-        "Antigens",
-        "Cube_178_004"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "25C36807-02FB-40AE-8F10-A63952F9AAB4",
-        "root",
-        "body",
-        "Antigens",
-        "Cube_178_017"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "25C36807-02FB-40AE-8F10-A63952F9AAB4",
-        "root",
-        "body"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "25C36807-02FB-40AE-8F10-A63952F9AAB4",
-        "root",
-        "body",
-        "Antigens",
-        "Cube_178_013"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "25C36807-02FB-40AE-8F10-A63952F9AAB4",
-        "root",
-        "body",
-        "Antigens",
-        "Cube_178_012"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "25C36807-02FB-40AE-8F10-A63952F9AAB4",
-        "root",
-        "body",
-        "Antigens",
-        "Cube_178_008"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "25C36807-02FB-40AE-8F10-A63952F9AAB4",
-        "root",
-        "body",
-        "Antigens",
-        "Cube_178_006"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "25C36807-02FB-40AE-8F10-A63952F9AAB4",
-        "root",
-        "body",
-        "Antigens"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "25C36807-02FB-40AE-8F10-A63952F9AAB4",
-        "root",
-        "body",
-        "Antigens",
-        "Cube_178_009"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "25C36807-02FB-40AE-8F10-A63952F9AAB4",
-        "root",
-        "body",
-        "Antigens",
-        "Cube_178"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "25C36807-02FB-40AE-8F10-A63952F9AAB4",
-        "root",
-        "body",
-        "Antigens",
-        "Cube_178_016"
+        "Cube_178_011"
       ],
       {
         "isExpanded" : true,
@@ -251,25 +186,16 @@
       ],
       {
         "isExpanded" : true,
-        "isLocked" : false
+        "isLocked" : false,
+        "selectedAudioFilePrim" : {
+          "string" : "\/root\/Dramatic_Hit_Cinematic_01_wav"
+        }
       },
       [
         "25C36807-02FB-40AE-8F10-A63952F9AAB4",
         "root",
-        "body",
-        "Antigens",
-        "Cube_178_015"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "25C36807-02FB-40AE-8F10-A63952F9AAB4",
-        "root",
-        "body",
-        "Antigens",
-        "Cube_178_010"
+        "Timeline",
+        "Track"
       ],
       {
         "isExpanded" : true,
@@ -288,9 +214,27 @@
       [
         "25C36807-02FB-40AE-8F10-A63952F9AAB4",
         "root",
-        "body",
-        "Antigens",
-        "Cube_178_005"
+        "Timeline",
+        "Track2"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "25C36807-02FB-40AE-8F10-A63952F9AAB4",
+        "root",
+        "cancerCellDeath",
+        "Track2"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "25C36807-02FB-40AE-8F10-A63952F9AAB4",
+        "root",
+        "cancerCellDeath"
       ],
       {
         "isExpanded" : true,
@@ -300,8 +244,7 @@
         "25C36807-02FB-40AE-8F10-A63952F9AAB4",
         "root",
         "body",
-        "Antigens",
-        "Cube_178_003"
+        "Antigens"
       ],
       {
         "isExpanded" : true,
@@ -310,31 +253,19 @@
       [
         "25C36807-02FB-40AE-8F10-A63952F9AAB4",
         "root",
-        "body",
-        "Antigens",
-        "Cube_178_007"
+        "body"
       ],
       {
         "isExpanded" : true,
         "isLocked" : false
-      },
+      }
+    ]
+  },
+  "3B5A01E3-A014-48CE-B941-067CFD3D66B9" : {
+    "objectMetadataList" : [
       [
-        "25C36807-02FB-40AE-8F10-A63952F9AAB4",
-        "root",
-        "body",
-        "Antigens",
-        "Cube_178_002"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "25C36807-02FB-40AE-8F10-A63952F9AAB4",
-        "root",
-        "body",
-        "Antigens",
-        "Cube_178_011"
+        "3B5A01E3-A014-48CE-B941-067CFD3D66B9",
+        "Root"
       ],
       {
         "isExpanded" : true,
@@ -401,8 +332,7 @@
       [
         "7E5548F0-FD98-43E0-BBE8-B93E37A1BFCE",
         "root",
-        "body",
-        "Cube_008_037"
+        "body"
       ],
       {
         "isExpanded" : true,
@@ -411,7 +341,8 @@
       [
         "7E5548F0-FD98-43E0-BBE8-B93E37A1BFCE",
         "root",
-        "body"
+        "body",
+        "Cube_008_037"
       ],
       {
         "isExpanded" : true,

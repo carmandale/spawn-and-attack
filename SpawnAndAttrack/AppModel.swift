@@ -18,4 +18,13 @@ class AppModel {
         case open
     }
     var immersiveSpaceState = ImmersiveSpaceState.closed
+    
+    // Game state
+    var score = 0
+    var totalHits = 0
+    var cellsDestroyed = 0
+    
+    func incrementScore(by points: Int = 1) {
+        score += points
+    }
 }
