@@ -11,16 +11,22 @@ import RealityKitContent
 @main
 struct SpawnAndAttrackApp: App {
 
-    @State private var appModel = AppModel()
-    
     init() {
         /// register components
         RealityKitContent.AttachmentPoint.registerComponent()
         RealityKitContent.CancerCellComponent.registerComponent()
+        RealityKitContent.MovementComponent.registerComponent()
+        RealityKitContent.UIAttachmentComponent.registerComponent()
         
         /// register systems
         RealityKitContent.AttachmentSystem.registerSystem()
+        RealityKitContent.CancerCellSystem.registerSystem()
+        RealityKitContent.MovementSystem.registerSystem()
+        RealityKitContent.UIAttachmentSystem.registerSystem()
+        RealityKitContent.ADCMovementSystem.registerSystem()
     }
+    
+    @State private var appModel = AppModel()
     
     var body: some Scene {
         WindowGroup {
@@ -30,7 +36,7 @@ struct SpawnAndAttrackApp: App {
         .windowStyle(.volumetric)
 
         ImmersiveSpace(id: appModel.immersiveSpaceID) {
-            CurvedPathView()
+            AttackCancerView()
                 .environment(appModel)
                 .onAppear {
                     appModel.immersiveSpaceState = .open

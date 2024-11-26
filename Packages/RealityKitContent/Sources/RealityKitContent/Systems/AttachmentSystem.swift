@@ -11,8 +11,16 @@ public struct AttachmentSystem: System {
     
     @MainActor
     public func update(context: SceneUpdateContext) {
-        // System now only monitors attachment points
-        // State changes are handled directly in markPointAsOccupied/Available
+        for entity in context.entities(matching: Self.attachmentQuery, updatingSystemWhen: .rendering) {
+            // if you find attachments, and they have marked themselves as occupied, then increment the hitCount of that attachments parent cancer cell. only one increment per isOccupied
+            // if entity.components[AttachmentPoint.self]?.isOccupied == true {
+            //     if let cellEntity = entity.parent,
+            //        var cellComponent = cellEntity.components[CancerCellComponent.self] {
+            //         cellComponent.hitCount += 1
+            //         cellEntity.components[CancerCellComponent.self] = cellComponent
+            //     }
+            // }
+        }
     }
     
     // MARK: - Public API
@@ -47,10 +55,10 @@ public struct AttachmentSystem: System {
         attachPoint.isOccupied = true
         entity.components[AttachmentPoint.self] = attachPoint
         
-        // Update parent cancer cell's hit count
+        // Update parent cancer cell's hit count. the parent cell is 4 levels up from the attachment point. 
         if let cellEntity = entity.parent,
            var cellComponent = cellEntity.components[CancerCellComponent.self] {
-            cellComponent.hitCount += 1
+           cellComponent.hitCount += 1
             cellEntity.components[CancerCellComponent.self] = cellComponent
         }
     }
