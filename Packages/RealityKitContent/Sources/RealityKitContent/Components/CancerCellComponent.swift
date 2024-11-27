@@ -4,6 +4,7 @@ import RealityKit
 public struct CancerCellComponent: Component, Codable {
     public var cellID: Int?
     public var hitCount: Int = 0
+    public var isDestroyed: Bool = false
     public static let requiredHits = 18
     
     public init(cellID: Int? = nil) {
