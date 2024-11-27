@@ -17,6 +17,8 @@ struct SpawnAndAttrackApp: App {
         RealityKitContent.CancerCellComponent.registerComponent()
         RealityKitContent.MovementComponent.registerComponent()
         RealityKitContent.UIAttachmentComponent.registerComponent()
+        RealityKitContent.ADCComponent.registerComponent()
+        RealityKitContent.BillboardComponent.registerComponent()
         
         /// register systems
         RealityKitContent.AttachmentSystem.registerSystem()
@@ -24,6 +26,7 @@ struct SpawnAndAttrackApp: App {
         RealityKitContent.MovementSystem.registerSystem()
         RealityKitContent.UIAttachmentSystem.registerSystem()
         RealityKitContent.ADCMovementSystem.registerSystem()
+        RealityKitContent.BillboardSystem.registerSystem()
     }
     
     @State private var appModel = AppModel()

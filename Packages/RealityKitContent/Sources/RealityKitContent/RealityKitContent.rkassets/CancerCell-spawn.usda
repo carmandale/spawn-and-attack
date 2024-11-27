@@ -12,11 +12,21 @@ def Xform "Root"
 {
     def "cancerCell_complex" (
         active = true
-        prepend references = @Assets/cancerCell_complex.usd@
+        references = @Assets/CancerCell/cancerCell_complex.usd@
     )
     {
         float3 xformOp:scale = (1, 1, 1)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        over "AnimationLibrary"
+        {
+            reorder nameChildren = ["default_subtree_animation", "death"]
+        }
+
+        over "RCP_BehaviorsContainer"
+        {
+            rel behaviors = </Root/cancerCell_complex/OnAddedToScene>
+        }
     }
 }
 

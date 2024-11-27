@@ -51,6 +51,9 @@ struct AttackCancerView: View {
                         
                         // Position the meter above the cell
                         meter.position = uiAttachment.offset
+                        
+                        // Add BillboardComponent to make the hit counter face the camera
+                        meter.components.set(RealityKitContent.BillboardComponent())
                     }
                 }
             }
@@ -84,59 +87,57 @@ struct AttackCancerView: View {
     private func handleTap(on entity: Entity) {
         print("Tapped entity: \(entity.name)")
         
-        guard let scene = scene else {
-            print("No scene available")
+        guard let scene = scene,
+              let cellComponent = entity.components[CancerCellComponent.self],
+              let cellID = cellComponent.cellID else {
+            print("No scene available or no cell component/ID")
             return
         }
+        print("Found cancer cell with ID: \(cellID)")
         
-        // Get the tapped position in world space
-        let worldPosition = entity.position(relativeTo: nil)
-        
-        // Find nearest available attachment point
-        guard let attachPoint = AttachmentSystem.getAvailablePoint(in: scene, nearPosition: worldPosition) else {
+        guard let attachPoint = AttachmentSystem.getAvailablePoint(in: scene, forCellID: cellID) else {
             print("No available attach point found")
             return
         }
         print("Found attach point: \(attachPoint.name)")
         
-        // Mark the attachment point as occupied immediately
         AttachmentSystem.markPointAsOccupied(attachPoint)
-        
-        spawnADC(targetPoint: attachPoint)
+        spawnADC(targetPoint: attachPoint, forCellID: cellID)
     }
     
-    private func spawnADC(targetPoint: Entity) {
+    private func spawnADC(targetPoint: Entity, forCellID cellID: Int) {
         guard let template = adcTemplate,
               let root = rootEntity else {
-            print("No ADC template or root entity available")
+            print("No ADC template, root entity, or scene available")
             return
         }
         
         // Clone the template
         let adc = template.clone(recursive: true)
         
-        // Add ADCComponent
-        adc.components[ADCComponent.self] = ADCComponent()
+        // Update ADCComponent properties
+        guard var adcComponent = adc.components[ADCComponent.self] else { return }
+        adcComponent.targetCellID = cellID
+        adc.components[ADCComponent.self] = adcComponent
         
         // Generate random spawn position
         let spawnPoint = SIMD3<Float>(
-            Float.random(in: -0.25...0.25),
+            Float.random(in: -0.125...0.125),
             Float.random(in: 0.25...1.1),
-            Float.random(in: -1.0...(-0.25))
+            Float.random(in: -0.5...(-0.125))
         )
+        
+        // Set initial position
+        adc.position = spawnPoint
         
         // Get target world position
-        let targetPosition = targetPoint.convert(position: .zero, to: nil)
+//        let targetPosition = targetPoint.convert(position: .zero, to: nil)
         
-        // Start movement
-        ADCMovementSystem.startMovement(
-            entity: adc,
-            from: spawnPoint,
-            to: targetPosition
-        )
-        
-        // Add to root
+        // Add to root first
         root.addChild(adc)
+        
+        // Start movement using static method
+        ADCMovementSystem.startMovement(entity: adc, from: spawnPoint, to: targetPoint)
     }
     
     private func inspectEntityHierarchy(_ entity: Entity, level: Int) {
@@ -177,17 +178,37 @@ struct AttackCancerView: View {
                 }
                 
                 // Set the cell ID in the CancerCellComponent
-                if var cancerCell = complexCell.components[CancerCellComponent.self] {
-                    cancerCell.cellID = i
-                    complexCell.components[CancerCellComponent.self] = cancerCell
-                    print("Set cellID \(i) for cancer cell")
-                } else {
-                    print("Warning: Could not find CancerCellComponent on complexCell")
+                if let complexCell = cell.findEntity(named: "cancerCell_complex") {
+                    if var cancerCell = complexCell.components[CancerCellComponent.self] {
+                        cancerCell.cellID = i
+                        complexCell.components[CancerCellComponent.self] = cancerCell
+                        
+                        root.addChild(cell)
+                        appModel.registerCancerCell(cell)
+
+                        // Now that the cell is in the scene, set up attachment points
+                        if let scene = cell.scene {
+                            let attachPointQuery = EntityQuery(where: .has(AttachmentPoint.self))
+                            for entity in scene.performQuery(attachPointQuery) {
+                                // Check if this attachment point is part of our cell's hierarchy
+                                var current = entity.parent
+                                while let parent = current {
+                                    if parent == complexCell {
+                                        var attachPoint = entity.components[AttachmentPoint.self]!
+                                        attachPoint.cellID = i
+                                        entity.components[AttachmentPoint.self] = attachPoint
+                                        print("Set cellID \(i) for attachment point \(entity.name)")
+                                        break
+                                    }
+                                    current = parent.parent
+                                }
+                            }
+                        }
+                    } else {
+                        print("Warning: Could not find CancerCellComponent on complexCell")
+                    }
                 }
             }
-            
-            root.addChild(cell)
-            appModel.registerCancerCell(cell)
         }
     }
 }

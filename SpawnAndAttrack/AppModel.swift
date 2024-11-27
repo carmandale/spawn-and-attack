@@ -18,6 +18,7 @@ class AppModel: HitCountTracking {
     
     // Systems
     var cancerCellSystem: CancerCellSystem?
+    var adcMovementSystem: ADCMovementSystem?
     
     // Game stats (observable properties)
     var score = 0
@@ -27,6 +28,43 @@ class AppModel: HitCountTracking {
     // Hit count tracking
     @MainActor
     private var hitCounts: [Int: Int] = [:]
+    
+    init() {
+        setupNotifications()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    private func setupNotifications() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleCancerCellUpdate),
+            name: Notification.Name("UpdateCancerCell"),
+            object: nil
+        )
+    }
+    
+    @objc private func handleCancerCellUpdate(_ notification: Notification) {
+        guard let entity = notification.userInfo?["entity"] as? Entity,
+              let component = entity.components[CancerCellComponent.self],
+              let cellID = component.cellID else {
+            return
+        }
+        
+        // Update our local tracking
+        hitCounts[cellID] = component.hitCount
+        
+        // Update the cancer cells array
+        if let index = cancerCells.firstIndex(where: { 
+            $0.components[CancerCellComponent.self]?.cellID == cellID 
+        }) {
+            cancerCells[index] = entity
+        } else {
+            cancerCells.append(entity)
+        }
+    }
     
     @MainActor
     func getHitCount(for cellID: Int) -> Int {

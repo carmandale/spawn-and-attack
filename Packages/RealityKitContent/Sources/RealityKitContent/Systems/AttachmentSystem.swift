@@ -1,5 +1,5 @@
 import Foundation
-import RealityKit
+@preconcurrency import RealityKit
 import SwiftUI
 
 public struct AttachmentSystem: System {
@@ -11,7 +11,7 @@ public struct AttachmentSystem: System {
     
     @MainActor
     public func update(context: SceneUpdateContext) {
-        for entity in context.entities(matching: Self.attachmentQuery, updatingSystemWhen: .rendering) {
+        for entity in context.entities(matching: attachmentQuery, updatingSystemWhen: .rendering) {
             // if you find attachments, and they have marked themselves as occupied, then increment the hitCount of that attachments parent cancer cell. only one increment per isOccupied
             // if entity.components[AttachmentPoint.self]?.isOccupied == true {
             //     if let cellEntity = entity.parent,
@@ -26,41 +26,26 @@ public struct AttachmentSystem: System {
     // MARK: - Public API
     
     @MainActor
-    public static func getAvailablePoint(in scene: RealityKit.Scene, nearPosition: SIMD3<Float>) -> Entity? {
-        // Create query locally since this is a static method
+    public static func getAvailablePoint(in scene: RealityKit.Scene, forCellID cellID: Int) -> Entity? {
         let query = EntityQuery(where: .has(AttachmentPoint.self))
         let entities = scene.performQuery(query)
         
-        // Find the closest unoccupied attachment point
-        var closestPoint: Entity?
-        var closestDistance: Float = .infinity
-        
-        for entity in entities {
-            guard let attachPoint = entity.components[AttachmentPoint.self],
-                  !attachPoint.isOccupied else { continue }
-            
-            let distance = simd_distance(entity.position(relativeTo: nil), nearPosition)
-            if distance < closestDistance {
-                closestDistance = distance
-                closestPoint = entity
-            }
+        // Find first unoccupied attachment point for this cell
+        return entities.first { entity in
+            guard let attachPoint = entity.components[AttachmentPoint.self] else { return false }
+            return attachPoint.cellID == cellID && !attachPoint.isOccupied
         }
-        
-        return closestPoint
     }
     
     @MainActor
-    public static func markPointAsOccupied(_ entity: Entity) {
-        guard var attachPoint = entity.components[AttachmentPoint.self] else { return }
-        attachPoint.isOccupied = true
-        entity.components[AttachmentPoint.self] = attachPoint
-        
-        // Update parent cancer cell's hit count. the parent cell is 4 levels up from the attachment point. 
-        if let cellEntity = entity.parent,
-           var cellComponent = cellEntity.components[CancerCellComponent.self] {
-           cellComponent.hitCount += 1
-            cellEntity.components[CancerCellComponent.self] = cellComponent
+    public static func markPointAsOccupied(_ point: Entity) {
+        guard var attachPoint = point.components[AttachmentPoint.self] else {
+            print("No AttachmentPoint component found")
+            return
         }
+        
+        attachPoint.isOccupied = true
+        point.components[AttachmentPoint.self] = attachPoint
     }
     
     @MainActor

@@ -19,19 +19,59 @@ public class ADCMovementSystem: System {
     
     /// Update the entities to apply movement
     public func update(context: SceneUpdateContext) {
-        // Get all entities with ADCComponent
         for entity in context.entities(matching: Self.query, updatingSystemWhen: .rendering) {
             guard var adcComponent = entity.components[ADCComponent.self],
                   adcComponent.state == .moving,
-                  let target = adcComponent.targetWorldPosition,
-                  let start = adcComponent.startWorldPosition else { continue }
+                  let start = adcComponent.startWorldPosition,
+                  let targetID = adcComponent.targetEntityID else { continue }
+            
+            // Find target entity using ID
+            let query = EntityQuery(where: .has(AttachmentPoint.self))
+            let entities = context.scene.performQuery(query)
+            guard let targetEntity = entities.first(where: { $0.id == Entity.ID(targetID) }) else { continue }
+            
+            // Get current target position
+            let target = targetEntity.position(relativeTo: nil)
             
             // Update progress
             adcComponent.movementProgress += Float(context.deltaTime / Self.totalDuration)
             
             if adcComponent.movementProgress >= 1.0 {
                 // Movement complete
-                entity.position = target
+                
+                // Remove from current parent and add to target entity
+                entity.removeFromParent()
+                targetEntity.addChild(entity)
+                
+                // Align orientation with target and set position with slight offset
+                entity.orientation = targetEntity.orientation(relativeTo: nil)
+                entity.position = SIMD3<Float>(0, -0.08, 0)
+                
+                // Scale up animation
+                var scaleUpTransform = entity.transform
+                scaleUpTransform.scale = SIMD3<Float>(repeating: 1.2)
+                
+                // Animate scale up and back down
+                entity.move(
+                    to: scaleUpTransform,
+                    relativeTo: entity.parent,
+                    duration: 0.15,
+                    timingFunction: .easeInOut
+                )
+                
+                // After small delay, scale back to original
+                Task {
+                    try? await Task.sleep(for: .milliseconds(150))
+                    var originalTransform = entity.transform
+                    originalTransform.scale = SIMD3<Float>(repeating: 1.0)
+                    
+                    entity.move(
+                        to: originalTransform,
+                        relativeTo: entity.parent,
+                        duration: 0.15,
+                        timingFunction: .easeInOut
+                    )
+                }
                 
                 // Stop drone sound and play attach sound
                 entity.stopAllAudio()
@@ -43,17 +83,51 @@ public class ADCMovementSystem: System {
                 // Update component state
                 adcComponent.state = .attached
                 entity.components[ADCComponent.self] = adcComponent
+                
+                // Increment hit count for target cell
+                if let cellID = adcComponent.targetCellID {
+                    let cellQuery = EntityQuery(where: .has(CancerCellComponent.self))
+                    for cellEntity in context.scene.performQuery(cellQuery) {
+                        guard let cellComponent = cellEntity.components[CancerCellComponent.self],
+                              cellComponent.cellID == cellID else { continue }
+                        
+                        var updatedComponent = cellComponent
+                        updatedComponent.hitCount += 1
+                        cellEntity.components[CancerCellComponent.self] = updatedComponent
+                        
+                        // Update the AppModel's cancerCells array
+                        NotificationCenter.default.post(
+                            name: Notification.Name("UpdateCancerCell"),
+                            object: nil,
+                            userInfo: ["entity": cellEntity]
+                        )
+                        
+                        print("Incremented hit count for cell \(cellID) to \(updatedComponent.hitCount)")
+                        break
+                    }
+                }
             } else {
-                // Calculate current position on curve
+                // Calculate current position on curve using Bezier curve
                 let p = adcComponent.movementProgress
-                let basePoint = mix(start, target, t: p)
-                let heightProgress = 1.0 - pow(p * 2.0 - 1.0, 2)
-                let height = Self.arcHeight * heightProgress
-                let sideOffset = sin(p * .pi * 1.5) * Self.slalomWidth * (1.0 - p)
-                let position = basePoint + SIMD3<Float>(sideOffset, height, 0)
+                let distance = length(target - start)
+                let midPoint = mix(start, target, t: 0.5)
+                let heightOffset = distance * 0.5 // Adjust this factor to control arc height
+                let controlPoint = midPoint + SIMD3<Float>(0, heightOffset, 0)
+                
+                // Quadratic Bezier formula: B(t) = (1-t)²P0 + 2(1-t)tP1 + t²P2
+                let t1 = 1.0 - p
+                let position = t1 * t1 * start + 2 * t1 * p * controlPoint + p * p * target
                 
                 // Update position
                 entity.position = position
+                
+                // Apply rotation - spin around Z axis
+                let rotationSpeed = adcComponent.spinSpeed ?? Float.random(in: 3.0...5.0)
+                adcComponent.spinSpeed = rotationSpeed // Store for consistent speed
+                
+                let rotationAngle = rotationSpeed * Float(context.deltaTime)
+                let rotation = simd_quatf(angle: rotationAngle, axis: [0, 0, 1])
+                entity.orientation = entity.orientation * rotation
             }
             
             // Update component
@@ -61,19 +135,30 @@ public class ADCMovementSystem: System {
         }
     }
     
-    // MARK: - Public Methods
+    // MARK: - Public API
     
-    /// Start movement for an ADC entity
     @MainActor
-    public static func startMovement(entity: Entity, from start: SIMD3<Float>, to target: SIMD3<Float>) {
-        guard var adcComponent = entity.components[ADCComponent.self] else { return }
+    public static func startMovement(entity: Entity, from start: SIMD3<Float>, to targetPoint: Entity) {
+        print("\n=== Starting ADC Movement ===")
+        print("ADC Entity: \(entity.name)")
+        print("Start Position: \(start)")
+        print("Target Entity: \(targetPoint.name)")
+        print("Target Position: \(targetPoint.position(relativeTo: nil))")
+        print("ADC Components: \(entity.components)")
+        
+        guard var adcComponent = entity.components[ADCComponent.self] else {
+            print("ERROR: No ADCComponent found on entity")
+            return
+        }
         
         // Set up movement
         adcComponent.state = .moving
         adcComponent.startWorldPosition = start
-        adcComponent.targetWorldPosition = target
         adcComponent.movementProgress = 0
+        adcComponent.targetEntityID = UInt64(targetPoint.id)
+        adcComponent.spinSpeed = nil  // Will be set in first update
         
+        // Update the component
         entity.components[ADCComponent.self] = adcComponent
         
         // Initial position

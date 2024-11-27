@@ -24,7 +24,3 @@ struct LabView: View {
     }
 }
 
-//#Preview(immersionStyle: .mixed) {
-//    ImmersiveView()
-//        .environment(AppModel())
-//}

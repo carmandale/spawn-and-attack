@@ -11,23 +11,71 @@
       }
     ]
   },
-  "1D572CEB-057A-41C3-B575-04C37501A3C0" : {
+  "12B1BFDE-D45B-4A19-958C-624E0EE55CAE" : {
     "objectMetadataList" : [
       [
-        "1D572CEB-057A-41C3-B575-04C37501A3C0",
+        "12B1BFDE-D45B-4A19-958C-624E0EE55CAE",
         "Root",
-        "CancerCellDeath_left",
-        "Track2"
+        "Keyboard2"
+      ],
+      {
+        "isExpanded" : false,
+        "isLocked" : false,
+        "selectedAudioFilePrim" : {
+          "string" : "\/Root\/Keyboard_2_cm_wav"
+        }
+      },
+      [
+        "12B1BFDE-D45B-4A19-958C-624E0EE55CAE",
+        "Root",
+        "Rear_Right"
+      ],
+      {
+        "isExpanded" : false,
+        "isLocked" : false,
+        "selectedAudioFilePrim" : {
+          "string" : "\/Root\/Room_Ambience_5_cm_wav"
+        }
+      },
+      [
+        "12B1BFDE-D45B-4A19-958C-624E0EE55CAE",
+        "Root"
       ],
       {
         "isExpanded" : true,
         "isLocked" : false
       },
       [
-        "1D572CEB-057A-41C3-B575-04C37501A3C0",
+        "12B1BFDE-D45B-4A19-958C-624E0EE55CAE",
         "Root",
-        "Timeline",
-        "Track"
+        "Front_Left_Upper"
+      ],
+      {
+        "isExpanded" : false,
+        "isLocked" : false,
+        "selectedAudioFilePrim" : {
+          "string" : "\/Root\/Room_Ambience_1_cm_wav"
+        }
+      },
+      [
+        "12B1BFDE-D45B-4A19-958C-624E0EE55CAE",
+        "Root",
+        "Front_Right_Upper"
+      ],
+      {
+        "isExpanded" : false,
+        "isLocked" : false,
+        "selectedAudioFilePrim" : {
+          "string" : "\/Root\/Room_Ambience_2_cm_wav"
+        }
+      }
+    ]
+  },
+  "1D572CEB-057A-41C3-B575-04C37501A3C0" : {
+    "objectMetadataList" : [
+      [
+        "1D572CEB-057A-41C3-B575-04C37501A3C0",
+        "Root"
       ],
       {
         "isExpanded" : true,
@@ -38,9 +86,7 @@
         "Root",
         "cancerCell_left",
         "cancerCell_complex",
-        "body",
-        "Antigens",
-        "Cube_178_011"
+        "body"
       ],
       {
         "isExpanded" : true,
@@ -49,7 +95,25 @@
       [
         "1D572CEB-057A-41C3-B575-04C37501A3C0",
         "Root",
-        "CancerCellDeath_left",
+        "cancerCell_complex"
+      ],
+      {
+        "isExpanded" : false,
+        "isLocked" : false
+      },
+      [
+        "1D572CEB-057A-41C3-B575-04C37501A3C0",
+        "Root",
+        "cancerCell_left"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "1D572CEB-057A-41C3-B575-04C37501A3C0",
+        "Root",
+        "CancerCellDeath_right",
         "Track"
       ],
       {
@@ -71,7 +135,7 @@
       [
         "1D572CEB-057A-41C3-B575-04C37501A3C0",
         "Root",
-        "CancerCellDeath_right",
+        "Timeline",
         "Track"
       ],
       {
@@ -90,24 +154,8 @@
       [
         "1D572CEB-057A-41C3-B575-04C37501A3C0",
         "Root",
-        "cancerCell_left"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "1D572CEB-057A-41C3-B575-04C37501A3C0",
-        "Root"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "1D572CEB-057A-41C3-B575-04C37501A3C0",
-        "Root",
-        "cancerCell_complex"
+        "CancerCellDeath_left",
+        "Track2"
       ],
       {
         "isExpanded" : true,
@@ -126,8 +174,73 @@
       [
         "1D572CEB-057A-41C3-B575-04C37501A3C0",
         "Root",
+        "CancerCellDeath_left",
+        "Track"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "1D572CEB-057A-41C3-B575-04C37501A3C0",
+        "Root",
         "cancerCell_left",
         "cancerCell_complex",
+        "body",
+        "Antigens",
+        "Cube_178_011"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      }
+    ]
+  },
+  "1EBF1622-190B-43A7-845E-9B82B5A7A908" : {
+    "objectMetadataList" : [
+      [
+        "1EBF1622-190B-43A7-845E-9B82B5A7A908",
+        "root",
+        "body",
+        "cancerCellSurface"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "1EBF1622-190B-43A7-845E-9B82B5A7A908",
+        "root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false,
+        "selectedAudioFilePrim" : {
+          "string" : "\/root\/Cell_Drone_Clean_1_wav"
+        }
+      },
+      [
+        "1EBF1622-190B-43A7-845E-9B82B5A7A908",
+        "root",
+        "cellAudio"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "1EBF1622-190B-43A7-845E-9B82B5A7A908",
+        "root",
+        "cellAudio",
+        "Track"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "1EBF1622-190B-43A7-845E-9B82B5A7A908",
+        "root",
         "body"
       ],
       {
@@ -140,8 +253,7 @@
     "objectMetadataList" : [
       [
         "220C04E5-242E-4BBB-82A0-77AFE2744F74",
-        "Root",
-        "cancerCell_complex"
+        "Root"
       ],
       {
         "isExpanded" : true,
@@ -149,7 +261,8 @@
       },
       [
         "220C04E5-242E-4BBB-82A0-77AFE2744F74",
-        "Root"
+        "Root",
+        "cancerCell_complex"
       ],
       {
         "isExpanded" : true,
@@ -159,16 +272,6 @@
   },
   "25C36807-02FB-40AE-8F10-A63952F9AAB4" : {
     "objectMetadataList" : [
-      [
-        "25C36807-02FB-40AE-8F10-A63952F9AAB4",
-        "root",
-        "cancerCellDeath",
-        "Track"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
       [
         "25C36807-02FB-40AE-8F10-A63952F9AAB4",
         "root",
@@ -182,20 +285,19 @@
       },
       [
         "25C36807-02FB-40AE-8F10-A63952F9AAB4",
-        "root"
+        "root",
+        "cancerCellDeath",
+        "Track2"
       ],
       {
         "isExpanded" : true,
-        "isLocked" : false,
-        "selectedAudioFilePrim" : {
-          "string" : "\/root\/Dramatic_Hit_Cinematic_01_wav"
-        }
+        "isLocked" : false
       },
       [
         "25C36807-02FB-40AE-8F10-A63952F9AAB4",
         "root",
-        "Timeline",
-        "Track"
+        "body",
+        "Antigens"
       ],
       {
         "isExpanded" : true,
@@ -223,18 +325,20 @@
       },
       [
         "25C36807-02FB-40AE-8F10-A63952F9AAB4",
-        "root",
-        "cancerCellDeath",
-        "Track2"
+        "root"
       ],
       {
         "isExpanded" : true,
-        "isLocked" : false
+        "isLocked" : false,
+        "selectedAudioFilePrim" : {
+          "string" : "\/root\/Distortion_Wave_01_wav"
+        }
       },
       [
         "25C36807-02FB-40AE-8F10-A63952F9AAB4",
         "root",
-        "cancerCellDeath"
+        "cancerCellDeath",
+        "Track"
       ],
       {
         "isExpanded" : true,
@@ -244,7 +348,27 @@
         "25C36807-02FB-40AE-8F10-A63952F9AAB4",
         "root",
         "body",
-        "Antigens"
+        "Antigens",
+        "Cube_178_012"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "25C36807-02FB-40AE-8F10-A63952F9AAB4",
+        "root",
+        "Timeline",
+        "Track"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "25C36807-02FB-40AE-8F10-A63952F9AAB4",
+        "root",
+        "cancerCellDeath"
       ],
       {
         "isExpanded" : true,
@@ -273,6 +397,80 @@
       }
     ]
   },
+  "3C484B2E-DEF0-4302-B76F-681C274D34A5" : {
+    "objectMetadataList" : [
+      [
+        "3C484B2E-DEF0-4302-B76F-681C274D34A5",
+        "Root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "3C484B2E-DEF0-4302-B76F-681C274D34A5",
+        "Root",
+        "cancerCell_complex"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "3C484B2E-DEF0-4302-B76F-681C274D34A5",
+        "Root",
+        "Timeline",
+        "Track"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "3C484B2E-DEF0-4302-B76F-681C274D34A5",
+        "Root",
+        "cancerCell_complex",
+        "body",
+        "Antigens",
+        "Cube_178_011"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "3C484B2E-DEF0-4302-B76F-681C274D34A5",
+        "Root",
+        "cancerCell_complex",
+        "body",
+        "Antigens"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "3C484B2E-DEF0-4302-B76F-681C274D34A5",
+        "Root",
+        "deathAnimation",
+        "Track"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "3C484B2E-DEF0-4302-B76F-681C274D34A5",
+        "Root",
+        "cancerCell_complex",
+        "body"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      }
+    ]
+  },
   "3CD69C7C-DB10-4FEF-95BD-BEF05412DB44" : {
     "objectMetadataList" : [
       [
@@ -282,6 +480,227 @@
       {
         "isExpanded" : true,
         "isLocked" : false
+      }
+    ]
+  },
+  "496045F4-3CA9-4D9E-A417-A818651ADBD3" : {
+    "objectMetadataList" : [
+      [
+        "496045F4-3CA9-4D9E-A417-A818651ADBD3",
+        "Root",
+        "BloodVesselAudio"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "496045F4-3CA9-4D9E-A417-A818651ADBD3",
+        "Root",
+        "BloodVesselAudio",
+        "Track7"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "496045F4-3CA9-4D9E-A417-A818651ADBD3",
+        "Root",
+        "Front_Right_Upper"
+      ],
+      {
+        "isExpanded" : false,
+        "isLocked" : false,
+        "selectedAudioFilePrim" : {
+          "string" : "\/Root\/Ambience_2_cm_R_wav"
+        }
+      },
+      [
+        "496045F4-3CA9-4D9E-A417-A818651ADBD3",
+        "Root",
+        "Rear_Left"
+      ],
+      {
+        "isExpanded" : false,
+        "isLocked" : false,
+        "selectedAudioFilePrim" : {
+          "string" : "\/Root\/Ambience_1_cm_L_wav"
+        }
+      },
+      [
+        "496045F4-3CA9-4D9E-A417-A818651ADBD3",
+        "Root",
+        "Front_Right_Lower"
+      ],
+      {
+        "isExpanded" : false,
+        "isLocked" : false,
+        "selectedAudioFilePrim" : {
+          "string" : "\/Root\/Ambience_3_cm_R_wav"
+        }
+      },
+      [
+        "496045F4-3CA9-4D9E-A417-A818651ADBD3",
+        "Root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "496045F4-3CA9-4D9E-A417-A818651ADBD3",
+        "Root",
+        "Front_Right"
+      ],
+      {
+        "isExpanded" : false,
+        "isLocked" : false,
+        "selectedAudioFilePrim" : {
+          "string" : "\/Root\/Ambience_2_cm_R_wav"
+        }
+      },
+      [
+        "496045F4-3CA9-4D9E-A417-A818651ADBD3",
+        "Root",
+        "BloodVesselAudio",
+        "Track8"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "496045F4-3CA9-4D9E-A417-A818651ADBD3",
+        "Root",
+        "BloodVesselAudio",
+        "Track6"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "496045F4-3CA9-4D9E-A417-A818651ADBD3",
+        "Root",
+        "Front_Left"
+      ],
+      {
+        "isExpanded" : false,
+        "isLocked" : false,
+        "selectedAudioFilePrim" : {
+          "string" : "\/Root\/Ambience_2_cm_L_wav"
+        }
+      },
+      [
+        "496045F4-3CA9-4D9E-A417-A818651ADBD3",
+        "Root",
+        "Right"
+      ],
+      {
+        "isExpanded" : false,
+        "isLocked" : false,
+        "selectedAudioFilePrim" : {
+          "string" : "\/Root\/Heartbeat_cm_R_wav"
+        }
+      },
+      [
+        "496045F4-3CA9-4D9E-A417-A818651ADBD3",
+        "Root",
+        "Front_Left_Lower"
+      ],
+      {
+        "isExpanded" : false,
+        "isLocked" : false,
+        "selectedAudioFilePrim" : {
+          "string" : "\/Root\/Ambience_3_cm_L_wav"
+        }
+      },
+      [
+        "496045F4-3CA9-4D9E-A417-A818651ADBD3",
+        "Root",
+        "BloodVesselAudio",
+        "Track"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "496045F4-3CA9-4D9E-A417-A818651ADBD3",
+        "Root",
+        "BloodVesselAudio",
+        "Track3"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "496045F4-3CA9-4D9E-A417-A818651ADBD3",
+        "Root",
+        "BloodVesselAudio",
+        "Track4"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "496045F4-3CA9-4D9E-A417-A818651ADBD3",
+        "Root",
+        "BloodVesselAudio",
+        "Track2"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "496045F4-3CA9-4D9E-A417-A818651ADBD3",
+        "Root",
+        "Rear_Right"
+      ],
+      {
+        "isExpanded" : false,
+        "isLocked" : false,
+        "selectedAudioFilePrim" : {
+          "string" : "\/Root\/Ambience_1_cm_R_wav"
+        }
+      },
+      [
+        "496045F4-3CA9-4D9E-A417-A818651ADBD3",
+        "Root",
+        "Left"
+      ],
+      {
+        "isExpanded" : false,
+        "isLocked" : false,
+        "selectedAudioFilePrim" : {
+          "string" : "\/Root\/Heartbeat_cm_L_wav"
+        }
+      },
+      [
+        "496045F4-3CA9-4D9E-A417-A818651ADBD3",
+        "Root",
+        "BloodVesselAudio",
+        "Track5"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "496045F4-3CA9-4D9E-A417-A818651ADBD3",
+        "Root",
+        "Front_Left_Upper"
+      ],
+      {
+        "isExpanded" : false,
+        "isLocked" : false,
+        "selectedAudioFilePrim" : {
+          "string" : "\/Root\/Ambience_2_cm_L_wav"
+        }
       }
     ]
   },
@@ -297,26 +716,215 @@
       }
     ]
   },
-  "7E5548F0-FD98-43E0-BBE8-B93E37A1BFCE" : {
+  "6A4DE9D6-0C97-4C67-A48F-AF868DD22FA4" : {
     "objectMetadataList" : [
       [
-        "7E5548F0-FD98-43E0-BBE8-B93E37A1BFCE",
-        "root"
+        "6A4DE9D6-0C97-4C67-A48F-AF868DD22FA4",
+        "Root",
+        "Lab_audio",
+        "Track4"
       ],
       {
         "isExpanded" : true,
         "isLocked" : false
       },
       [
-        "7E5548F0-FD98-43E0-BBE8-B93E37A1BFCE",
-        "root",
-        "body",
-        "Cube_178_015"
+        "6A4DE9D6-0C97-4C67-A48F-AF868DD22FA4",
+        "Root",
+        "Lab_audio",
+        "Track8"
       ],
       {
         "isExpanded" : true,
         "isLocked" : false
       },
+      [
+        "6A4DE9D6-0C97-4C67-A48F-AF868DD22FA4",
+        "Root",
+        "Keyboard2"
+      ],
+      {
+        "isExpanded" : false,
+        "isLocked" : false,
+        "selectedAudioFilePrim" : {
+          "string" : "\/Root\/Keyboard_2_cm_wav"
+        }
+      },
+      [
+        "6A4DE9D6-0C97-4C67-A48F-AF868DD22FA4",
+        "Root",
+        "Beaker"
+      ],
+      {
+        "isExpanded" : false,
+        "isLocked" : false,
+        "selectedAudioFilePrim" : {
+          "string" : "\/Root\/Beaker_Stir_1_cm_wav"
+        }
+      },
+      [
+        "6A4DE9D6-0C97-4C67-A48F-AF868DD22FA4",
+        "Root",
+        "Lab_audio",
+        "Track5"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "6A4DE9D6-0C97-4C67-A48F-AF868DD22FA4",
+        "Root",
+        "Paperwork1_1"
+      ],
+      {
+        "isExpanded" : false,
+        "isLocked" : false,
+        "selectedAudioFilePrim" : {
+          "string" : "\/Root\/Paperwork_2_cm_wav"
+        }
+      },
+      [
+        "6A4DE9D6-0C97-4C67-A48F-AF868DD22FA4",
+        "Root",
+        "Lab_audio",
+        "Track7"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "6A4DE9D6-0C97-4C67-A48F-AF868DD22FA4",
+        "Root",
+        "Keyboard1"
+      ],
+      {
+        "isExpanded" : false,
+        "isLocked" : false,
+        "selectedAudioFilePrim" : {
+          "string" : "\/Root\/Keyboard_1_cm_wav"
+        }
+      },
+      [
+        "6A4DE9D6-0C97-4C67-A48F-AF868DD22FA4",
+        "Root",
+        "Lab_audio",
+        "Track3"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "6A4DE9D6-0C97-4C67-A48F-AF868DD22FA4",
+        "Root",
+        "Lab_audio",
+        "Track2"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "6A4DE9D6-0C97-4C67-A48F-AF868DD22FA4",
+        "Root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "6A4DE9D6-0C97-4C67-A48F-AF868DD22FA4",
+        "Root",
+        "Lab_audio",
+        "Track"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "6A4DE9D6-0C97-4C67-A48F-AF868DD22FA4",
+        "Root",
+        "Rear_Right"
+      ],
+      {
+        "isExpanded" : false,
+        "isLocked" : false,
+        "selectedAudioFilePrim" : {
+          "string" : "\/Root\/Room_Ambience_5_cm_wav"
+        }
+      },
+      [
+        "6A4DE9D6-0C97-4C67-A48F-AF868DD22FA4",
+        "Root",
+        "Front_Right_Upper"
+      ],
+      {
+        "isExpanded" : false,
+        "isLocked" : false,
+        "selectedAudioFilePrim" : {
+          "string" : "\/Root\/Room_Ambience_3_cm_wav"
+        }
+      },
+      [
+        "6A4DE9D6-0C97-4C67-A48F-AF868DD22FA4",
+        "Root",
+        "Front_Left_Upper"
+      ],
+      {
+        "isExpanded" : false,
+        "isLocked" : false,
+        "selectedAudioFilePrim" : {
+          "string" : "\/Root\/Room_Ambience_1_cm_wav"
+        }
+      },
+      [
+        "6A4DE9D6-0C97-4C67-A48F-AF868DD22FA4",
+        "Root",
+        "Lab_audio"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "6A4DE9D6-0C97-4C67-A48F-AF868DD22FA4",
+        "Root",
+        "Rear_Left"
+      ],
+      {
+        "isExpanded" : false,
+        "isLocked" : false,
+        "selectedAudioFilePrim" : {
+          "string" : "\/Root\/Room_Ambience_4_cm_wav"
+        }
+      },
+      [
+        "6A4DE9D6-0C97-4C67-A48F-AF868DD22FA4",
+        "Root",
+        "Lab_audio",
+        "Track6"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "6A4DE9D6-0C97-4C67-A48F-AF868DD22FA4",
+        "Root",
+        "Lab_audio",
+        "Track9"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      }
+    ]
+  },
+  "7E5548F0-FD98-43E0-BBE8-B93E37A1BFCE" : {
+    "objectMetadataList" : [
       [
         "7E5548F0-FD98-43E0-BBE8-B93E37A1BFCE",
         "root",
@@ -340,9 +948,27 @@
       },
       [
         "7E5548F0-FD98-43E0-BBE8-B93E37A1BFCE",
+        "root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "7E5548F0-FD98-43E0-BBE8-B93E37A1BFCE",
         "root",
         "body",
         "Cube_008_037"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "7E5548F0-FD98-43E0-BBE8-B93E37A1BFCE",
+        "root",
+        "body",
+        "Cube_178_015"
       ],
       {
         "isExpanded" : true,
@@ -371,8 +997,7 @@
     "objectMetadataList" : [
       [
         "D66134B1-3681-4A8E-AFE5-29F257229F3B",
-        "Root",
-        "Sphere"
+        "Root"
       ],
       {
         "isExpanded" : true,
@@ -380,7 +1005,8 @@
       },
       [
         "D66134B1-3681-4A8E-AFE5-29F257229F3B",
-        "Root"
+        "Root",
+        "Sphere"
       ],
       {
         "isExpanded" : true,
@@ -390,7 +1016,44 @@
   },
   "E2AD027D-0D91-4F9B-B113-E36E1C293338" : {
     "objectMetadataList" : [
-
+      [
+        "E2AD027D-0D91-4F9B-B113-E36E1C293338",
+        "Root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      }
+    ]
+  },
+  "EECEED5A-617E-4993-A9C4-7F879800DFAA" : {
+    "objectMetadataList" : [
+      [
+        "EECEED5A-617E-4993-A9C4-7F879800DFAA",
+        "root",
+        "_materials"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "EECEED5A-617E-4993-A9C4-7F879800DFAA",
+        "root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "EECEED5A-617E-4993-A9C4-7F879800DFAA",
+        "root",
+        "ceiling_panels"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      }
     ]
   }
 }
