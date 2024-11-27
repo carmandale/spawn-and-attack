@@ -61,11 +61,14 @@ public class CancerCellSystem: System {
                 let currentScale = entity.scale.x
                 let targetScale = component.targetScale
                 
-                // Much faster scaling - complete in roughly 0.1 seconds
-                let t = Float(10.0 * context.deltaTime) // 10x faster
+                // Even faster scaling with easing
+                let t = Float(15.0 * context.deltaTime) // 15x faster
+                
+                // Use exponential easing for more dramatic effect
+                let easedT = 1.0 - pow(1.0 - t, 3)  // Cubic easing
                 
                 if abs(currentScale - targetScale) > 0.001 {
-                    let newScale = simd_mix(currentScale, targetScale, t)
+                    let newScale = simd_mix(currentScale, targetScale, easedT)
                     entity.scale = [newScale, newScale, newScale]
                 } else {
                     // Animation complete
@@ -82,12 +85,6 @@ public class CancerCellSystem: System {
                     component.isScaling = true
                     component.targetScale = threshold.scale
                     component.currentScale = threshold.scale
-                    
-                    // Play sonic pulse sound for scale down effect
-                    if let audioComponent = entity.components[AudioLibraryComponent.self],
-                       let pulseSound = audioComponent.resources["Sonic_Pulse_Hit_01.wav"] {
-                        entity.playAudio(pulseSound)
-                    }
                     
                     entity.components[CancerCellComponent.self] = component
                     break

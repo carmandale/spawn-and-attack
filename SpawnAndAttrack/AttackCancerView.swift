@@ -151,6 +151,19 @@ struct AttackCancerView: View {
     }
     
     private func spawnCancerCells(in root: Entity, from template: Entity, count: Int) {
+        // Create central force entity first
+        let forceEntity = Entity()
+        forceEntity.position = [0, 1.5, 0]  // Center point where we want gravity
+        
+        // Create gravity effect exactly as they do
+        let gravity = ForceEffect(
+            effect: Gravity(minimumDistance: 0.2),
+            mask: .default  // We can adjust mask if needed
+        )
+        forceEntity.components.set(ForceEffectComponent(effects: [gravity]))
+        
+        root.addChild(forceEntity)
+        
         for i in 0..<count {
             let cell = template.clone(recursive: true)
             
@@ -208,6 +221,41 @@ struct AttackCancerView: View {
                         print("Warning: Could not find CancerCellComponent on complexCell")
                     }
                 }
+                
+                // Add breathing component with random values
+                // let breathingComponent = BreathingComponent(
+                //     cycleDuration: Float.random(in: 3.0...5.0),
+                //     intensity: Float.random(in: 0.03...0.07)
+                // )
+                // complexCell.components[BreathingComponent.self] = breathingComponent
+                
+                // Add physics body matching their asteroid setup exactly
+                let radius = length(cell.position)  // Distance from center
+                let theta = atan2(cell.position.x, cell.position.z)
+                
+                var physicsBody = PhysicsBodyComponent(
+                    massProperties: .init(mass: 1),  // Match their mass
+                    material: .generate(friction: 0.0, restitution: 0.5),
+                    mode: .dynamic
+                )
+                physicsBody.isAffectedByGravity = false  // Only affected by our force effect
+                physicsBody.linearDamping = 0            // No damping like their asteroids
+                physicsBody.angularDamping = 0
+                
+                // Calculate initial velocity for orbit exactly as they do
+                let orbitSpeed = sqrt(0.1 / radius)  // Using same gravityMagnitude
+                let orbitDirection: SIMD3<Float> = [cos(theta), 0, -sin(theta)]
+                let orbitVelocity = orbitDirection * orbitSpeed
+                
+                // Add random angular velocity exactly as they do
+                let angularDirection: SIMD3<Float> = normalize([.random(in: 0...1), .random(in: 0...1), .random(in: 0...1)])
+                
+                complexCell.components[PhysicsMotionComponent.self] = .init(
+                    linearVelocity: orbitVelocity,
+                    angularVelocity: angularDirection * .pi / 3
+                )
+                complexCell.components[PhysicsBodyComponent.self] = physicsBody
+                complexCell.components[CellPhysicsComponent.self] = .init()
             }
         }
     }
