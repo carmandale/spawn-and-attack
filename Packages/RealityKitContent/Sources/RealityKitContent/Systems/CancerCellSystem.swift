@@ -16,43 +16,21 @@ public class CancerCellSystem: System {
     /// Update cancer cell entities
     public func update(context: SceneUpdateContext) {
         for entity in context.entities(matching: Self.query, updatingSystemWhen: .rendering) {
-            guard let component = entity.components[CancerCellComponent.self] else { continue }
+            guard var component = entity.components[CancerCellComponent.self] else { continue }
             
-            // Check if cell should be destroyed
+            // Check for destruction first - highest priority
             if component.hitCount >= CancerCellComponent.requiredHits && !component.isDestroyed {
-                // Mark as destroyed to prevent re-triggering
-                if var updatedComponent = entity.components[CancerCellComponent.self] {
-                    updatedComponent.isDestroyed = true
-                    entity.components[CancerCellComponent.self] = updatedComponent
-                }
+                // Mark as destroyed immediately
+                component.isDestroyed = true
+                entity.components[CancerCellComponent.self] = component
                 
                 print("=== Cancer Cell Death Triggered ===")
                 
-                // Check for animation library
+                // Play death animation immediately
                 if let animLib = entity.components[AnimationLibraryComponent.self] {
-                    print("Found AnimationLibraryComponent on entity: \(entity.name)")
-                    
-                    // Print animation info
-                    print("Number of animations: \(animLib.animations.count)")
-                    print("Has animations: \(!animLib.animations.isEmpty)")
-                    print("Default animation key: \(animLib.defaultKey ?? "none")")
-                    
-                    // Print all animation names
-                    print("Animation names:")
-                    for (name, _) in animLib.animations {
-                        print("- \(name)")
-                    }
-                    
-                    // Try to play death animation
                     if let deathAnimation = animLib.animations["death"] {
-                        print("Found death animation")
-                        print("Playing animation on entity: \(entity.name)")
                         entity.playAnimation(deathAnimation)
-                    } else {
-                        print("No death animation found in library")
                     }
-                } else {
-                    print("No AnimationLibraryComponent found on entity: \(entity.name)")
                 }
                 
                 // Play audio
@@ -75,14 +53,45 @@ public class CancerCellSystem: System {
                         }
                     }
                 }
+                continue
+            }
+            
+            // Handle sudden scale changes based on hit count
+            if component.isScaling {
+                let currentScale = entity.scale.x
+                let targetScale = component.targetScale
                 
-                // Remove after animation/audio completes
-                // Task {
-                //     try? await Task.sleep(for: .seconds(2))
-                //     if entity.scene != nil {
-                //         entity.removeFromParent()
-                //     }
-                // }
+                // Much faster scaling - complete in roughly 0.1 seconds
+                let t = Float(10.0 * context.deltaTime) // 10x faster
+                
+                if abs(currentScale - targetScale) > 0.001 {
+                    let newScale = simd_mix(currentScale, targetScale, t)
+                    entity.scale = [newScale, newScale, newScale]
+                } else {
+                    // Animation complete
+                    component.isScaling = false
+                    entity.scale = [targetScale, targetScale, targetScale]
+                }
+                entity.components[CancerCellComponent.self] = component
+            }
+            
+            // Check for hit count thresholds
+            for threshold in CancerCellComponent.scaleThresholds {
+                if component.hitCount == threshold.hits {
+                    // Immediately start scaling down
+                    component.isScaling = true
+                    component.targetScale = threshold.scale
+                    component.currentScale = threshold.scale
+                    
+                    // Play sonic pulse sound for scale down effect
+                    if let audioComponent = entity.components[AudioLibraryComponent.self],
+                       let pulseSound = audioComponent.resources["Sonic_Pulse_Hit_01.wav"] {
+                        entity.playAudio(pulseSound)
+                    }
+                    
+                    entity.components[CancerCellComponent.self] = component
+                    break
+                }
             }
         }
     }
