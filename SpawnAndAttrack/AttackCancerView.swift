@@ -13,6 +13,7 @@ struct AttackCancerView: View {
     
     var body: some View {
         RealityView { content, attachments in
+            print("\n=== RealityView Make Closure Start ===")
             let root = Entity()
             content.add(root)
             rootEntity = root
@@ -43,20 +44,20 @@ struct AttackCancerView: View {
                     if let meter = attachments.entity(for: "\(i)"),
                        let cellEntity = root.children.first(where: { $0.name == "cancer_cell_\(i)" }) {
                         print("Adding UI attachment for cell \(i)")
-                        cellEntity.addChild(meter)
+                        root.addChild(meter) // Add to root instead of cell
                         
-                        // Add UIAttachmentComponent to the cell entity
-                        var uiAttachment = UIAttachmentComponent(attachmentID: "\(i)")
-                        cellEntity.components[UIAttachmentComponent.self] = uiAttachment
-                        
-                        // Position the meter above the cell
-                        meter.position = uiAttachment.offset
+                        // Add UIAttachmentComponent to the UI entity (meter)
+                        var uiAttachment = UIAttachmentComponent(attachmentID: i)
+                        meter.components[UIAttachmentComponent.self] = uiAttachment
+                        print("Added UIAttachmentComponent to meter \(i) with ID: \(uiAttachment.attachmentID)")
                         
                         // Add BillboardComponent to make the hit counter face the camera
                         meter.components.set(RealityKitContent.BillboardComponent())
+                        print("Added BillboardComponent to meter \(i)")
                     }
                 }
             }
+            print("=== RealityView Make Closure End ===\n")
         } attachments: {
             ForEach(0..<cellCount, id: \.self) { i in
                 Attachment(id: "\(i)") {
@@ -130,9 +131,6 @@ struct AttackCancerView: View {
         // Set initial position
         adc.position = spawnPoint
         
-        // Get target world position
-//        let targetPosition = targetPoint.convert(position: .zero, to: nil)
-        
         // Add to root first
         root.addChild(adc)
         
@@ -190,45 +188,6 @@ struct AttackCancerView: View {
                     complexCell.components[MovementComponent.self] = movement
                 }
                 
-                // Set the cell ID in the CancerCellComponent
-                if let complexCell = cell.findEntity(named: "cancerCell_complex") {
-                    if var cancerCell = complexCell.components[CancerCellComponent.self] {
-                        cancerCell.cellID = i
-                        complexCell.components[CancerCellComponent.self] = cancerCell
-                        
-                        root.addChild(cell)
-                        appModel.registerCancerCell(cell)
-
-                        // Now that the cell is in the scene, set up attachment points
-                        if let scene = cell.scene {
-                            let attachPointQuery = EntityQuery(where: .has(AttachmentPoint.self))
-                            for entity in scene.performQuery(attachPointQuery) {
-                                // Check if this attachment point is part of our cell's hierarchy
-                                var current = entity.parent
-                                while let parent = current {
-                                    if parent == complexCell {
-                                        var attachPoint = entity.components[AttachmentPoint.self]!
-                                        attachPoint.cellID = i
-                                        entity.components[AttachmentPoint.self] = attachPoint
-                                        print("Set cellID \(i) for attachment point \(entity.name)")
-                                        break
-                                    }
-                                    current = parent.parent
-                                }
-                            }
-                        }
-                    } else {
-                        print("Warning: Could not find CancerCellComponent on complexCell")
-                    }
-                }
-                
-                // Add breathing component with random values
-                // let breathingComponent = BreathingComponent(
-                //     cycleDuration: Float.random(in: 3.0...5.0),
-                //     intensity: Float.random(in: 0.03...0.07)
-                // )
-                // complexCell.components[BreathingComponent.self] = breathingComponent
-                
                 // Add physics body matching their asteroid setup exactly
                 let radius = length(cell.position)  // Distance from center
                 let theta = atan2(cell.position.x, cell.position.z)
@@ -256,6 +215,36 @@ struct AttackCancerView: View {
                 )
                 complexCell.components[PhysicsBodyComponent.self] = physicsBody
                 complexCell.components[CellPhysicsComponent.self] = .init()
+                
+                // Set the cell ID in the CancerCellComponent
+                if var cancerCell = complexCell.components[CancerCellComponent.self] {
+                    cancerCell.cellID = i
+                    complexCell.components[CancerCellComponent.self] = cancerCell
+                    
+                    root.addChild(cell)
+                    appModel.registerCancerCell(cell)
+                    
+                    // Now that the cell is in the scene, set up attachment points
+                    if let scene = cell.scene {
+                        let attachPointQuery = EntityQuery(where: .has(AttachmentPoint.self))
+                        for entity in scene.performQuery(attachPointQuery) {
+                            // Check if this attachment point is part of our cell's hierarchy
+                            var current = entity.parent
+                            while let parent = current {
+                                if parent == complexCell {
+                                    var attachPoint = entity.components[AttachmentPoint.self]!
+                                    attachPoint.cellID = i
+                                    entity.components[AttachmentPoint.self] = attachPoint
+                                    print("Set cellID \(i) for attachment point \(entity.name)")
+                                    break
+                                }
+                                current = parent.parent
+                            }
+                        }
+                    }
+                } else {
+                    print("Warning: Could not find CancerCellComponent on complexCell")
+                }
             }
         }
     }
