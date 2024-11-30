@@ -39,6 +39,27 @@ public class ADCMovementSystem: System {
             if adcComponent.movementProgress >= 1.0 {
                 // Movement complete
                 
+                print("\n=== ADC Impact Debug ===")
+                let impactDirection = normalize(target - start)
+                print("Impact direction: \(impactDirection)")
+                
+                // Find the parent cancer cell using our utility function
+                if let cancerCell = findParentCancerCell(for: targetEntity, in: context.scene),
+                   var cellPhysics = cancerCell.components[PhysicsMotionComponent.self] {
+                    print("Found cancer cell: \(cancerCell.name)")
+                    print("Initial velocity: \(cellPhysics.linearVelocity)")
+                    
+                    // Apply impulse
+                    cellPhysics.linearVelocity += impactDirection * 0.05
+                    print("New velocity: \(cellPhysics.linearVelocity)")
+                    
+                    cancerCell.components[PhysicsMotionComponent.self] = cellPhysics
+                    print("Updated physics on cancer cell")
+                    
+                } else {
+                    print("Could not find parent cancer cell with physics component")
+                }
+
                 // Remove from current parent and add to target entity
                 entity.removeFromParent()
                 targetEntity.addChild(entity)
@@ -171,15 +192,23 @@ public class ADCMovementSystem: System {
         }
     }
     
-    // MARK: - Private Methods
+    // MARK: - Private Helpers
     
-    private func findParentWithComponent<T: Component>(_ componentType: T.Type, startingFrom entity: Entity) -> Entity? {
-        var current: Entity? = entity
-        while let parent = current?.parent {
-            if parent.components[componentType] != nil {
-                return parent
+    /// Finds the parent cancer cell entity for an attachment point by querying all cancer cells
+    /// and checking if any are ancestors of the given entity
+    private func findParentCancerCell(for attachmentPoint: Entity, in scene: Scene) -> Entity? {
+        let cancerCellQuery = EntityQuery(where: .has(CancerCellComponent.self))
+        let cancerCells = scene.performQuery(cancerCellQuery)
+        
+        // Check each cancer cell to see if it's an ancestor of our attachment point
+        for cell in cancerCells {
+            var current: Entity? = attachmentPoint
+            while let parent = current?.parent {
+                if parent == cell {
+                    return parent
+                }
+                current = parent
             }
-            current = parent
         }
         return nil
     }
