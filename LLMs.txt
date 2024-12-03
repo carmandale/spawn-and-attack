@@ -1,0 +1,102 @@
+# developer.apple.com llms.txt
+
+- [Apple Developer Program](https://developer.apple.com/programs/): Join Apple Developer Program to create and distribute innovative apps.
+- [Apple Developer Resources](https://developer.apple.com/): Discover resources, guides, and tools for Apple developers.
+- [iCloud for Developers](https://developer.apple.com/icloud/): Discover iCloud tools for seamless app development and synchronization.
+- [Apple Developer Resources](https://developer.apple.com/develop/): Comprehensive resources for developing on Apple platforms and tools.
+- [Access Denied](https://developer.apple.com/unauthorized): Access denied: account requirements not met for this content.
+- [Core Transferable Framework](https://developer.apple.com/documentation/coretransferable): Swift framework for declaring transferable data representations.
+- [Audio Recognition with ShazamKit](https://developer.apple.com/shazamkit/): Integrate audio recognition into apps using ShazamKit's features.
+- [WWDC24 Developer Conference](https://developer.apple.com/wwdc24/): Join WWDC24 for a week of tech reveals and creativity.
+- [Core NFC Framework](https://developer.apple.com/documentation/corenfc): Framework for reading and writing NFC tags in apps.
+- [Apple Design Resources](https://developer.apple.com/design/): Explore resources for designing apps and games on Apple platforms.
+- [Bonjour Networking Overview](https://developer.apple.com/bonjour/): Discover devices and services on local networks effortlessly.
+- [Apple Developer Academies](https://developer.apple.com/academies/): Free app development curriculum for future professionals worldwide.
+- [Wireless Streaming with AirPlay](https://developer.apple.com/airplay/): Stream content wirelessly from Apple devices using AirPlay.
+- [iMessage Apps Guide](https://developer.apple.com/imessage/): Create and submit engaging iMessage apps and sticker packs.
+- [watchOS 11 Development Overview](https://developer.apple.com/watchos/): Explore new features and development tools for watchOS 11.
+- [iOS 18 Development Resources](https://developer.apple.com/ios/): Explore iOS 18 features, documentation, and app development tools.
+- [Local Authentication Framework](https://developer.apple.com/documentation/localauthentication): Integrate biometric and passphrase authentication in your apps.
+- [Apple Fonts Overview](https://developer.apple.com/fonts/): Explore Apple's typefaces for designing apps across platforms.
+- [SwiftData Framework](https://developer.apple.com/documentation/swiftdata): Declarative framework for efficient data modeling and persistence.
+- [App Store Server API](https://developer.apple.com/documentation/appstoreserverapi): Manage App Store transactions and subscriptions from your server.
+- [Apple Wallet Integration](https://developer.apple.com/wallet/): Integrate passes and cards with Apple Wallet for convenience.
+- [Networking Driver Development](https://developer.apple.com/documentation/networkingdriverkit): Develop Ethernet drivers using NetworkingDriverKit framework with examples.
+- [Apple Developer Enrollment](https://developer.apple.com/support/enrollment): Enroll in Apple Developer Program for app development and distribution.
+- [CarPlay Developer Resources](https://developer.apple.com/carplay/): Develop apps and systems for CarPlay, enhancing driving safety.
+- [Metal Graphics API](https://developer.apple.com/metal/): Accelerate graphics and machine learning with Metal on Apple.
+- [Apple Developer Resources](https://developer.apple.com/cn/): Explore Apple developer resources, events, and platform updates.
+- [App Distribution on Apple](https://developer.apple.com/distribute/): Guide to distributing apps on Apple platforms worldwide.
+- [Apple Intelligence Overview](https://developer.apple.com/apple-intelligence/): Explore Apple Intelligence features for enhanced app experiences.
+- [Apple Notifications Overview](https://developer.apple.com/notifications/): Explore Apple’s notifications for apps, including push and local.
+- [Apple Developer Support](https://developer.apple.com/support/): Access support and resources for Apple development tools and technologies.
+- [Swift Programming Language](https://developer.apple.com/swift/): Swift programming language: powerful, intuitive, and easy to learn.
+- [macOS Development Resources](https://developer.apple.com/macos/): Explore tools and resources for macOS app development.
+- [HTTP Live Streaming Resources](https://developer.apple.com/streaming/): Learn to deliver reliable streaming with HTTP Live Streaming.
+- [Apple Widgets Development](https://developer.apple.com/jp/widgets/): Create interactive widgets and live activities for Apple devices.
+- [Simplified Beta Testing](https://developer.apple.com/testflight/): Easily manage beta testing and feedback for your apps.
+- [TestFlight for Beta Testing](https://developer.apple.com/jp/testflight/): Simplify beta testing with TestFlight for Apple applications.
+- [Apple Developer Support](https://developer.apple.com/jp/support/): Access support for tools, technology, and Apple experts.
+- [Apple Music Integration Tools](https://developer.apple.com/musickit/): Integrate Apple Music into apps and websites seamlessly.
+- [Apple Maps Development](https://developer.apple.com/maps/): Explore Apple Maps integration, APIs, and development tools.
+- [visionOS Development Tools](https://developer.apple.com/visionos/): Explore visionOS for immersive app development and features.
+- [Objective-C Runtime Overview](https://developer.apple.com/documentation/objectivec): Explore the fundamental APIs of the Objective-C runtime.
+- [AppKit User Interface Management](https://developer.apple.com/documentation/appkit): Build and manage macOS app interfaces with AppKit framework.
+- [WeatherKit for Developers](https://developer.apple.com/weatherkit/): Integrate advanced weather data into your Apple apps easily.
+- [Interactive Widgets Overview](https://developer.apple.com/widgets/): Build interactive widgets for iOS, iPadOS, and watchOS.
+- [Apple Developer Resources](https://developer.apple.com/discover/): Explore tools and resources for creating apps on Apple platforms.
+- [Apple Maps Developer Resources](https://developer.apple.com/kr/maps/): Explore Apple Maps integration tools and API resources for apps.
+- [Xcode: App Development Toolkit](https://developer.apple.com/xcode/): Develop, test, and distribute apps across Apple platforms easily.
+- [Siri Developer Resources](https://developer.apple.com/siri/): Discover Siri's features, integration, and tools for developers.
+- [5G Developer Resources](https://developer.apple.com/5g/): Explore how 5G enhances app performance and user experience.
+- [Business App Development](https://developer.apple.com/business/): Resources for developing business apps on Apple's iOS platform.
+- [Quick Look Framework](https://developer.apple.com/documentation/quicklook): Easily preview and edit files within your iOS applications.
+- [iPad to Mac Apps](https://developer.apple.com/mac-catalyst/): Transform iPad apps into optimized Mac applications with ease.
+- [ClassKit Framework Overview](https://developer.apple.com/documentation/classkit): Integrate educational app activities with ClassKit for teachers.
+- [StoreKit 2 Overview](https://developer.apple.com/storekit/): Explore StoreKit 2 for secure in-app purchases on Apple.
+- [macOS App Distribution Guide](https://developer.apple.com/macos/distribution/): Guidance on macOS app distribution via App Store and Developer ID.
+- [Metal-cpp Overview](https://developer.apple.com/metal/cpp/): C++ interface for Metal to enhance graphics applications easily.
+- [Apple SF Symbols](https://developer.apple.com/sf-symbols/): Extensive library of customizable symbols for Apple platforms.
+- [Apple Game Development Resources](https://developer.apple.com/games/): Create and distribute games for Apple devices effectively.
+- [Educational App Development](https://developer.apple.com/education/): Discover tools and frameworks for developing educational apps effectively.
+- [Apple Developer Resources](https://developer.apple.com/kr/): Explore Apple's developer resources and tools for building applications.
+- [Bundle Resources Overview](https://developer.apple.com/documentation/bundleresources): Learn how to manage resources in application bundles effectively.
+- [Siri Integration Overview](https://developer.apple.com/jp/siri/): Explore Apple's Siri features for seamless app integration and commands.
+- [iOS 18 Developer Resources](https://developer.apple.com/jp/ios/): Explore iOS 18 features, tools, and resources for developers.
+- [External Purchase Server API](https://developer.apple.com/documentation/externalpurchaseserverapi): API for managing external purchase tokens and transaction reporting.
+- [Swift Package Testing](https://developer.apple.com/documentation/testing): Efficiently create and run tests for Swift packages and projects.
+- [Apple Pay Integration](https://developer.apple.com/documentation/apple_pay_on_the_web): Integrate Apple Pay on your site using JavaScript APIs.
+- [Apple Developer Program](https://developer.apple.com/kr/programs/): Join Apple Developer Program for app development and deployment.
+- [Apple Documentation Updates](https://developer.apple.com/documentation/updates): Find major updates and release notes for Apple documentation.
+- [IPv6 Support Guidelines](https://developer.apple.com/support/ipv6): Guidelines for supporting IPv6 networks in iOS apps.
+- [Apple Developer情報](https://developer.apple.com/jp/): Appleの開発者向け最新情報とリソースを提供。
+- [Apple Developer Forums](https://forums.developer.apple.com/forums/): Interactive forum for Apple developers sharing insights and issues.
+- [Siri Developer Overview](https://developer.apple.com/kr/siri/): Explore Siri's latest features, enhancements, and developer documentation.
+- [iPadOS 18 Development Guide](https://developer.apple.com/kr/ipados/): Explore iPadOS 18 features, tools, and development resources.
+- [Custom App Distribution Overview](https://developer.apple.com/custom-apps/): Create and distribute tailored apps for businesses and schools.
+- [Build Apps with Swift](https://developer.apple.com/business/create/): Create powerful apps with Swift and Xcode for businesses.
+- [Custom Haptic Feedback](https://developer.apple.com/documentation/corehaptics): Create and customize advanced haptic feedback for apps.
+- [Xcode Development Tools](https://developer.apple.com/cn/xcode/): Comprehensive tools for developing, testing, and deploying Apple apps.
+- [SpriteKit Framework Overview](https://developer.apple.com/documentation/spritekit): Framework for adding 2D graphics and animations to apps.
+- [Apple Developer Discussions](https://developer.apple.com/forums/): Apple Developer Forums: Collaborate, share, and discuss development topics.
+- [RealityKit Framework Overview](https://developer.apple.com/documentation/realitykit): Create immersive 3D augmented reality applications with RealityKit.
+- [User-Space Device Drivers](https://developer.apple.com/documentation/driverkit): Create user-space drivers for macOS and iPadOS devices.
+- [UIKit Framework Overview](https://developer.apple.com/documentation/uikit): Manage user interfaces for iOS, iPadOS, and tvOS apps.
+- [Security Interface Framework](https://developer.apple.com/documentation/securityinterface): Objective-C classes for security UI elements in macOS.
+- [Core Image Framework](https://developer.apple.com/documentation/coreimage): Image processing framework with built-in and custom filters.
+- [Apple App Development](https://developer.apple.com/kr/discover/): Discover tools and technologies for Apple app development.
+- [Accessibility Resources](https://developer.apple.com/jp/accessibility/): Build accessible apps using Apple’s accessibility features and APIs.
+- [Apple Developer Forums](https://developer.apple.com/support/forums): Connect with developers, share knowledge, and ask technical questions.
+- [Apple Developer News Updates](https://developer.apple.com/news/): Latest Apple Developer news on pricing, updates, and technologies.
+- [BIMI Email Support Guide](https://developer.apple.com/support/bimi): Understand BIMI support for displaying brand logos in emails.
+- [Apple Design Resources](https://developer.apple.com/jp/design/): Resources for designing exceptional apps and games on Apple platforms.
+- [CallKit Framework Overview](https://developer.apple.com/documentation/callkit): Integrate VoIP services with native calling interfaces across platforms.
+- [tvOS App Submission Guide](https://developer.apple.com/tvos/submit/): Submit and optimize your tvOS apps for the App Store.
+- [Apple Game Development](https://developer.apple.com/kr/games/): Create engaging games using Apple's advanced development tools.
+- [FinanceKit Overview](https://developer.apple.com/documentation/financekit): Access financial data, transactions, and interact with Wallet.
+- [Apple Accessibility Resources](https://developer.apple.com/accessibility/): Explore tools and features for creating inclusive Apple apps.
+- [CloudKit App Development](https://developer.apple.com/icloud/cloudkit/): Build and manage apps using secure, scalable CloudKit data storage.
+- [Accelerate Framework Overview](https://developer.apple.com/documentation/accelerate): High-performance computing for math, images, and audio processing.
+- [Apple Developer Documentation](https://developer.apple.com/documentation): Comprehensive resource for Apple developer documentation and APIs.
+- [Combine Framework Overview](https://developer.apple.com/documentation/combine): Framework for handling asynchronous events in Swift efficiently.
+- [Apple Developer Program Overview](https://developer.apple.com/cn/programs/): Join Apple Developer Program to publish and enhance your apps.

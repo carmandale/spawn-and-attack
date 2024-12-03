@@ -1,0 +1,348 @@
+# VisionOS Cancer Cell Targeting Game Optimization Plan
+
+## 1. Entity Component System Optimization
+- [ ] Implement state management following SwiftSplash patterns
+  - [ ] Create AttachmentStateComponent for state tracking
+  - [ ] Separate state from behavior (like ConnectableStateComponent)
+  - [ ] Use proper @MainActor annotations
+  - [ ] Add entity relationship tracking
+- [ ] Move attachment point state management to System
+  - [ ] Remove View-level state tracking arrays and sets
+  - [ ] Utilize EntityQuery with proper update timing
+  - [ ] Add proper cleanup methods
+- [ ] Enhance AttachmentSystem following BOTAnist patterns
+  - [ ] Implement efficient update cycle
+  - [ ] Add proper error handling
+  - [ ] Use inline optimizations for frequent operations
+- [ ] Implement proper component lifecycle management
+  - [ ] Add cleanup methods for removed entities
+  - [ ] Handle component state updates through system updates
+
+## 2. Animation System Improvements
+- [ ] Replace DispatchQueue-based animation with RealityKit animation system
+  - [ ] Create proper AnimationResource for ADC movement
+  - [ ] Implement keyframe-based path animation
+  - [ ] Add proper animation completion handlers
+- [ ] Optimize animation performance
+  - [ ] Reduce number of transform updates
+  - [ ] Implement proper interpolation
+  - [ ] Add animation resource caching
+
+## 3. Audio System Refinements
+- [ ] Enhance audio resource management
+  - [ ] Implement proper resource preloading
+  - [ ] Add audio resource caching
+  - [ ] Handle audio interruption scenarios
+- [ ] Optimize spatial audio
+  - [ ] Fine-tune 3D audio parameters
+  - [ ] Implement distance-based attenuation
+  - [ ] Add audio occlusion support
+
+## 4. Performance Optimization
+- [ ] Implement entity pooling for ADCs
+  - [ ] Create entity pool manager
+  - [ ] Reuse entities instead of creating new ones
+  - [ ] Add proper entity recycling
+- [ ] Optimize scene graph
+  - [ ] Review and optimize entity hierarchy
+  - [ ] Implement proper culling
+  - [ ] Minimize dynamic entity creation
+
+## 5. Architecture Improvements
+- [ ] Implement proper error handling
+  - [ ] Add meaningful error types
+  - [ ] Implement proper error propagation
+  - [ ] Add error recovery mechanisms
+- [ ] Enhance event system
+  - [ ] Replace NotificationCenter with RealityKit events
+  - [ ] Implement proper event handling system
+  - [ ] Add type-safe event definitions
+
+## 6. User Experience Enhancements
+- [ ] Add visual feedback
+  - [ ] Implement proper hit feedback
+  - [ ] Add attachment point highlighting
+  - [ ] Enhance progress visualization
+- [ ] Improve interaction model
+  - [ ] Add gesture recognition system
+  - [ ] Implement proper hit testing
+  - [ ] Add haptic feedback
+
+## 7. Testing and Profiling
+- [ ] Add comprehensive testing
+  - [ ] Unit tests for components
+  - [ ] Integration tests for systems
+  - [ ] Performance benchmarks
+- [ ] Implement profiling
+  - [ ] Add performance metrics
+  - [ ] Monitor memory usage
+  - [ ] Track frame rates
+
+## 8. Documentation
+- [ ] Add comprehensive documentation
+  - [ ] System architecture documentation
+  - [ ] Component interaction diagrams
+  - [ ] API documentation
+  - [ ] Performance guidelines
+
+## Architecture Decision Records
+
+### ADR 1: Component Registration Pattern
+**Date**: 2024-03-19
+
+**Context**:
+- Need to register RealityKit components and systems at app startup
+- Experiencing actor isolation warnings with current implementation
+- Evaluated patterns from Apple's sample apps (SwiftSplash, BOTanist, Diorama, HelloWorld)
+
+**Options Considered**:
+1. SwiftSplash Pattern:
+   - Mark App struct with `@MainActor`
+   - Register in `init()`
+   - Simple, direct approach
+
+2. BOTanist Pattern:
+   - Scene-based system initialization
+   - Systems conform to `System` protocol
+   - More complex, requires architecture changes
+
+3. Diorama Pattern:
+   - Register in `init()` without explicit actor isolation
+   - Similar to our current approach but with more components
+
+**Decision**:
+Adopt SwiftSplash's pattern by adding `@MainActor` to our app struct. This means:
+- Adding `@MainActor` annotation to `SpawnAndAttrackApp`
+- Keeping component registration in `init()`
+- Maintaining current architecture with proper actor isolation
+
+**Rationale**:
+1. **Simplicity**: Requires minimal changes to existing code
+2. **Correctness**: Properly handles actor isolation as required by visionOS
+3. **Precedent**: Follows pattern from SwiftSplash, a primary Apple example
+4. **Maintainability**: Keeps registration code centralized and easy to understand
+5. **Future-proof**: Aligns with Apple's actor isolation guidelines
+
+**Consequences**:
+- Positive:
+  * Resolves actor isolation warnings
+  * Maintains simple initialization flow
+  * Follows established Apple patterns
+- Negative:
+  * Adds main actor constraint to app struct
+  * May require similar annotations in related code
+
+**Implementation Plan**:
+1. Add `@MainActor` to `SpawnAndAttrackApp`
+2. Verify component registration still works
+3. Test for any performance impacts
+4. Document actor isolation requirements
+
+**Status**: Approved
+
+### ADR 2: Hybrid State Management Architecture
+**Date**: 2024-03-19
+
+**Context**:
+- Current implementation mixes View-level state with RealityKit systems
+- Analyzed three reference implementations:
+  1. SwiftSplash: Centralized state with feature-based extensions
+  2. HappyBeam: Component-based state with collision system
+  3. Spaceship Game: Full ECS with clean system separation
+
+**Problem**:
+1. State scattered across Views and Components
+2. Unclear boundaries between state and behavior
+3. Inconsistent actor isolation
+4. Mixed architectural patterns
+
+**Options Considered**:
+1. Pure ECS (Spaceship Pattern):
+   - All state in components
+   - Systems manage all behavior
+   - Clean but complex
+
+2. Centralized State (SwiftSplash Pattern):
+   - Single state object
+   - Feature-based organization
+   - Simple but less modular
+
+3. Hybrid Approach:
+   - Centralized game state
+   - ECS for entity behavior
+   - Connection management from SwiftSplash
+
+**Decision**:
+Implement hybrid architecture combining strengths of all three patterns:
+
+1. Central State Manager (SwiftSplash):
+```swift
+@Observable
+@MainActor
+class GameState {
+    var phase: GamePhase
+    var score: Int
+    var isPlaying: Bool
+    
+    // Extensions for features
+    // GameState+ADC.swift
+    // GameState+CancerCells.swift
+}
+```
+
+2. ECS for Entity Behavior (Spaceship):
+```swift
+final class ADCSystem: System {
+    static let query = EntityQuery(
+        where: .has(ADCComponent.self) && 
+               .has(ADCStateComponent.self)
+    )
+    
+    func update(context: SceneUpdateContext) {
+        // Movement and attachment logic
+    }
+}
+```
+
+3. Connection Management (SwiftSplash):
+```swift
+extension GameState {
+    func connectADC(_ adc: Entity, to attachPoint: Entity) {
+        guard let outConnection = adc.outConnection,
+              let inConnection = attachPoint.inConnection
+        // Connection logic
+    }
+}
+```
+
+**Additional Insights from BOTAnist**:
+
+1. Performance Optimizations:
+```swift
+@MainActor
+@inline(__always)
+fileprivate func pinEntity(indices: [Int],
+                          skeleton: ModelEntity,
+                          transforms: [Transform],
+                          offset: simd_float4x4,
+                          staticEntity: Entity) {
+    // Optimized transform calculations
+}
+```
+- Use of @inline(__always) for critical paths
+- Efficient matrix transformations
+- Careful memory management
+
+2. Asset Management:
+```swift
+let provider = RobotProvider.shared
+_ = PlantAnimationProvider.shared  // Warm up provider
+```
+- Dedicated providers for assets
+- Preloading and caching
+- Clear resource lifecycle
+
+3. Phase-Based State Management:
+```swift
+public enum AppPhase: CaseIterable, Codable, Identifiable, Sendable {
+    case waitingToStart
+    case loadingAssets
+    case playing
+    case exploration
+}
+```
+- Clear phase transitions
+- Type-safe state management
+- Sendable conformance for concurrency
+
+**Rationale**:
+1. **Clarity**: Clear separation of concerns
+   - Game state in observable object
+   - Entity behavior in systems
+   - Connections in dedicated manager
+2. **Performance**: Efficient entity management through ECS
+3. **Maintainability**: Feature-based organization
+4. **Safety**: Consistent actor isolation
+5. **Precedent**: Based on proven Apple patterns
+
+**Implementation Plan**:
+
+Phase 1: State Migration
+- [ ] Create GameState class
+- [ ] Move View state to GameState
+- [ ] Create feature-based extensions
+- [ ] Add proper actor isolation
+- [ ] Add phase-based state management
+- [ ] Implement asset providers
+- [ ] Add performance annotations
+
+Phase 2: Component Refactoring
+- [ ] Split components into state/behavior
+- [ ] Implement proper component registration
+- [ ] Add component lifecycle management
+- [ ] Create dedicated state components
+- [ ] Add inline optimizations for critical paths
+- [ ] Implement efficient transform handling
+- [ ] Add proper memory management
+
+Phase 3: System Implementation
+- [ ] Create ADCSystem
+- [ ] Create CancerCellSystem
+- [ ] Implement proper update cycles
+- [ ] Add system coordination
+
+Phase 4: Connection Management
+- [ ] Implement connection system
+- [ ] Add attachment point management
+- [ ] Create connection validation
+- [ ] Add connection events
+
+**Additional Considerations**:
+1. Performance:
+   - Use @inline(__always) for frequent operations
+   - Optimize matrix transformations
+   - Implement efficient asset loading
+
+2. Asset Management:
+   - Create dedicated providers
+   - Implement proper preloading
+   - Add resource cleanup
+
+3. State Organization:
+   - Use phase-based transitions
+   - Implement proper type safety
+   - Ensure concurrency safety
+
+This combines the best of:
+- SwiftSplash's state organization
+- Spaceship's ECS architecture
+- BOTAnist's performance optimizations
+- HappyBeam's collision handling
+
+**Consequences**:
+Positive:
+- Clean architecture
+- Better performance
+- Clear state management
+- Thread safety
+- Easier testing
+
+Negative:
+- Initial refactoring effort
+- Learning curve for team
+- More boilerplate code
+- Potential migration challenges
+
+**Status**: Pending Implementation
+
+## Priority Order
+1. Entity Component System Optimization
+2. Animation System Improvements
+3. Performance Optimization
+4. Audio System Refinements
+5. Architecture Improvements
+6. User Experience Enhancements
+7. Testing and Profiling
+8. Documentation
+
+Each task should be approached with RealityKit best practices in mind, following the guidelines in PROMPT.md.

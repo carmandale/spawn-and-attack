@@ -1,0 +1,204 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 2.0 (448.0.16.0.3)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    reorder nameChildren = ["music", "IntroMusic"]
+    def Xform "music" (
+        active = true
+    )
+    {
+        def RealityKitComponent "AudioLibrary"
+        {
+            uniform token info:id = "RealityKit.AudioLibrary"
+
+            def RealityKitDict "resources"
+            {
+                string[] keys = ["Pfizer_Full_Score_Piano_7.wav"]
+                rel values = </Root/Pfizer_Full_Score_Piano_7_wav>
+            }
+        }
+
+        def RealityKitComponent "SpatialAudio"
+        {
+            uniform token info:id = "RealityKit.SpatialAudio"
+        }
+
+        def RealityKitComponent "RCP_BehaviorsContainer"
+        {
+            rel behaviors = </Root/music/OnAddedToScene>
+            uniform token info:id = "RCP.BehaviorsContainer"
+        }
+
+        def Preliminary_Behavior "OnAddedToScene"
+        {
+            rel actions = </Root/music/OnAddedToScene/Action>
+            uniform bool exclusive
+            rel triggers = </Root/music/OnAddedToScene/Trigger>
+
+            def Preliminary_Trigger "Trigger"
+            {
+                rel affectedObjects = </Root/music>
+                token info:id = "SceneTransition"
+            }
+
+            def Preliminary_Action "Action"
+            {
+                rel affectedObjects = </Root>
+                rel animationLibraryKey = </Root/IntroMusic>
+                rel animationLibraryKeyOverrideKey = </Root/music/OnAddedToScene/Trigger>
+                token info:id = "PlayTimeline"
+                int loops = 0
+                int performCount = 1
+                token type = "serial"
+            }
+        }
+    }
+
+    def RealityKitTimeline "IntroMusic"
+    {
+        def RealityKitTrack "Track"
+        {
+            def RealityKitAction "Play_Audio"
+            {
+                string actionKind = "audio"
+                string audioResourceName = "Pfizer_Full_Score_Piano_7.wav"
+                bool controlPlayback = 1
+                double duration = 301.8
+                uniform token info:id = "27FED9B5-C1F8-4F43-BFDA-AD5C8FD15347"
+                double startTime = 0
+                rel target = </Root/music>
+
+                def RealityKitStruct "handoffType"
+                {
+                }
+            }
+        }
+    }
+
+    def "intro" (
+        active = true
+        customData = {
+            float3 rotationEulerHint = (-1.5707964, 0, 0)
+        }
+        prepend references = @Assets/Intro/intro.usdc@
+    )
+    {
+        quatf xformOp:orient = (0.70710677, -0.70710677, 0, 0)
+        float3 xformOp:scale = (1, 1, 1)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        over "People_MSR"
+        {
+            over "person_001" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                rel material:binding = </Root/M_spatial_picture/M_Spatial> (
+                    bindMaterialAs = "strongerThanDescendants"
+                )
+            }
+
+            over "person_002" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                rel material:binding = </Root/M_spatial_picture_1/M_Spatial> (
+                    bindMaterialAs = "weakerThanDescendants"
+                )
+            }
+
+            over "person_003" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                rel material:binding = </Root/M_spatial_picture_2/M_Spatial> (
+                    bindMaterialAs = "weakerThanDescendants"
+                )
+            }
+
+            over "person_004" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                rel material:binding = </Root/M_spatial_picture_3/M_Spatial> (
+                    bindMaterialAs = "weakerThanDescendants"
+                )
+            }
+        }
+    }
+
+    def RealityKitAudioFile "Pfizer_Full_Score_Piano_7_wav"
+    {
+        uniform asset file = @Assets/Intro/Pfizer_Full_Score_Piano_7.wav@
+        uniform bool shouldLoop = 0
+    }
+
+    def "M_spatial_picture" (
+        active = true
+        prepend references = @Assets/Intro/M_spatial_picture.usda@
+    )
+    {
+        float3 xformOp:scale = (1, 1, 1)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+    }
+
+    def "M_spatial_picture_1" (
+        active = true
+        prepend references = @Assets/Intro/M_spatial_picture.usda@
+    )
+    {
+        float2 ui:nodegraph:node:pos = (-381.83594, -68.12109)
+        int ui:nodegraph:node:stackingOrder = 1
+        float3 xformOp:scale = (1, 1, 1)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        over "M_Spatial"
+        {
+            asset inputs:Left = @Assets/Intro/textures/F02_Man45s_C_v06_L.jpg@
+            asset inputs:Right = @Assets/Intro/textures/F02_Man45s_C_v06_R.jpg@
+        }
+    }
+
+    def "M_spatial_picture_2" (
+        active = true
+        prepend references = @Assets/Intro/M_spatial_picture.usda@
+    )
+    {
+        float2 ui:nodegraph:node:pos = (-361.83594, -48.121094)
+        int ui:nodegraph:node:stackingOrder = 2
+        float3 xformOp:scale = (1, 1, 1)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        over "M_Spatial"
+        {
+            asset inputs:Left = @Assets/Intro/textures/F03_WomanYoungMother_G_v04_L.jpg@
+            asset inputs:Right = @Assets/Intro/textures/F03_WomanYoungMother_G_v04_R.jpg@
+        }
+    }
+
+    def "M_spatial_picture_3" (
+        active = true
+        prepend references = @Assets/Intro/M_spatial_picture.usda@
+    )
+    {
+        float2 ui:nodegraph:node:pos = (-341.83594, -28.121094)
+        int ui:nodegraph:node:stackingOrder = 3
+        float3 xformOp:scale = (1, 1, 1)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        over "M_Spatial"
+        {
+            asset inputs:Left = @Assets/Intro/textures/F05_ElderlyWoman_70s_v03_L.jpg@
+            asset inputs:Right = @Assets/Intro/textures/F05_ElderlyWoman_70s_v03_R.jpg@
+        }
+    }
+}
+

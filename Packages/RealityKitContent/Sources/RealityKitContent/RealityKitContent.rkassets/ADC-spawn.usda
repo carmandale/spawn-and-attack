@@ -1,0 +1,77 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 2.0 (448.0.16.0.3)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    def "antibodyProtein_complex" (
+        active = true
+        prepend references = @Assets/ADC/antibodyProtein_complex.usdc@
+    )
+    {
+        float3 xformOp:scale = (0.5, 0.5, 0.5)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        over "RigidBody"
+        {
+            def RealityKitStruct "massFrame"
+            {
+            }
+
+            def RealityKitStruct "material"
+            {
+            }
+        }
+    }
+
+    def RealityKitCustomComponent "RealityKitContent_AudioComponent"
+    {
+        string attachSound = "Sonic_Pulse_Hit_01"
+        string droneSound = "Drones_01"
+        uniform token info:id = "RealityKitContent.AudioComponent"
+    }
+
+    def RealityKitComponent "AudioLibrary"
+    {
+        uniform token info:id = "RealityKit.AudioLibrary"
+
+        def RealityKitDict "resources"
+        {
+            string[] keys = ["Drones_01.wav", "Sonic_Pulse_Hit_01.wav"]
+            rel values = [
+                </Root/Drones_01_wav>,
+                </Root/Sonic_Pulse_Hit_01_wav>,
+            ]
+        }
+    }
+
+    def RealityKitComponent "SpatialAudio"
+    {
+        uniform token info:id = "RealityKit.SpatialAudio"
+        float rolloffFactor = 0
+    }
+
+    def RealityKitAudioFile "Drones_01_wav"
+    {
+        uniform asset file = @Audio/Drones_01.wav@
+        uniform bool shouldLoop = 1
+    }
+
+    def RealityKitAudioFile "Sonic_Pulse_Hit_01_wav"
+    {
+        uniform asset file = @Audio/Sonic_Pulse_Hit_01.wav@
+        uniform bool shouldLoop = 0
+    }
+
+    def RealityKitCustomComponent "RealityKitContent_ADCComponent"
+    {
+        uniform token info:id = "RealityKitContent.ADCComponent"
+    }
+}
+
