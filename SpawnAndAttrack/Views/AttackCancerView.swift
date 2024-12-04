@@ -4,8 +4,8 @@ import RealityKitContent
 
 struct AttackCancerView: View {
     @Environment(AppModel.self) private var appModel
-    @Environment(\.realityKitScene) private var scene
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.realityKitScene) private var scene
     private let cellCount = 10
     
     // Store entities
@@ -99,17 +99,15 @@ struct AttackCancerView: View {
                     }
                 }
         )
-        .onChange(of: scenePhase) { oldPhase, newPhase in
-            if newPhase == .background || newPhase == .inactive {
-                appModel.immersiveSpaceActive = false
-                appModel.currentImmersiveSpaceID = nil
+        .onChange(of: scenePhase, initial: true) {
+            switch scenePhase {
+            case .inactive, .background:
+                appModel.attackSpaceActive = false
+            case .active:
+                appModel.attackSpaceActive = true
+            @unknown default:
+                appModel.attackSpaceActive = false
             }
-        }
-        .onAppear {
-            appModel.phase = .attack
-        }
-        .onDisappear {
-            appModel.phase = .intro
         }
     }
     

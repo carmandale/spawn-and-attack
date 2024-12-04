@@ -11,7 +11,7 @@ import RealityKitContent
 @main
 struct SpawnAndAttrackApp: App {
     @State private var appModel = AppModel()
-
+    
     init() {
         /// Register components and systems
         RealityKitContent.AttachmentPoint.registerComponent()
@@ -35,36 +35,47 @@ struct SpawnAndAttrackApp: App {
     }
 
     var body: some Scene {
+        // Main Content Window - Left unchanged, preserving volumetric style
         WindowGroup {
-            switch appModel.phase {
-            case .waitingToStart, .loadingAssets:
-                LoadingView()
-                    .environment(appModel)
-                    .task {
-                        await appModel.startLoading()
-                    }
-            case .intro, .lab, .attack:
-                UIPortalView()  // Will be our intro view
-                    .environment(appModel)
-            }
+            ContentView()
+                .environment(appModel)
         }
-       .windowStyle(.volumetric)
+        .windowStyle(.volumetric)
 
-        // Immersive space for LabView
-        ImmersiveSpace(id: "LabSpace") {
+        // Debug Navigation Window - Adjusted to match Garden14 pattern
+        WindowGroup(id: "DebugNavigation") {
+            DebugNavigationWindow()
+                .environment(appModel)
+        }
+        // .defaultSize(CGSize(width: 300, height: 200))
+        // Removed unnecessary modifiers
+
+        // ADC Builder Window - Left unchanged
+        WindowGroup(id: "ADCBuilder") {
+            BuildADCView()
+                .environment(appModel)
+        }
+
+        // ADC Volumetric Window
+        WindowGroup(id: "ADCVolumetric") {
+            ADCVolumetricView()
+                .environment(appModel)
+        }
+        .windowStyle(.volumetric)
+
+        // Immersive Spaces
+        ImmersiveSpace(id: AppModel.SpaceState.intro.spaceId) {
+            IntroView()
+                .environment(appModel)
+        }
+
+        ImmersiveSpace(id: AppModel.SpaceState.lab.spaceId) {
             LabView()
                 .environment(appModel)
         }
 
-        // Immersive space for AttackCancerView
-        ImmersiveSpace(id: "AttackCancerSpace") {
+        ImmersiveSpace(id: AppModel.SpaceState.attack.spaceId) {
             AttackCancerView()
-                .environment(appModel)
-        }
-
-        /// Register the Intro immersive space.
-        ImmersiveSpace(id: "IntroSpace") {
-            IntroView()
                 .environment(appModel)
         }
     }

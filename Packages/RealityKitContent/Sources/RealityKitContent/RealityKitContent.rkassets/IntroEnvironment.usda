@@ -51,8 +51,8 @@ def Xform "Root"
 
             def Preliminary_Action "Action"
             {
-                rel affectedObjects = </Root>
-                rel animationLibraryKey = </Root/IntroMusic>
+                rel affectedObjects = None
+                rel animationLibraryKey = None
                 rel animationLibraryKeyOverrideKey = </Root/music/OnAddedToScene/Trigger>
                 token info:id = "PlayTimeline"
                 int loops = 0
@@ -148,6 +148,15 @@ def Xform "Root"
     {
         float3 xformOp:scale = (1, 1, 1)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        over "M_Spatial"
+        {
+            over "Image_1"
+            {
+                float2 ui:nodegraph:node:pos = (-747.44507, -4.42199)
+                int ui:nodegraph:node:stackingOrder = 29
+            }
+        }
     }
 
     def "M_spatial_picture_1" (

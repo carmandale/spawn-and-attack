@@ -197,8 +197,8 @@ def Xform "Root"
 
         def Preliminary_Action "Action"
         {
-            rel affectedObjects = </Root>
-            rel animationLibraryKey = </Root/Lab_audio>
+            rel affectedObjects = None
+            rel animationLibraryKey = None
             rel animationLibraryKeyOverrideKey = </Root/OnAddedToScene/Trigger>
             token info:id = "PlayTimeline"
             int loops = 0
@@ -207,29 +207,20 @@ def Xform "Root"
         }
     }
 
-    def "lab_v004" (
-        active = true
-        customData = {
-            float3 rotationEulerHint = (-1.5707964, 0, 0)
-        }
-        references = @Assets/Lab/lab_v004.usdc@
-    )
-    {
-        quatf xformOp:orient = (0.70710677, -0.70710677, 0, 0)
-        float3 xformOp:scale = (1, 1, 1)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-    }
-
     def "SkySphere" (
         active = true
+        customData = {
+            float3 rotationEulerHint = (0, -1.5707963, 0)
+        }
         references = @SkySphere.usdz@
     )
     {
+        quatf xformOp:orient = (0.7079074, 0, -0.7063053, 0)
         float3 xformOp:scale = (1, 1, 1)
 
         over "SkySphere_mat"
         {
-            asset inputs:SkySphere_Texture = @Assets/Lab/textures/LA_Downtown_Afternoon_Fishing_B_8k_2.jpg@
+            asset inputs:SkySphere_Texture = @Assets/Lab/AdobeStock_496286979.jpeg@
         }
     }
 
@@ -721,6 +712,28 @@ def Xform "Root"
                     float directivityFocus = 0.7
                     uniform token info:id = "RealityKit.SpatialAudio"
                 }
+            }
+        }
+    }
+
+    def "lab" (
+        active = true
+        customData = {
+            float3 rotationEulerHint = (-1.5707964, 0, 0)
+        }
+        prepend references = @Assets/Lab/lab.usdc@
+    )
+    {
+        quatf xformOp:orient = (0.70710677, -0.70710677, 0, 0)
+        float3 xformOp:scale = (1, 1, 1)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        over "_materials"
+        {
+            over "glass_mat"
+            {
+                token outputs:mtlx:surface
+                token outputs:realitykit:vertex
             }
         }
     }

@@ -3,75 +3,181 @@ import RealityKit
 import RealityKitContent
 
 /// Maintains app-wide state for the cancer cell targeting game
+/// This class is responsible for:
+/// 1. Game State Management: Handles core game mechanics and state transitions
+/// 2. Cell Management: Tracks and updates cancer cell entities
+/// 3. Collision Detection: Manages cell-to-cell and ADC-to-cell interactions
+/// 4. Score Tracking: Maintains hit counts and overall game score
 @Observable
 @MainActor
-class AppModel: HitCountTracking {
-    // MARK: - App Phases
-
-    enum Phase: String {
-        case waitingToStart
-        case loadingAssets
+final class AppModel: HitCountTracking {
+    // MARK: - Space Management
+    enum SpaceState: String, Identifiable, CaseIterable {
         case intro
         case lab
         case attack
+        
+        var id: Self { self }
+        var name: String { rawValue.capitalized }
+        var spaceId: String { rawValue + "Space" }
+    }
+    
+    // MARK: - Window Management
+    static let adcBuilderWindowId = "ADCBuilder"
+    static let adcVolumetricWindowId = "ADCVolumetric"
+    static let debugNavigationWindowId = "DebugNavigation"
+    
+    enum WindowState {
+        case adcBuilder
+        case adcVolumetric
+        case debugNavigation
+        
+        var windowId: String {
+            switch self {
+            case .adcBuilder: return AppModel.adcBuilderWindowId
+            case .adcVolumetric: return AppModel.adcVolumetricWindowId
+            case .debugNavigation: return AppModel.debugNavigationWindowId
+            }
+        }
+        
+        var shouldShowInLabSpace: Bool {
+            switch self {
+            case .adcBuilder, .adcVolumetric: return true
+            case .debugNavigation: return false
+            }
+        }
+    }
+    
+    // Window visibility state
+    var isShowingADCBuilder: Bool = false {
+        didSet {
+            handleWindowVisibility(.adcBuilder, isShowing: isShowingADCBuilder)
+        }
+    }
+    var isShowingADCVolumetric: Bool = false {
+        didSet {
+            handleWindowVisibility(.adcVolumetric, isShowing: isShowingADCVolumetric)
+        }
+    }
+    var isShowingDebugNavigation: Bool = false {
+        didSet {
+            handleWindowVisibility(.debugNavigation, isShowing: isShowingDebugNavigation)
+        }
+    }
+    
+    private func handleWindowVisibility(_ window: WindowState, isShowing: Bool) {
+        // This will be called by the environment openWindow/dismissWindow actions
+        // We don't need to implement anything here as it's just for state tracking
     }
 
-    var phase: Phase = .waitingToStart
-
-    // Reference to the shared AssetLoadingManager
-    let assetLoadingManager = AssetLoadingManager.shared
-
-    // Methods to handle phase transitions
-
-    func transitionToIntro() {
-        phase = .loadingAssets
-        phase = .intro
+    // MARK: - Space State
+    var introSpaceActive: Bool = false {
+        didSet {
+            if !introSpaceActive {
+                // Clean up when space becomes inactive
+            }
+        }
+    }
+    
+    var labSpaceActive: Bool = false {
+        didSet {
+            if labSpaceActive {
+                isShowingADCBuilder = true
+                isShowingADCVolumetric = true
+            } else {
+                isShowingADCBuilder = false
+                isShowingADCVolumetric = false
+            }
+        }
+    }
+    
+    var attackSpaceActive: Bool = false {
+        didSet {
+            if !attackSpaceActive {
+                // Clean up when space becomes inactive
+            }
+        }
     }
 
-    func transitionToLab() async {
-        phase = .loadingAssets
-        phase = .lab
-    }
-
-    func transitionToAttackCancer() async {
-        phase = .loadingAssets
-        phase = .attack
+    var immersiveSpaceActive: Bool {
+        return introSpaceActive || labSpaceActive || attackSpaceActive
     }
 
     // MARK: - Game State
-    enum ImmersiveSpaceState {
-        case closed
-        case inTransition
-        case open
+    /// Represents the current phase of the game
+    /// - setup: Initial state, systems being initialized
+    /// - playing: Active gameplay
+    /// - paused: Game temporarily suspended
+    /// - completed: Game finished (win/loss condition met)
+    /// - error: Game finished due to an error
+    enum GamePhase {
+        case setup
+        case playing
+        case paused
+        case completed
+        case error
     }
     
-    enum ImmersiveSpaceID: String {
-        case attackCancer = "attack_cancer_space"
-        case lab = "lab_space"
-        case intro = "intro_space"
-    }
+    /// Current phase of the game
+    var gamePhase: GamePhase = .setup
     
-    var currentSpace: ImmersiveSpaceID?
-    var immersiveSpaceIsShown = false
-    var immersiveSpaceState: ImmersiveSpaceState = .closed
-    
-    // Systems
+    // MARK: - Game Systems
+    /// System responsible for cancer cell behavior and spawning
     var cancerCellSystem: CancerCellSystem?
+    
+    /// System handling ADC movement and interactions
     var adcMovementSystem: ADCMovementSystem?
     
-    // Game stats (observable properties)
-    var score = 0
+    // MARK: - Game Stats and Tracking
+    /// Overall game score, calculated from hits and destroyed cells
+    var score: Int = 0
+    
+    // MARK: - Game Stats and Tracking
+    /// Total number of successful hits across all cells
     var totalHits = 0
+    
+    /// Number of cells completely destroyed (3 hits)
     var cellsDestroyed = 0
     
     // Hit count tracking
-    @MainActor
     private var hitCounts: [Int: Int] = [:]
     
-    // Add these new properties
-    var immersiveSpaceActive: Bool = false
-    var currentImmersiveSpaceID: String?
+    // MARK: - Hit Count Tracking
+    var hitCount: Int = 0
+    var totalCellsDestroyed: Int = 0
+    var totalADCsDeployed: Int = 0
     
+    func incrementHitCount() {
+        hitCount += 1
+    }
+    
+    func incrementCellsDestroyed() {
+        totalCellsDestroyed += 1
+    }
+    
+    func incrementADCsDeployed() {
+        totalADCsDeployed += 1
+    }
+    
+    func resetHitCounts() {
+        hitCount = 0
+        totalCellsDestroyed = 0
+        totalADCsDeployed = 0
+    }
+    
+    // MARK: - Game Configuration
+    /// Difficulty level of the game, affecting spawn rates and cell behavior
+    var difficulty: Float = 1.0
+    
+    /// Time interval between cancer cell spawns
+    var spawnRate: TimeInterval = 2.0
+    
+    /// Maximum number of cells allowed on screen
+    static let maxCancerCells: Int = 10
+    
+    // MARK: - Asset Management
+    let assetLoadingManager = AssetLoadingManager.shared
+
     init() {
         setupNotifications()
     }
@@ -96,32 +202,78 @@ class AppModel: HitCountTracking {
             return
         }
         
-        // Update our local tracking
-        hitCounts[cellID] = component.hitCount
+        // Update cell state
+        var state = cellStates[cellID] ?? CellState(hitCount: 0, isDestroyed: false, lastHitTime: 0)
+        state.hitCount = component.hitCount
+        state.isDestroyed = component.hitCount >= 3
+        state.lastHitTime = Date().timeIntervalSinceReferenceDate
+        cellStates[cellID] = state
         
-        // Update the cancer cells array
-        if let index = cancerCells.firstIndex(where: { 
-            $0.components[CancerCellComponent.self]?.cellID == cellID 
-        }) {
-            cancerCells[index] = entity
-        } else {
-            cancerCells.append(entity)
-        }
-    }
-    
-    @MainActor
-    func getHitCount(for cellID: Int) -> Int {
-        return hitCounts[cellID] ?? 0
-    }
-    
-    @MainActor
-    func updateHitCount(for cellID: Int, count: Int) {
-        hitCounts[cellID] = count
+        // Update game stats
+        totalHits = cellStates.values.map { $0.hitCount }.reduce(0, +)
+        cellsDestroyed = cellStates.values.filter { $0.isDestroyed }.count
+        
+        // Update score and notify
+        score = cellsDestroyed * 100 + totalHits * 10
+        
+        // Check game conditions and notify state changes
+        checkGameConditions()
+        notifyCellStateChanged()
     }
     
     // MARK: - Cell Management
-    static let maxCancerCells = 5  // Start with 5 cells for testing
-    var cancerCells: [Entity] = []  // Track active cells for game state
+    private(set) var cancerCells: [Entity] = []  // Track active cells for game state
+    
+    /// Tracks the state of each cancer cell
+    private var cellStates: [Int: CellState] = [:]
+    
+    struct CellState {
+        var hitCount: Int
+        var isDestroyed: Bool
+        var lastHitTime: TimeInterval
+    }
+    
+    // MARK: - Cell Management Methods
+    func registerCancerCell(_ entity: Entity) {
+        cancerCells.append(entity)
+        if let component = entity.components[CancerCellComponent.self],
+           let cellID = component.cellID {
+            cellStates[cellID] = CellState(hitCount: 0, isDestroyed: false, lastHitTime: 0)
+        }
+        notifyCellStateChanged()
+    }
+    
+    func removeCancerCell(_ entity: Entity) {
+        if let index = cancerCells.firstIndex(where: { $0 === entity }) {
+            cancerCells.remove(at: index)
+            if let component = entity.components[CancerCellComponent.self],
+               let cellID = component.cellID {
+                cellStates.removeValue(forKey: cellID)
+            }
+            notifyCellStateChanged()
+        }
+    }
+    
+    private func notifyCellStateChanged() {
+        // Post notification for UI updates
+        NotificationCenter.default.post(
+            name: .init("CellStateChanged"),
+            object: self,
+            userInfo: [
+                "totalHits": totalHits,
+                "cellsDestroyed": cellsDestroyed,
+                "score": score
+            ]
+        )
+    }
+    
+    // MARK: - Game Conditions
+    private func checkGameConditions() {
+        // Check for game completion
+        if totalCellsDestroyed >= Self.maxCancerCells {
+            gamePhase = .completed
+        }
+    }
     
     // MARK: - Spawn Configuration
     let spawnBounds = BoundingBox(
@@ -135,23 +287,96 @@ class AppModel: HitCountTracking {
         static let rotationRange: Float = .pi * 2
     }
     
-    // MARK: - Cell Tracking Methods
-    func registerCancerCell(_ entity: Entity) {
-        cancerCells.append(entity)
-    }
-    
-    func removeCancerCell(_ entity: Entity) {
-        if let index = cancerCells.firstIndex(where: { $0 === entity }) {
-            cancerCells.remove(at: index)
-        }
-    }
-    
-    // MARK: - Game State Methods
-    func resetGame() {
+    // MARK: - Game Methods
+    func startGame() {
+        gamePhase = .playing
         score = 0
         totalHits = 0
         cellsDestroyed = 0
-        cancerCells.removeAll()
+    }
+    
+    func pauseGame() {
+        gamePhase = .paused
+    }
+    
+    func resumeGame() {
+        gamePhase = .playing
+    }
+    
+    func endGame() {
+        gamePhase = .completed
+    }
+    
+    func resetGameState() {
+        gamePhase = .setup
+        score = 0
+        totalHits = 0
+        cellsDestroyed = 0
+    }
+    
+    // MARK: - Game State Observation
+    var onGameStateChanged: ((GamePhase) -> Void)?
+    var onScoreChanged: ((Int) -> Void)?
+    
+    private func notifyGameStateChanged() {
+        onGameStateChanged?(gamePhase)
+    }
+    
+    private func notifyScoreChanged() {
+        onScoreChanged?(score)
+    }
+    
+    // MARK: - Asset Loading
+    var isLoadingAssets: Bool {
+        if case .loading = assetLoadingManager.state {
+            return true
+        }
+        return false
+    }
+    
+    var assetsLoaded: Bool {
+        if case .completed = assetLoadingManager.state {
+            return true
+        }
+        return false
+    }
+    
+    var loadingProgress: Float = 0
+    var isLoading = false
+    
+    func startLoading() async {
+        isLoading = true
+        do {
+            // Start progress monitoring
+            Task {
+                while assetLoadingManager.loadingProgress() < 1.0 {
+                    loadingProgress = assetLoadingManager.loadingProgress()
+                    try? await Task.sleep(nanoseconds: 100_000_000)
+                }
+                loadingProgress = assetLoadingManager.loadingProgress()
+            }
+            
+            try await assetLoadingManager.loadAssets()
+            isLoading = false
+
+            // Update gamePhase to indicate loading is complete
+            gamePhase = .playing
+            
+        } catch {
+            print("Error loading assets: \(error)")
+            isLoading = false
+
+            // Handle error by setting gamePhase or presenting an error message
+            gamePhase = .error
+        }
+    }
+    
+    func getHitCount(for cellID: Int) -> Int {
+        return hitCounts[cellID] ?? 0
+    }
+    
+    func updateHitCount(for cellID: Int, count: Int) {
+        hitCounts[cellID] = count
     }
     
     // MARK: - Collision Handling
@@ -209,32 +434,18 @@ class AppModel: HitCountTracking {
         debounce[entities] = now
         return true
     }
-
-    // MARK: - Asset Loading
-    var loadingProgress: Float = 0
-    var isLoading = false
     
-    func startLoading() async {
-        phase = .loadingAssets
-        isLoading = true
-        do {
-            // Start progress monitoring
-            Task {
-                while assetLoadingManager.loadingProgress() < 1.0 {
-                    loadingProgress = assetLoadingManager.loadingProgress()
-                    try? await Task.sleep(nanoseconds: 100_000_000)
-                }
-                loadingProgress = assetLoadingManager.loadingProgress()
-            }
-            
-            try await assetLoadingManager.loadAssets()
-            isLoading = false
-            phase = .intro  // Go to intro after loading
-        } catch {
-            print("Error loading assets: \(error)")
-            isLoading = false
+    // MARK: - Immersive Space Management
+    func setImmersiveSpaceActive(spaceID: String, isActive: Bool) {
+        switch spaceID {
+        case "IntroSpace":
+            introSpaceActive = isActive
+        case "LabSpace":
+            labSpaceActive = isActive
+        case "AttackSpace":
+            attackSpaceActive = isActive
+        default:
+            break
         }
     }
-
-
 }

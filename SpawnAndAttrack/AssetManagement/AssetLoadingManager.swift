@@ -43,6 +43,9 @@ final class AssetLoadingManager {
     /// Current loading state
     private var loadingState: LoadingState = .notStarted
     
+    /// The current state of asset loading
+    var state: LoadingState { loadingState }
+    
     /// Loaded lab environment entity
     var labEnvironment: Entity?
     

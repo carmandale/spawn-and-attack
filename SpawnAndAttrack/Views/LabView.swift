@@ -11,71 +11,42 @@ import RealityKitContent
 
 /// A RealityView that creates an immersive lab environment with spatial audio and IBL lighting
 struct LabView: View {
-    @Environment(AppModel.self) private var appModel: AppModel
+    @Environment(AppModel.self) private var appModel
     @Environment(\.scenePhase) private var scenePhase
-
+    @Environment(\.openWindow) private var openWindow
+    @Environment(\.dismissWindow) private var dismissWindow
+    
     var body: some View {
         RealityView { content in
             // Create the root entity for our lab environment
-            let rootEntity = Entity()
-            
+            let root = Entity()
             do {
-                // Set up IBL lighting
-                try await setupLighting(on: rootEntity)
-                
-                // Load Lab Environment from pre-loaded assets
-                if let labEnvironmentScene = await appModel.assetLoadingManager.instantiateEntity("lab_environment") {
-                    rootEntity.addChild(labEnvironmentScene)
-                } else {
-                    print("Failed to load LabEnvironment from asset manager")
-                }
-                
-                // Temporarily comment out equipment loading to test
-                let equipmentScene = try await appModel.assetLoadingManager.loadPopulatedLabScene()
-                rootEntity.addChild(equipmentScene)
-                
-                // Add the root entity to the content
-                content.add(rootEntity)
-                
+                try await createEnvironment(on: root, appModel: appModel)
             } catch {
-                print("Error setting up lab environment: \(error.localizedDescription)")
+                print("Failed to load environment: \(error.localizedDescription)")
+            }
+            
+            content.add(root)
+        }
+        .onChange(of: scenePhase) { _, newPhase in
+            switch newPhase {
+            case .active:
+                // When lab space becomes active, open ADC builder
+                openWindow(id: AppModel.WindowState.adcBuilder.windowId)
+                appModel.isShowingADCBuilder = true
+            case .inactive, .background:
+                // When lab space becomes inactive, close all associated windows
+                if appModel.isShowingADCVolumetric {
+                    dismissWindow(id: AppModel.WindowState.adcVolumetric.windowId)
+                    appModel.isShowingADCVolumetric = false
+                }
+                if appModel.isShowingADCBuilder {
+                    dismissWindow(id: AppModel.WindowState.adcBuilder.windowId)
+                    appModel.isShowingADCBuilder = false
+                }
+            @unknown default:
+                break
             }
         }
-        .onChange(of: scenePhase) { oldPhase, newPhase in
-            if newPhase == .background || newPhase == .inactive {
-                appModel.immersiveSpaceActive = false
-                appModel.currentImmersiveSpaceID = nil
-            }
-        }
-        .onAppear {
-            appModel.phase = .lab
-        }
-        .onDisappear {
-            appModel.phase = .intro
-        }
-    }
-    
-    /// Sets up image-based lighting for the lab environment
-    private func setupLighting(on root: Entity) async throws {
-        // Load the EXR file for IBL
-        guard let iblURL = Bundle.main.url(forResource: "metro_noord_2k", withExtension: "exr") else {
-            fatalError("Failed to load the Image-Based Lighting file.")
-        }
-        
-        // Create environment resource from the EXR file
-        let iblEnvironment = try await EnvironmentResource(fromImage: iblURL)
-        
-        // Create entity for IBL
-        let iblEntity = Entity()
-        
-        // Create and configure IBL component
-        var iblComponent = ImageBasedLightComponent(source: .single(iblEnvironment), intensityExponent: 0.0)
-        iblComponent.inheritsRotation = true
-        
-        // Add IBL component to the entity
-        iblEntity.components.set(iblComponent)
-        
-        // Make the root entity receive the IBL
-        root.components.set(ImageBasedLightReceiverComponent(imageBasedLight: iblEntity))
     }
 }
