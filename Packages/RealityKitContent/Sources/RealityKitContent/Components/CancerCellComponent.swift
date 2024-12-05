@@ -6,14 +6,11 @@ public struct CancerCellComponent: Component, Codable {
     public var hitCount: Int = 0
     public var isDestroyed: Bool = false
     public var currentScale: Float = 1.0
-    public var isScaling: Bool = false
-    public var targetScale: Float = 1.0
+    public var isScaling: Bool = false  // Track if we're currently in a scaling animation
+    public var targetScale: Float = 1.0  // The scale we're animating towards
     
-    // Each cell gets its own required hits value
-    public var requiredHits: Int = 3
-    
-    // Class-level default for UI/display purposes
-    public static let defaultRequiredHits = 18
+    /// The number of hits required to destroy the cancer cell
+    public static let requiredHits = 18
     
     // Scale thresholds for different hit counts
     public static let scaleThresholds: [(hits: Int, scale: Float)] = [
@@ -27,8 +24,5 @@ public struct CancerCellComponent: Component, Codable {
     
     public init(cellID: Int? = nil) {
         self.cellID = cellID
-        self.requiredHits = Int.random(in: 5...18)
-        print("\n=== Cancer Cell Component Creation ===")
-        print("Created cell \(cellID ?? -1) with requiredHits: \(requiredHits)")
     }
 }

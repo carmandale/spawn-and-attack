@@ -108,7 +108,7 @@ public class ADCMovementSystem: System {
                 // Stop drone sound and play attach sound
                 entity.stopAllAudio()
                 if let audioComponent = entity.components[AudioLibraryComponent.self],
-                   let attachSound = audioComponent.resources["ADC_Attach.wav"] {
+                   let attachSound = audioComponent.resources["Sonic_Pulse_Hit_01.wav"] {
                     entity.playAudio(attachSound)
                 }
                 
@@ -202,7 +202,7 @@ public class ADCMovementSystem: System {
         
         // Start drone sound
         if let audioComponent = entity.components[AudioLibraryComponent.self],
-           let droneSound = audioComponent.resources["SpinBus.wav"] {
+           let droneSound = audioComponent.resources["Drones_01.wav"] {
             entity.playAudio(droneSound)
         }
     }

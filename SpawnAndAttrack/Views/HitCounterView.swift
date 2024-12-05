@@ -1,19 +1,18 @@
 import SwiftUI
-import RealityKitContent
 
 struct HitCounterView: View {
     @Environment(AppModel.self) private var appModel: AppModel
     @Binding var hits: Int
-    let requiredHits: Int
     private let lineWidth: CGFloat = 12
     private let fontSize: CGFloat = 75
+    private let maxHits: Int = 18
     
     var progress: CGFloat {
-        CGFloat(hits) / CGFloat(requiredHits)
+        CGFloat(hits) / CGFloat(maxHits)
     }
     
     var body: some View {
-        if hits < requiredHits {
+        if hits < maxHits {
             ZStack {
                 // Background circle
                 Circle()
@@ -38,17 +37,7 @@ struct HitCounterView: View {
             }
             .frame(width: 160, height: 160)
             .padding(30)
-            .glassBackgroundEffect()
-            .onAppear {
-                print("\n=== Hit Counter Created ===")
-                print("Initial hits: \(hits)")
-                print("Required hits: \(requiredHits)")
-            }
-            .onChange(of: hits) { _, newValue in
-                print("\n=== Hit Counter Update ===")
-                print("Cell hits: \(newValue)")
-                print("Required hits: \(requiredHits)")
-            }
+            .glassBackgroundEffect() // visionOS glass effect
         }
     }
 }
