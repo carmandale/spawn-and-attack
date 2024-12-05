@@ -4,8 +4,6 @@ import RealityKitContent
 
 struct CompletedView: View {
     @Environment(AppModel.self) private var appModel
-    @Environment(\.openImmersiveSpace) private var openImmersiveSpace
-    @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
     
     var body: some View {
         VStack(spacing: 30) {
@@ -30,57 +28,34 @@ struct CompletedView: View {
             VStack(spacing: 15) {
                 Button("Start New Session") {
                     resetAndStartNew()
+                    appModel.startIntroPhase()
                 }
                 .buttonStyle(.bordered)
                 .tint(.blue)
                 
                 Button("Replay Attack Cancer") {
-                    Task {
-                        if appModel.immersiveSpaceActive {
-                            await dismissImmersiveSpace()
-                            appModel.introSpaceActive = false
-                            appModel.labSpaceActive = false
-                            appModel.attackSpaceActive = false
-                        }
-                        appModel.gamePhase = .playing
-                        await openImmersiveSpace(id: "AttackSpace")
-                        appModel.attackSpaceActive = true
-                    }
+                    resetAndStartNew()
+                    appModel.startAttackPhase()
                 }
                 .buttonStyle(.borderless)
                 
                 Button("Return to Lab") {
-                    Task {
-                        if appModel.immersiveSpaceActive {
-                            await dismissImmersiveSpace()
-                            appModel.introSpaceActive = false
-                            appModel.labSpaceActive = false
-                            appModel.attackSpaceActive = false
-                        }
-                        await openImmersiveSpace(id: "LabSpace")
-                        appModel.labSpaceActive = true
-                    }
+                    resetAndStartNew()
+                    appModel.startLabPhase()
                 }
                 .buttonStyle(.borderless)
                 
                 Button("Return to Intro") {
-                    Task {
-                        if appModel.immersiveSpaceActive {
-                            await dismissImmersiveSpace()
-                            appModel.introSpaceActive = false
-                            appModel.labSpaceActive = false
-                            appModel.attackSpaceActive = false
-                        }
-                        await openImmersiveSpace(id: "IntroSpace")
-                        appModel.introSpaceActive = true
-                    }
+                    resetAndStartNew()
+                    appModel.startIntroPhase()
                 }
                 .buttonStyle(.borderless)
             }
             .padding(.top)
         }
-        .padding()
-        .frame(maxWidth: 500)
+        .padding(40)
+        .frame(minWidth: 600, minHeight: 400)
+        .glassBackgroundEffect()
     }
     
     private var statsGrid: some View {
@@ -89,7 +64,7 @@ struct CompletedView: View {
             GridRow {
                 Label("Cancer Cells Destroyed", systemImage: "target")
                     .foregroundStyle(.secondary)
-                Text("\(appModel.totalCellsDestroyed)")
+                Text("\(appModel.cellsDestroyed)")
                     .monospacedDigit()
                     .foregroundStyle(.primary)
             }
@@ -103,11 +78,11 @@ struct CompletedView: View {
                     .foregroundStyle(.primary)
             }
             
-            // Hit Count
+            // Total Hits
             GridRow {
                 Label("Successful Hits", systemImage: "checkmark.circle")
                     .foregroundStyle(.secondary)
-                Text("\(appModel.hitCount)")
+                Text("\(appModel.totalHits)")
                     .monospacedDigit()
                     .foregroundStyle(.primary)
             }
@@ -115,18 +90,7 @@ struct CompletedView: View {
     }
     
     private func resetAndStartNew() {
-        // Reset all game stats
-        appModel.resetHitCounts()
-        
-        // Reset game state
-        appModel.gamePhase = .setup
-        
-        // Reset space states
-        appModel.introSpaceActive = false
-        appModel.labSpaceActive = false
-        appModel.attackSpaceActive = false
-        appModel.isShowingADCBuilder = false
-        appModel.isShowingADCVolumetric = false
-        appModel.isShowingDebugNavigation = false
+        // Reset game state but don't reload assets
+        appModel.resetGameState()
     }
 }

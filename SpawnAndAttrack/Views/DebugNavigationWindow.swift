@@ -8,34 +8,19 @@ struct DebugNavigationWindow: View {
             Text("Debug Navigation")
                 .font(.headline)
 
-            ImmersiveSpaceButton(
-                spaceID: .intro,
-                isShowing: .init(
-                    get: { appModel.introSpaceActive },
-                    set: { appModel.introSpaceActive = $0 }
-                ),
-                label: "Go to Intro Space"
-            )
+            Button("Go to Intro Space") {
+                appModel.startIntroPhase()
+            }
 
-            ImmersiveSpaceButton(
-                spaceID: .lab,
-                isShowing: .init(
-                    get: { appModel.labSpaceActive },
-                    set: { appModel.labSpaceActive = $0 }
-                ),
-                label: "Go to Lab Space"
-            )
+            Button("Go to Lab Space") {
+                appModel.startLabPhase()
+            }
 
-            ImmersiveSpaceButton(
-                spaceID: .attack,
-                isShowing: .init(
-                    get: { appModel.attackSpaceActive },
-                    set: { appModel.attackSpaceActive = $0 }
-                ),
-                label: "Go to Attack Space"
-            )
+            Button("Go to Attack Space") {
+                appModel.startAttackPhase()
+            }
         }
-        .padding()
-        .frame(maxWidth: 300)
+        .padding(20)
+        
     }
 }

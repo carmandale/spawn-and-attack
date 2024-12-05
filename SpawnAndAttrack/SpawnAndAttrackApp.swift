@@ -12,6 +12,9 @@ import RealityKitContent
 struct SpawnAndAttrackApp: App {
     @State private var appModel = AppModel()
     
+    @Environment(\.openImmersiveSpace) private var openImmersiveSpace
+    @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
+    
     init() {
         /// Register components and systems
         RealityKitContent.AttachmentPoint.registerComponent()
@@ -33,6 +36,8 @@ struct SpawnAndAttrackApp: App {
         RealityKitContent.UIStabilizerSystem.registerSystem()
         RealityKitContent.BillboardSystem.registerSystem()
     }
+    
+    let heightModifier: CGFloat = 0.25
 
     var body: some Scene {
         // Main Content Window - Left unchanged, preserving volumetric style
@@ -43,25 +48,33 @@ struct SpawnAndAttrackApp: App {
         .windowStyle(.volumetric)
 
         // Debug Navigation Window - Adjusted to match Garden14 pattern
-        WindowGroup(id: "DebugNavigation") {
+        WindowGroup(id: AppModel.WindowState.debugNavigation.windowId) {
             DebugNavigationWindow()
                 .environment(appModel)
-        }
-        // .defaultSize(CGSize(width: 300, height: 200))
+        }.windowResizability(.contentMinSize)
+         .defaultSize(CGSize(width: 150, height: 400))
         // Removed unnecessary modifiers
 
         // ADC Builder Window - Left unchanged
-        WindowGroup(id: "ADCBuilder") {
+        WindowGroup(id: AppModel.WindowState.adcBuilder.windowId) {
             BuildADCView()
                 .environment(appModel)
         }
 
         // ADC Volumetric Window
-        WindowGroup(id: "ADCVolumetric") {
+        WindowGroup(id: AppModel.WindowState.adcVolumetric.windowId) {
             ADCVolumetricView()
                 .environment(appModel)
         }
         .windowStyle(.volumetric)
+        .windowResizability(.contentMinSize)
+        .defaultWindowPlacement { _, context in
+            if let mainWindow = context.windows.first {
+                return WindowPlacement(.leading(mainWindow))
+            }
+            return WindowPlacement(.none)
+        }
+        
 
         // Immersive Spaces
         ImmersiveSpace(id: AppModel.SpaceState.intro.spaceId) {
@@ -77,6 +90,62 @@ struct SpawnAndAttrackApp: App {
         ImmersiveSpace(id: AppModel.SpaceState.attack.spaceId) {
             AttackCancerView()
                 .environment(appModel)
+        }
+        .onChange(of: appModel.gamePhase) { _, newPhase in
+            if newPhase == .playing && !appModel.immersiveSpaceActive {
+                Task {
+                    switch await openImmersiveSpace(id: AppModel.SpaceState.intro.spaceId) {
+                    case .opened:
+                        appModel.introSpaceActive = true
+                        appModel.currentPhase = .intro
+                    case .error, .userCancelled:
+                        fallthrough
+                    @unknown default:
+                        appModel.introSpaceActive = false
+                    }
+                }
+            }
+        }
+        
+        // Handle phase transitions
+        .onChange(of: appModel.currentPhase) { oldPhase, newPhase in
+            if oldPhase == newPhase { return }  // Skip if no actual change
+            Task {
+                switch newPhase {
+                case .intro:
+                    await dismissImmersiveSpace()
+                    switch await openImmersiveSpace(id: AppModel.SpaceState.intro.spaceId) {
+                    case .opened:
+                        appModel.introSpaceActive = true
+                    case .error, .userCancelled:
+                        fallthrough
+                    @unknown default:
+                        appModel.introSpaceActive = false
+                    }
+                    
+                case .lab:
+                    await dismissImmersiveSpace()
+                    switch await openImmersiveSpace(id: AppModel.SpaceState.lab.spaceId) {
+                    case .opened:
+                        appModel.labSpaceActive = true
+                    case .error, .userCancelled:
+                        fallthrough
+                    @unknown default:
+                        appModel.labSpaceActive = false
+                    }
+                    
+                case .attack:
+                    await dismissImmersiveSpace()
+                    switch await openImmersiveSpace(id: AppModel.SpaceState.attack.spaceId) {
+                    case .opened:
+                        appModel.attackSpaceActive = true
+                    case .error, .userCancelled:
+                        fallthrough
+                    @unknown default:
+                        appModel.attackSpaceActive = false
+                    }
+                }
+            }
         }
     }
 }

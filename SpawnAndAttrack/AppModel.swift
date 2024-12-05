@@ -11,6 +11,14 @@ import RealityKitContent
 @Observable
 @MainActor
 final class AppModel: HitCountTracking {
+    enum AppPhase {
+        case intro
+        case lab
+        case attack
+    }
+
+    var currentPhase: AppPhase = .intro
+
     // MARK: - Space Management
     enum SpaceState: String, Identifiable, CaseIterable {
         case intro
@@ -23,20 +31,20 @@ final class AppModel: HitCountTracking {
     }
     
     // MARK: - Window Management
-    static let adcBuilderWindowId = "ADCBuilder"
-    static let adcVolumetricWindowId = "ADCVolumetric"
-    static let debugNavigationWindowId = "DebugNavigation"
-    
     enum WindowState {
         case adcBuilder
         case adcVolumetric
         case debugNavigation
         
+        nonisolated static let adcBuilderWindowId = "ADCBuilder"
+        nonisolated static let adcVolumetricWindowId = "ADCVolumetric"
+        nonisolated static let debugNavigationWindowId = "DebugNavigation"
+        
         var windowId: String {
             switch self {
-            case .adcBuilder: return AppModel.adcBuilderWindowId
-            case .adcVolumetric: return AppModel.adcVolumetricWindowId
-            case .debugNavigation: return AppModel.debugNavigationWindowId
+            case .adcBuilder: return WindowState.adcBuilderWindowId
+            case .adcVolumetric: return WindowState.adcVolumetricWindowId
+            case .debugNavigation: return WindowState.debugNavigationWindowId
             }
         }
         
@@ -173,13 +181,23 @@ final class AppModel: HitCountTracking {
     var spawnRate: TimeInterval = 2.0
     
     /// Maximum number of cells allowed on screen
-    static let maxCancerCells: Int = 10
+    static let maxCancerCells: Int = 3
     
     // MARK: - Asset Management
     let assetLoadingManager = AssetLoadingManager.shared
 
+    // Add property to track completed deaths
+    private var completedDeaths: Set<Int> = []
+    
     init() {
         setupNotifications()
+        // Add observer for cell death completion
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleCellDeathComplete),
+            name: Notification.Name("CellDeathComplete"),
+            object: nil
+        )
     }
     
     deinit {
@@ -202,6 +220,18 @@ final class AppModel: HitCountTracking {
             return
         }
         
+        // Update BOTH tracking mechanisms
+        hitCounts[cellID] = component.hitCount  // For protocol compliance
+        
+        // Update cancer cells array
+        if let index = cancerCells.firstIndex(where: { 
+            $0.components[CancerCellComponent.self]?.cellID == cellID 
+        }) {
+            cancerCells[index] = entity
+        } else {
+            cancerCells.append(entity)
+        }
+        
         // Update cell state
         var state = cellStates[cellID] ?? CellState(hitCount: 0, isDestroyed: false, lastHitTime: 0)
         state.hitCount = component.hitCount
@@ -219,6 +249,17 @@ final class AppModel: HitCountTracking {
         // Check game conditions and notify state changes
         checkGameConditions()
         notifyCellStateChanged()
+    }
+    
+    @objc private func handleCellDeathComplete(_ notification: Notification) {
+        guard let cellID = notification.userInfo?["cellID"] as? Int else { return }
+        
+        completedDeaths.insert(cellID)
+        
+        // Check if all cells are fully destroyed
+        if completedDeaths.count >= Self.maxCancerCells {
+            gamePhase = .completed
+        }
     }
     
     // MARK: - Cell Management
@@ -269,9 +310,9 @@ final class AppModel: HitCountTracking {
     
     // MARK: - Game Conditions
     private func checkGameConditions() {
-        // Check for game completion
-        if totalCellsDestroyed >= Self.maxCancerCells {
-            gamePhase = .completed
+        // Only track destroyed count, completion handled by death notifications
+        if cellsDestroyed >= Self.maxCancerCells {
+            print("All cells destroyed, waiting for death animations...")
         }
     }
     
@@ -293,6 +334,9 @@ final class AppModel: HitCountTracking {
         score = 0
         totalHits = 0
         cellsDestroyed = 0
+        hitCounts.removeAll()
+        cellStates.removeAll()
+        cancerCells.removeAll()
     }
     
     func pauseGame() {
@@ -308,10 +352,15 @@ final class AppModel: HitCountTracking {
     }
     
     func resetGameState() {
-        gamePhase = .setup
         score = 0
         totalHits = 0
         cellsDestroyed = 0
+        totalADCsDeployed = 0
+        hitCounts.removeAll()
+        cellStates.removeAll()
+        cancerCells.removeAll()
+        completedDeaths.removeAll()
+        gamePhase = .playing
     }
     
     // MARK: - Game State Observation
@@ -371,12 +420,20 @@ final class AppModel: HitCountTracking {
         }
     }
     
+    @MainActor
     func getHitCount(for cellID: Int) -> Int {
         return hitCounts[cellID] ?? 0
     }
     
+    @MainActor
     func updateHitCount(for cellID: Int, count: Int) {
         hitCounts[cellID] = count
+        // Notify of changes
+        NotificationCenter.default.post(
+            name: .init("CellStateChanged"),
+            object: self,
+            userInfo: ["cellID": cellID, "hitCount": count]
+        )
     }
     
     // MARK: - Collision Handling
@@ -447,5 +504,34 @@ final class AppModel: HitCountTracking {
         default:
             break
         }
+    }
+
+    func transitionToPhase(_ newPhase: AppPhase) {
+        // Clean up current phase
+        switch currentPhase {
+        case .intro:
+            introSpaceActive = false
+        case .lab:
+            labSpaceActive = false
+        case .attack:
+            attackSpaceActive = false
+        }
+        
+        // Set new phase
+        currentPhase = newPhase
+    }
+
+    // Helper methods for phase transitions
+    @MainActor
+    func startIntroPhase() {
+        currentPhase = .intro  // SpawnAndAttrackApp will handle the space transition
+    }
+
+    func startLabPhase() {
+        currentPhase = .lab
+    }
+
+    func startAttackPhase() {
+        currentPhase = .attack
     }
 }

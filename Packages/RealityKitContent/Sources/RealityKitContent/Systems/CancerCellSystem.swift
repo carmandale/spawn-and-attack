@@ -19,7 +19,11 @@ public class CancerCellSystem: System {
             guard var component = entity.components[CancerCellComponent.self] else { continue }
             
             // Check for destruction first - highest priority
-            if component.hitCount >= CancerCellComponent.requiredHits && !component.isDestroyed {
+            if component.hitCount >= component.requiredHits && !component.isDestroyed {
+                print("\n=== Cancer Cell Destruction Check ===")
+                print("Cell \(component.cellID ?? -1):")
+                print("Hit count: \(component.hitCount)")
+                print("Required hits: \(component.requiredHits)")
                 // Mark as destroyed immediately
                 component.isDestroyed = true
                 entity.components[CancerCellComponent.self] = component
@@ -33,9 +37,9 @@ public class CancerCellSystem: System {
                     }
                 }
                 
-                // Play audio
+                // Play audio and handle completion
                 if let audioComponent = entity.components[AudioLibraryComponent.self],
-                   let deathSound = audioComponent.resources["Distortion_Wave_01.wav"] {
+                   let deathSound = audioComponent.resources["Kill_Cell_2.wav"] {
                     let controller = entity.playAudio(deathSound)
                     
                     // Remove after animation and audio completes
@@ -45,6 +49,9 @@ public class CancerCellSystem: System {
                         // Create a continuation to wait for audio completion
                         await withCheckedContinuation { continuation in
                             controller.completionHandler = {
+                                // Signal completion before removing entity
+                                self.cellDeathComplete(entity)
+                                
                                 if entity.scene != nil {
                                     entity.removeFromParent()
                                 }
@@ -90,6 +97,19 @@ public class CancerCellSystem: System {
                     break
                 }
             }
+        }
+    }
+    
+    // After cell death animation/effects are complete
+    func cellDeathComplete(_ entity: Entity) {
+        if let component = entity.components[CancerCellComponent.self],
+           let cellID = component.cellID {
+            // Post notification that this cell's death is complete
+            NotificationCenter.default.post(
+                name: .init("CellDeathComplete"),
+                object: self,
+                userInfo: ["cellID": cellID]
+            )
         }
     }
 }

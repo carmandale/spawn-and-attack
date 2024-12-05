@@ -77,35 +77,25 @@ struct BuildADCView: View {
             .padding(.horizontal)
 
             // View in 3D Button
-            WindowToggle(
-                window: .adcVolumetric,
-                isShowing: .init(
-                    get: { appModel.isShowingADCVolumetric },
-                    set: { appModel.isShowingADCVolumetric = $0 }
-                ),
-                label: "View in 3D"
-            )
+            Button(action: {
+                if appModel.isShowingADCVolumetric {
+                    dismissWindow(id: AppModel.WindowState.adcVolumetric.windowId)
+                } else {
+                    openWindow(id: AppModel.WindowState.adcVolumetric.windowId)
+                }
+                appModel.isShowingADCVolumetric.toggle()
+            }) {
+                Text("View in 3D")
+                    .foregroundColor(appModel.isShowingADCVolumetric ? .blue : .primary)
+            }
             .padding(.vertical)
 
             // Build Button
             Button(action: {
                 Task {
                     print("Building ADC with Color: \(selectedColor), Material: \(selectedMaterial)")
-                    // Close lab space and windows
-                    if appModel.labSpaceActive {
-                        await dismissImmersiveSpace()
-                        appModel.labSpaceActive = false
-                    }
-                    if appModel.isShowingADCVolumetric {
-                        dismissWindow(id: AppModel.WindowState.adcVolumetric.windowId)
-                        appModel.isShowingADCVolumetric = false
-                    }
-                    dismissWindow(id: AppModel.WindowState.adcBuilder.windowId)
-                    appModel.isShowingADCBuilder = false
-                    
-                    // Open attack space
-                    await openImmersiveSpace(id: AppModel.SpaceState.attack.spaceId)
-                    appModel.attackSpaceActive = true
+                    // Use AppModel's phase transition instead of directly managing spaces
+                    appModel.startAttackPhase()
                 }
             }) {
                 Text("Build")

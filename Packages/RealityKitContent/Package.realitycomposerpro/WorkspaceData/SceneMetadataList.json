@@ -293,7 +293,7 @@
         "isExpanded" : true,
         "isLocked" : false,
         "selectedAudioFilePrim" : {
-          "string" : "\/root\/Cell_Drone_Clean_1_wav"
+          "string" : "\/root\/Kill_Cell_2_wav"
         }
       },
       [
@@ -555,7 +555,9 @@
     "objectMetadataList" : [
       [
         "3C484B2E-DEF0-4302-B76F-681C274D34A5",
-        "Root"
+        "Root",
+        "cancerCell_complex",
+        "body"
       ],
       {
         "isExpanded" : true,
@@ -583,35 +585,6 @@
       [
         "3C484B2E-DEF0-4302-B76F-681C274D34A5",
         "Root",
-        "M_antigens",
-        "cancerCell_reusable"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "3C484B2E-DEF0-4302-B76F-681C274D34A5",
-        "Root",
-        "M_stems",
-        "cancerCell_reusable"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "3C484B2E-DEF0-4302-B76F-681C274D34A5",
-        "Root",
-        "M_stems"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "3C484B2E-DEF0-4302-B76F-681C274D34A5",
-        "Root",
         "cancerCell_complex",
         "_materials"
       ],
@@ -621,27 +594,7 @@
       },
       [
         "3C484B2E-DEF0-4302-B76F-681C274D34A5",
-        "Root",
-        "M_antigens"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "3C484B2E-DEF0-4302-B76F-681C274D34A5",
-        "Root",
-        "M_veins"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "3C484B2E-DEF0-4302-B76F-681C274D34A5",
-        "Root",
-        "cancerCell_complex",
-        "body"
+        "Root"
       ],
       {
         "isExpanded" : true,

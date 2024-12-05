@@ -1,10 +1,13 @@
 {
-  "advancedEditorSelectedIdentifier" : "ShaderGraphEditorPluginID",
+  "advancedEditorSelectedIdentifier" : "ProjectBrowser",
   "openSceneRelativePaths" : [
     "LabEnvironment.usda",
     "Assets\/Lab\/lab.usdc",
     "Assets\/Lab\/Objects\/microscope.usdc",
-    "IntroEnvironment.usda"
+    "IntroEnvironment.usda",
+    "ADC-spawn.usda",
+    "Assets\/CancerCell\/cancerCell_complex.usd",
+    "CancerCell-spawn.usda"
   ],
   "recentIdentifiers" : {
     "00353439-B084-4161-BDD3-58325B62FD61" : [
@@ -1104,6 +1107,28 @@
       }
     ],
     "3C484B2E-DEF0-4302-B76F-681C274D34A5" : [
+      {
+        "date" : 755046933.337482,
+        "title" : "Untitled",
+        "transform" : [
+          0.20670697,
+          -4.3451314e-09,
+          0.97840285,
+          0,
+          0.00010325759,
+          1,
+          -2.1810773e-05,
+          0,
+          -0.97840285,
+          0.00010553596,
+          0.20670702,
+          0,
+          -1.5131786,
+          0.005775701,
+          0.32358053,
+          1
+        ]
+      },
       {
         "date" : 754912459.728928,
         "title" : "Untitled",
@@ -2403,6 +2428,28 @@
     ],
     "E2AD027D-0D91-4F9B-B113-E36E1C293338" : [
       {
+        "date" : 755037556.732703,
+        "title" : "Untitled",
+        "transform" : [
+          0.9810102,
+          6.485298e-09,
+          -0.19395553,
+          0,
+          -0.09683516,
+          0.8664495,
+          -0.489784,
+          0,
+          0.16805264,
+          0.49926487,
+          0.8499958,
+          0,
+          0.05103085,
+          0.15160671,
+          0.2581097,
+          1
+        ]
+      },
+      {
         "date" : 754420037.812533,
         "title" : "Untitled",
         "transform" : [
@@ -2769,5 +2816,5 @@
   "sceneViewportBackgroundColors" : {
 
   },
-  "selectedSceneRelativePath" : "IntroEnvironment.usda"
+  "selectedSceneRelativePath" : "CancerCell-spawn.usda"
 }
