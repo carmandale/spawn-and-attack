@@ -89,30 +89,25 @@ struct AttackCancerView: View {
                                 },
                                 set: { _ in }
                             ),
-                            requiredHits: appModel.cancerCells
-                                .first(where: { cell in
-                                    cell.components[CancerCellComponent.self]?.cellID == i
-                                })?
-                                .components[CancerCellComponent.self]?
-                                .requiredHits ?? CancerCellComponent.defaultRequiredHits
+                            requiredHits: CancerCellComponent.requiredHits
                         )
                     }
                 }
             }
-            .gesture(
-                SpatialTapGesture()
-                    .targetedToAnyEntity()
-                    .onEnded { value in
-                        Task {
-                            await handleTap(on: value.entity)
-                        }
+        }
+        .gesture(
+            SpatialTapGesture()
+                .targetedToAnyEntity()
+                .onEnded { value in
+                    Task {
+                        await handleTap(on: value.entity)
                     }
-            )
-            
-            // Show CompletedView when game phase is completed
-            if appModel.gamePhase == .completed {
-                CompletedView()
-            }
+                }
+        )
+        
+        // Show CompletedView when game phase is completed
+        if appModel.gamePhase == .completed {
+            CompletedView()
         }
     }
     
