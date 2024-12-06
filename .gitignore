@@ -55,6 +55,6 @@ injected_container.swift
 *.png
 *.wav
 
-# REFERENCE_PROJECTS/
+REFERENCE_PROJECTS/
 .git.backup
 _ARCHIVE/
