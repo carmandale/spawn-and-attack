@@ -21,8 +21,8 @@ def Xform "Root"
 
             def RealityKitDict "resources"
             {
-                string[] keys = ["Pfizer_Full_Score_Piano_7.wav"]
-                rel values = </Root/Pfizer_Full_Score_Piano_7_wav>
+                string[] keys = ["PFIZER_5_wav"]
+                rel values = </Root/PFIZER_5_wav>
             }
         }
 
@@ -51,8 +51,8 @@ def Xform "Root"
 
             def Preliminary_Action "Action"
             {
-                rel affectedObjects = None
-                rel animationLibraryKey = None
+                rel affectedObjects = </Root>
+                rel animationLibraryKey = </Root/IntroMusic>
                 rel animationLibraryKeyOverrideKey = </Root/music/OnAddedToScene/Trigger>
                 token info:id = "PlayTimeline"
                 int loops = 0
@@ -69,9 +69,9 @@ def Xform "Root"
             def RealityKitAction "Play_Audio"
             {
                 string actionKind = "audio"
-                string audioResourceName = "Pfizer_Full_Score_Piano_7.wav"
+                string audioResourceName = "PFIZER_5_wav"
                 bool controlPlayback = 1
-                double duration = 301.8
+                double duration = 302.4
                 uniform token info:id = "27FED9B5-C1F8-4F43-BFDA-AD5C8FD15347"
                 double startTime = 0
                 rel target = </Root/music>
@@ -110,7 +110,7 @@ def Xform "Root"
                 prepend apiSchemas = ["MaterialBindingAPI"]
             )
             {
-                rel material:binding = </Root/M_spatial_picture_1/M_Spatial> (
+                rel material:binding = </Root/M_spatial_picture/M_Spatial_1> (
                     bindMaterialAs = "weakerThanDescendants"
                 )
             }
@@ -119,7 +119,7 @@ def Xform "Root"
                 prepend apiSchemas = ["MaterialBindingAPI"]
             )
             {
-                rel material:binding = </Root/M_spatial_picture_2/M_Spatial> (
+                rel material:binding = </Root/M_spatial_picture/M_Spatial_2> (
                     bindMaterialAs = "weakerThanDescendants"
                 )
             }
@@ -128,22 +128,31 @@ def Xform "Root"
                 prepend apiSchemas = ["MaterialBindingAPI"]
             )
             {
-                rel material:binding = </Root/M_spatial_picture_3/M_Spatial> (
+                rel material:binding = </Root/M_spatial_picture/M_Spatial_3> (
+                    bindMaterialAs = "weakerThanDescendants"
+                )
+            }
+
+            over "person_005" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                rel material:binding = </Root/M_spatial_picture/M_Spatial_4> (
                     bindMaterialAs = "weakerThanDescendants"
                 )
             }
         }
     }
 
-    def RealityKitAudioFile "Pfizer_Full_Score_Piano_7_wav"
+    def RealityKitAudioFile "PFIZER_5_wav"
     {
-        uniform asset file = @Assets/Intro/Pfizer_Full_Score_Piano_7.wav@
+        uniform asset file = @Assets/Intro/PFIZER_5.wav@
         uniform bool shouldLoop = 0
     }
 
     def "M_spatial_picture" (
         active = true
-        prepend references = @Assets/Intro/M_spatial_picture.usda@
+        prepend references = @Materials/M_spatial_picture.usda@
     )
     {
         float3 xformOp:scale = (1, 1, 1)
@@ -151,62 +160,78 @@ def Xform "Root"
 
         over "M_Spatial"
         {
+            asset inputs:Left = @Assets/Intro/textures/F2_001_Woman40s_v02.jpg@ (
+                customData = {
+                    dictionary realitykit = {
+                        float2 positionInSubgraph = (-1307.1523, -38.39453)
+                        int stackingOrderInSubgraph = 85
+                    }
+                }
+            )
+            asset inputs:Right = @Assets/Intro/textures/F2_001_Woman40s_v02.jpg@
+            float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (830.40625, 101.37109)
+            int ui:nodegraph:realitykit:subgraphOutputs:stackingOrder = 31
+
             over "Image_1"
             {
-                float2 ui:nodegraph:node:pos = (-747.44507, -4.42199)
-                int ui:nodegraph:node:stackingOrder = 29
+                float2 ui:nodegraph:node:pos = (-874.46094, 85.15234)
+                int ui:nodegraph:node:stackingOrder = 39
+            }
+
+            over "UnlitSurface"
+            {
+                bool inputs:applyPostProcessToneMap = 1
+                float inputs:opacity
+                float inputs:opacityThreshold
+                float2 ui:nodegraph:node:pos = (199.48047, 68.05859)
+                int ui:nodegraph:node:stackingOrder = 87
+            }
+
+            over "Image"
+            {
+                float2 ui:nodegraph:node:pos = (-951.53125, -151.42969)
+                int ui:nodegraph:node:stackingOrder = 37
             }
         }
-    }
 
-    def "M_spatial_picture_1" (
-        active = true
-        prepend references = @Assets/Intro/M_spatial_picture.usda@
-    )
-    {
-        float2 ui:nodegraph:node:pos = (-381.83594, -68.12109)
-        int ui:nodegraph:node:stackingOrder = 1
-        float3 xformOp:scale = (1, 1, 1)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-        over "M_Spatial"
+        def "M_Spatial_1" (
+            active = true
+            instanceable = true
+            prepend references = </Root/M_spatial_picture/M_Spatial>
+        )
         {
-            asset inputs:Left = @Assets/Intro/textures/F02_Man45s_C_v06_L.jpg@
-            asset inputs:Right = @Assets/Intro/textures/F02_Man45s_C_v06_R.jpg@
+            asset inputs:Left = @Assets/Intro/textures/F2_002_AfricanAmerican_Man_v01.jpg@
+            asset inputs:Right = @Assets/Intro/textures/F2_002_AfricanAmerican_Man_v01.jpg@
         }
-    }
 
-    def "M_spatial_picture_2" (
-        active = true
-        prepend references = @Assets/Intro/M_spatial_picture.usda@
-    )
-    {
-        float2 ui:nodegraph:node:pos = (-361.83594, -48.121094)
-        int ui:nodegraph:node:stackingOrder = 2
-        float3 xformOp:scale = (1, 1, 1)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-        over "M_Spatial"
+        def "M_Spatial_2" (
+            active = true
+            instanceable = true
+            prepend references = </Root/M_spatial_picture/M_Spatial>
+        )
         {
-            asset inputs:Left = @Assets/Intro/textures/F03_WomanYoungMother_G_v04_L.jpg@
-            asset inputs:Right = @Assets/Intro/textures/F03_WomanYoungMother_G_v04_R.jpg@
+            asset inputs:Left = @Assets/Intro/textures/F2_005_ElderlyWoman_v02.jpg@
+            asset inputs:Right = @Assets/Intro/textures/F2_005_ElderlyWoman_v02.jpg@
         }
-    }
 
-    def "M_spatial_picture_3" (
-        active = true
-        prepend references = @Assets/Intro/M_spatial_picture.usda@
-    )
-    {
-        float2 ui:nodegraph:node:pos = (-341.83594, -28.121094)
-        int ui:nodegraph:node:stackingOrder = 3
-        float3 xformOp:scale = (1, 1, 1)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-        over "M_Spatial"
+        def "M_Spatial_3" (
+            active = true
+            instanceable = true
+            prepend references = </Root/M_spatial_picture/M_Spatial>
+        )
         {
-            asset inputs:Left = @Assets/Intro/textures/F05_ElderlyWoman_70s_v03_L.jpg@
-            asset inputs:Right = @Assets/Intro/textures/F05_ElderlyWoman_70s_v03_R.jpg@
+            asset inputs:Left = @Assets/Intro/textures/F2_012_AfricanAmerican_Woman_v01.jpg@
+            asset inputs:Right = @Assets/Intro/textures/F2_012_AfricanAmerican_Woman_v01.jpg@
+        }
+
+        def "M_Spatial_4" (
+            active = true
+            instanceable = true
+            prepend references = </Root/M_spatial_picture/M_Spatial>
+        )
+        {
+            asset inputs:Left = @Assets/Intro/textures/CP_11_middleAge_AsianWoman_v01 copy.jpg@
+            asset inputs:Right = None
         }
     }
 }

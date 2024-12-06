@@ -37,7 +37,7 @@ struct HitCounterView: View {
             }
             .frame(width: 160, height: 160)
             .padding(30)
-            .glassBackgroundEffect() // visionOS glass effect
+            // .glassBackgroundEffect() // visionOS glass effect
         }
     }
 }

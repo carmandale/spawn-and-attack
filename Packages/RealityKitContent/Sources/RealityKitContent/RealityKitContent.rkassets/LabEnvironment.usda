@@ -10,7 +10,7 @@
 
 def Xform "Root"
 {
-    reorder nameChildren = ["Lab_audio", "RCP_BehaviorsContainer", "OnAddedToScene", "SkySphere", "AudioMixGroups", "AUDIO_26", "AUDIO_25", "AUDIO_transforms", "lab", "MicroscopeViewer", "Microscope"]
+    reorder nameChildren = ["Lab_audio", "RCP_BehaviorsContainer", "OnAddedToScene", "SkySphere", "AudioMixGroups", "lab", "MicroscopeViewer", "Microscope", "Sonic_Pulse_Hit_01_wav", "LabAudio", "People"]
     def RealityKitTimeline "Lab_audio"
     {
         reorder nameChildren = ["Track2", "Track", "Track3", "Track4", "Track5", "Track6", "Track7", "Track8", "Track9"]
@@ -476,6 +476,436 @@ def Xform "Root"
     {
         uniform asset file = @Audio/Sonic_Pulse_Hit_01.wav@
         uniform bool shouldLoop = 0
+    }
+
+    def "LabAudio" (
+        active = true
+        references = @LabAudio.usda@
+    )
+    {
+        float3 xformOp:scale = (1, 1, 1)
+    }
+
+    def "people" (
+        active = true
+        customData = {
+            float3 rotationEulerHint = (-1.5707964, 0, 0)
+        }
+        prepend references = @Assets/Lab/People/people.usdc@
+    )
+    {
+        quatf xformOp:orient = (0.70710677, -0.70710677, 0, 0)
+        float3 xformOp:scale = (1, 1, 1)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        over "South"
+        {
+            over "Plane_015"
+            {
+                quatf xformOp:orient = (-1.3315805e-7, 0, 0, 1)
+                float3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (-1.4261304140090942, -7.186245918273926, -3.157481742732671e-8)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            over "Plane_014"
+            {
+                quatf xformOp:orient = (-1.3315805e-7, 0, 0, 1)
+                float3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (3.120102643966675, -3.819206953048706, 2.27213206471788e-7)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            over "Plane_010"
+            {
+                quatf xformOp:orient = (-1.3315805e-7, 0, 0, 1)
+                float3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (1.7215224504470825, -4.864711284637451, 2.73552444696179e-7)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            over "Plane_019"
+            {
+                quatf xformOp:orient = (-1.3315805e-7, 0, 0, 1)
+                float3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (1.2014553546905518, -5.0897440910339355, 2.1668050464995758e-7)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            over "transform1" (
+                customData = {
+                    float3 rotationEulerHint = (2.7330633e-14, 6.8833675e-15, -3.1415925)
+                }
+            )
+            {
+                quatf xformOp:orient = (-7.54979e-8, -3.4416848e-15, 1.3665316e-14, 1)
+                float3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (0.7779712677001953, -4.155294895172119, -5.960464477539063e-8)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                over "person1"
+                {
+                    def RealityKitComponent "Billboard"
+                    {
+                        float blendFactor = 0
+                        uniform token info:id = "RealityKit.Billboard"
+                    }
+                }
+            }
+
+            over "transform2"
+            {
+                over "person2"
+                {
+                    def RealityKitComponent "Billboard"
+                    {
+                        float blendFactor = 0
+                        uniform token info:id = "RealityKit.Billboard"
+                    }
+                }
+            }
+
+            over "transform3"
+            {
+                over "person3"
+                {
+                    def RealityKitComponent "Billboard"
+                    {
+                        float blendFactor = 0
+                        uniform token info:id = "RealityKit.Billboard"
+                    }
+                }
+            }
+
+            over "transform4"
+            {
+                over "person4"
+                {
+                    def RealityKitComponent "Billboard"
+                    {
+                        float blendFactor = 0
+                        uniform token info:id = "RealityKit.Billboard"
+                    }
+                }
+            }
+
+            over "transform5"
+            {
+                over "person5"
+                {
+                    def RealityKitComponent "Billboard"
+                    {
+                        float blendFactor = 0
+                        uniform token info:id = "RealityKit.Billboard"
+                    }
+                }
+            }
+
+            over "transform6"
+            {
+                over "person6"
+                {
+                    def RealityKitComponent "Billboard"
+                    {
+                        float blendFactor = 0
+                        uniform token info:id = "RealityKit.Billboard"
+                    }
+                }
+            }
+
+            over "transform7"
+            {
+                over "person7"
+                {
+                    def RealityKitComponent "Billboard"
+                    {
+                        float blendFactor = 0
+                        uniform token info:id = "RealityKit.Billboard"
+                    }
+                }
+            }
+
+            over "transform8"
+            {
+                over "person8"
+                {
+                    def RealityKitComponent "Billboard"
+                    {
+                        float blendFactor = 0
+                        uniform token info:id = "RealityKit.Billboard"
+                    }
+                }
+            }
+
+            over "transform9"
+            {
+                over "person9"
+                {
+                    def RealityKitComponent "Billboard"
+                    {
+                        float blendFactor = 0
+                        uniform token info:id = "RealityKit.Billboard"
+                    }
+                }
+            }
+
+            over "transform10"
+            {
+                over "person10"
+                {
+                    def RealityKitComponent "Billboard"
+                    {
+                        float blendFactor = 0
+                        uniform token info:id = "RealityKit.Billboard"
+                    }
+                }
+            }
+        }
+
+        over "North"
+        {
+            over "Plane_003"
+            {
+                quatf xformOp:orient = (1, 0, 0, 0)
+                float3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (0.44731563329696655, 2.2712957859039307, 6.466575719343837e-9)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            over "Plane_001"
+            {
+                quatf xformOp:orient = (1, 0, 0, 0)
+                float3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (-3.4204134941101074, 7.449886322021484, 1.9510738979988673e-7)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            over "Plane_008"
+            {
+                quatf xformOp:orient = (1, 0, 0, 0)
+                float3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (-2.389204740524292, 6.023715019226074, -5.768124822225218e-8)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                over "Plane_009" (
+                    customData = {
+                        float3 rotationEulerHint = (0, 0, 0)
+                    }
+                )
+                {
+                    quatf xformOp:orient = (1, 0, 0, 0)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                }
+            }
+
+            over "transform11"
+            {
+                over "person11"
+                {
+                    def RealityKitComponent "Billboard"
+                    {
+                        float blendFactor = 0
+                        uniform token info:id = "RealityKit.Billboard"
+                    }
+                }
+            }
+
+            over "transform12"
+            {
+                over "person12"
+                {
+                    def RealityKitComponent "Billboard"
+                    {
+                        float blendFactor = 0
+                        uniform token info:id = "RealityKit.Billboard"
+                    }
+                }
+            }
+
+            over "transform13"
+            {
+                quatf xformOp:orient = (1, 0, 0, 0)
+                float3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (-2.367677688598633, 7.414694309234619, 0)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                over "person13"
+                {
+                    def RealityKitComponent "Billboard"
+                    {
+                        float blendFactor = 0
+                        uniform token info:id = "RealityKit.Billboard"
+                    }
+                }
+            }
+
+            over "transform14"
+            {
+                over "person14"
+                {
+                    def RealityKitComponent "Billboard"
+                    {
+                        float blendFactor = 0
+                        uniform token info:id = "RealityKit.Billboard"
+                    }
+                }
+            }
+
+            over "transform15"
+            {
+                over "person15"
+                {
+                    def RealityKitComponent "Billboard"
+                    {
+                        float blendFactor = 0
+                        uniform token info:id = "RealityKit.Billboard"
+                    }
+                }
+            }
+
+            over "transform16"
+            {
+                over "person16"
+                {
+                    def RealityKitComponent "Billboard"
+                    {
+                        float blendFactor = 0
+                        uniform token info:id = "RealityKit.Billboard"
+                    }
+                }
+            }
+
+            over "transform17"
+            {
+                over "person17"
+                {
+                    def RealityKitComponent "Billboard"
+                    {
+                        float blendFactor = 0
+                        uniform token info:id = "RealityKit.Billboard"
+                    }
+                }
+            }
+
+            over "transform18"
+            {
+                over "person18"
+                {
+                    def RealityKitComponent "Billboard"
+                    {
+                        float blendFactor = 0
+                        uniform token info:id = "RealityKit.Billboard"
+                    }
+                }
+            }
+
+            over "transform19"
+            {
+                over "person19"
+                {
+                    def RealityKitComponent "Billboard"
+                    {
+                        float blendFactor = 0
+                        uniform token info:id = "RealityKit.Billboard"
+                    }
+                }
+            }
+
+            over "transform20"
+            {
+                over "person20"
+                {
+                    def RealityKitComponent "Billboard"
+                    {
+                        float blendFactor = 0
+                        uniform token info:id = "RealityKit.Billboard"
+                    }
+                }
+            }
+        }
+
+        over "_materials"
+        {
+            over "M_people"
+            {
+                token cullMode = "unspecified" (
+                    allowedTokens = ["unspecified", "none", "front", "back"]
+                )
+            }
+
+            over "M_people_1"
+            {
+                token cullMode = "unspecified" (
+                    allowedTokens = ["unspecified", "none", "front", "back"]
+                )
+            }
+
+            over "M_people_2"
+            {
+                token cullMode = "unspecified" (
+                    allowedTokens = ["unspecified", "none", "front", "back"]
+                )
+            }
+
+            over "M_people_3"
+            {
+                token cullMode = "unspecified" (
+                    allowedTokens = ["unspecified", "none", "front", "back"]
+                )
+            }
+
+            over "M_people_4"
+            {
+                token cullMode = "unspecified" (
+                    allowedTokens = ["unspecified", "none", "front", "back"]
+                )
+            }
+
+            over "M_people_5"
+            {
+                token cullMode = "unspecified" (
+                    allowedTokens = ["unspecified", "none", "front", "back"]
+                )
+            }
+
+            over "M_people_6"
+            {
+                token cullMode = "unspecified" (
+                    allowedTokens = ["unspecified", "none", "front", "back"]
+                )
+            }
+
+            over "M_people_7"
+            {
+                token cullMode = "unspecified" (
+                    allowedTokens = ["unspecified", "none", "front", "back"]
+                )
+            }
+
+            over "M_people_8"
+            {
+                token cullMode = "unspecified" (
+                    allowedTokens = ["unspecified", "none", "front", "back"]
+                )
+            }
+
+            over "M_people_9"
+            {
+                token cullMode = "unspecified" (
+                    allowedTokens = ["unspecified", "none", "front", "back"]
+                )
+            }
+        }
+
+        over "N_Model_Sorting_Group"
+        {
+            token depthPass = "postPass"
+        }
+
+        over "S_Model_Sorting_Group"
+        {
+            token depthPass = "postPass"
+        }
     }
 }
 

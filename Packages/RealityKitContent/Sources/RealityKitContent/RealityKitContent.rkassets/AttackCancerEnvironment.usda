@@ -9,7 +9,7 @@ reorder rootPrims = ["Root", "GridMaterial"]
 
 def Xform "Root"
 {
-    reorder nameChildren = ["Left", "Right", "Front_Right_Upper", "Front_Left_Upper", "Rear_Left", "Rear_Right", "Ambience_1_cm_L_wav", "Ambience_1_cm_R_wav", "Ambience_2_cm_L_wav", "Ambience_2_cm_R_wav", "Front_Right_Lower", "Front_Left_Lower", "BloodVesselAudio"]
+    reorder nameChildren = ["Left", "Right", "Front_Right_Upper", "Front_Left_Upper", "Rear_Left", "Rear_Right", "Ambience_1_cm_L_wav", "Ambience_1_cm_R_wav", "Ambience_2_cm_L_wav", "Ambience_2_cm_R_wav", "Front_Right_Lower", "Front_Left_Lower", "Ambience_3_cm_L_wav", "Ambience_3_cm_R_wav", "Heartbeat_cm_L_wav", "Heartbeat_cm_R_wav", "BloodVesselAudio", "RCP_BehaviorsContainer", "OnAddedToScene", "bloodVessel_v004_clean", "right", "left", "top", "bottom", "player", "front", "back"]
     rel material:binding = None (
         bindMaterialAs = "weakerThanDescendants"
     )
@@ -40,6 +40,7 @@ def Xform "Root"
         {
             float directivityFocus = 0
             uniform token info:id = "RealityKit.SpatialAudio"
+            float rolloffFactor = 0
         }
     }
 
@@ -475,6 +476,476 @@ def Xform "Root"
             int loops = 0
             int performCount = 1
             token type = "serial"
+        }
+    }
+
+    def "bloodVessel_v004_clean" (
+        active = true
+        customData = {
+            float3 rotationEulerHint = (-1.5707964, 0, 0)
+        }
+        references = @Assets/Blood Vessel/bloodVessel_v004_clean.usdc@
+    )
+    {
+        float2 ui:nodegraph:node:pos = (20, 20)
+        int ui:nodegraph:node:stackingOrder = 1
+        quatf xformOp:orient = (0.70710677, -0.70710677, 0, 0)
+        float3 xformOp:scale = (4, 4, 4)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+    }
+
+    def Cube "right" (
+        active = true
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        reorder nameChildren = ["M_wall", "Collider", "RealityKitContent_BloodVesselWallComponent"]
+        rel material:binding = </Root/right/M_wall>
+        double size = 4
+        float3 xformOp:scale = (0.7796878, 2, 5)
+        float3 xformOp:translate = (5.7153263, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def Material "M_wall"
+        {
+            token outputs:mtlx:surface
+            token outputs:realitykit:vertex
+            token outputs:surface.connect = </Root/right/M_wall/DefaultSurfaceShader.outputs:surface>
+
+            def Shader "DefaultSurfaceShader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (1, 1, 1)
+                float inputs:opacity = 0
+                float inputs:opacityThreshold = 0.5
+                float inputs:roughness = 1
+                token outputs:surface
+            }
+        }
+
+        def RealityKitComponent "Collider"
+        {
+            uint group = 1
+            uniform token info:id = "RealityKit.Collider"
+            uint mask = 4294967295
+            token type = "Default"
+
+            def RealityKitStruct "Shape"
+            {
+                float3 extent = (4, 5, 5)
+                float height = 4
+                float radius = 2
+                token shapeType = "Box"
+
+                def RealityKitStruct "pose"
+                {
+                }
+            }
+        }
+
+        def RealityKitCustomComponent "RealityKitContent_BloodVesselWallComponent"
+        {
+            uniform token info:id = "RealityKitContent.BloodVesselWallComponent"
+        }
+
+        def RealityKitComponent "RigidBody"
+        {
+            bool gravityEnabled = 0
+            uniform token info:id = "RealityKit.RigidBody"
+            token motionType = "Static"
+
+            def RealityKitStruct "massFrame"
+            {
+                def RealityKitStruct "m_pose"
+                {
+                }
+            }
+
+            def RealityKitStruct "material"
+            {
+            }
+        }
+    }
+
+    def Cube "left" (
+        active = true
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        rel material:binding = </Root/right/M_wall> (
+            bindMaterialAs = "weakerThanDescendants"
+        )
+        double size = 4
+        float2 ui:nodegraph:node:pos = (20, 20)
+        int ui:nodegraph:node:stackingOrder = 1
+        quatf xformOp:orient = (1, 0, 0, 0)
+        float3 xformOp:scale = (0.7796878, 2, 5)
+        float3 xformOp:translate = (-5.156196, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def RealityKitComponent "Collider"
+        {
+            uint group = 1
+            uniform token info:id = "RealityKit.Collider"
+            uint mask = 4294967295
+            token type = "Default"
+
+            def RealityKitStruct "Shape"
+            {
+                float3 extent = (4, 5, 5)
+                float height = 4
+                float radius = 2
+                token shapeType = "Box"
+
+                def RealityKitStruct "pose"
+                {
+                }
+            }
+        }
+
+        def RealityKitCustomComponent "RealityKitContent_BloodVesselWallComponent"
+        {
+            uniform token info:id = "RealityKitContent.BloodVesselWallComponent"
+        }
+
+        def RealityKitComponent "RigidBody"
+        {
+            bool gravityEnabled = 0
+            uniform token info:id = "RealityKit.RigidBody"
+            token motionType = "Static"
+
+            def RealityKitStruct "massFrame"
+            {
+                def RealityKitStruct "m_pose"
+                {
+                }
+            }
+
+            def RealityKitStruct "material"
+            {
+            }
+        }
+    }
+
+    def Cube "top" (
+        active = true
+        prepend apiSchemas = ["MaterialBindingAPI"]
+        customData = {
+            float3 rotationEulerHint = (0, 0, -1.5643739)
+        }
+    )
+    {
+        rel material:binding = </Root/right/M_wall> (
+            bindMaterialAs = "weakerThanDescendants"
+        )
+        double size = 4
+        float2 ui:nodegraph:node:pos = (40, 40)
+        int ui:nodegraph:node:stackingOrder = 2
+        quatf xformOp:orient = (0.70937383, 0, 0, -0.70483243)
+        float3 xformOp:scale = (1, 4, 5)
+        float3 xformOp:translate = (0.59540546, 4.980757, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def RealityKitComponent "Collider"
+        {
+            uint group = 1
+            uniform token info:id = "RealityKit.Collider"
+            uint mask = 4294967295
+            token type = "Default"
+
+            def RealityKitStruct "Shape"
+            {
+                float3 extent = (4, 5, 5)
+                float height = 4
+                float radius = 2
+                token shapeType = "Box"
+
+                def RealityKitStruct "pose"
+                {
+                }
+            }
+        }
+
+        def RealityKitCustomComponent "RealityKitContent_BloodVesselWallComponent"
+        {
+            uniform token info:id = "RealityKitContent.BloodVesselWallComponent"
+        }
+
+        def RealityKitComponent "RigidBody"
+        {
+            bool gravityEnabled = 0
+            uniform token info:id = "RealityKit.RigidBody"
+            token motionType = "Static"
+
+            def RealityKitStruct "massFrame"
+            {
+                def RealityKitStruct "m_pose"
+                {
+                }
+            }
+
+            def RealityKitStruct "material"
+            {
+            }
+        }
+    }
+
+    def Cube "bottom" (
+        active = true
+        prepend apiSchemas = ["MaterialBindingAPI"]
+        customData = {
+            float3 rotationEulerHint = (0, 0, -1.5643739)
+        }
+    )
+    {
+        rel material:binding = </Root/right/M_wall> (
+            bindMaterialAs = "weakerThanDescendants"
+        )
+        double size = 4
+        float2 ui:nodegraph:node:pos = (60, 60)
+        int ui:nodegraph:node:stackingOrder = 3
+        quatf xformOp:orient = (0.70937383, 0, 0, -0.70483243)
+        float3 xformOp:scale = (1, 4, 5)
+        float3 xformOp:translate = (0.6647155, -5.810588, 0.0000019073486)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def RealityKitComponent "Collider"
+        {
+            uint group = 1
+            uniform token info:id = "RealityKit.Collider"
+            uint mask = 4294967295
+            token type = "Default"
+
+            def RealityKitStruct "Shape"
+            {
+                float3 extent = (4, 5, 5)
+                float height = 4
+                float radius = 2
+                token shapeType = "Box"
+
+                def RealityKitStruct "pose"
+                {
+                }
+            }
+        }
+
+        def RealityKitCustomComponent "RealityKitContent_BloodVesselWallComponent"
+        {
+            uniform token info:id = "RealityKitContent.BloodVesselWallComponent"
+        }
+
+        def RealityKitComponent "RigidBody"
+        {
+            bool gravityEnabled = 0
+            uniform token info:id = "RealityKit.RigidBody"
+            token motionType = "Static"
+
+            def RealityKitStruct "massFrame"
+            {
+                def RealityKitStruct "m_pose"
+                {
+                }
+            }
+
+            def RealityKitStruct "material"
+            {
+            }
+        }
+    }
+
+    def Capsule "player" (
+        active = true
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Y"
+        double height = 2
+        rel material:binding = </Root/player/M_player>
+        double radius = 0.7
+
+        def Material "M_player"
+        {
+            token outputs:mtlx:surface
+            token outputs:realitykit:vertex
+            token outputs:surface.connect = </Root/player/M_player/DefaultSurfaceShader.outputs:surface>
+
+            def Shader "DefaultSurfaceShader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (1, 1, 1)
+                float inputs:opacity = 0
+                float inputs:opacityThreshold = 0.5
+                float inputs:roughness = 0
+                token outputs:surface
+            }
+        }
+
+        def RealityKitComponent "Collider"
+        {
+            uint group = 1
+            uniform token info:id = "RealityKit.Collider"
+            uint mask = 4294967295
+            token type = "Default"
+
+            def RealityKitStruct "Shape"
+            {
+                float3 extent = (2, 4, 2)
+                token shapeType = "Box"
+
+                def RealityKitStruct "pose"
+                {
+                    float3 position = (0, 0, -5.9604645e-8)
+                }
+            }
+        }
+
+        def RealityKitCustomComponent "RealityKitContent_BloodVesselWallComponent"
+        {
+            uniform token info:id = "RealityKitContent.BloodVesselWallComponent"
+        }
+
+        def RealityKitComponent "RigidBody"
+        {
+            bool gravityEnabled = 0
+            uniform token info:id = "RealityKit.RigidBody"
+            token motionType = "Static"
+
+            def RealityKitStruct "massFrame"
+            {
+                def RealityKitStruct "m_pose"
+                {
+                }
+            }
+
+            def RealityKitStruct "material"
+            {
+            }
+        }
+    }
+
+    def Cube "front" (
+        active = true
+        prepend apiSchemas = ["MaterialBindingAPI"]
+        customData = {
+            float3 rotationEulerHint = (1.5584964, 1.5707963, 0)
+        }
+    )
+    {
+        rel material:binding = </Root/right/M_wall> (
+            bindMaterialAs = "weakerThanDescendants"
+        )
+        double size = 4
+        float2 ui:nodegraph:node:pos = (60, 60)
+        int ui:nodegraph:node:stackingOrder = 3
+        quatf xformOp:orient = (0.503075, 0.49692497, 0.5001268, -0.49985433)
+        float3 xformOp:scale = (1, 4, 5)
+        float3 xformOp:translate = (0.6319224, -0.700407, 11.899526)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def RealityKitComponent "Collider"
+        {
+            uint group = 1
+            uniform token info:id = "RealityKit.Collider"
+            uint mask = 4294967295
+            token type = "Default"
+
+            def RealityKitStruct "Shape"
+            {
+                float3 extent = (4, 5, 5)
+                float height = 4
+                float radius = 2
+                token shapeType = "Box"
+
+                def RealityKitStruct "pose"
+                {
+                }
+            }
+        }
+
+        def RealityKitCustomComponent "RealityKitContent_BloodVesselWallComponent"
+        {
+            uniform token info:id = "RealityKitContent.BloodVesselWallComponent"
+        }
+
+        def RealityKitComponent "RigidBody"
+        {
+            bool gravityEnabled = 0
+            uniform token info:id = "RealityKit.RigidBody"
+            token motionType = "Static"
+
+            def RealityKitStruct "massFrame"
+            {
+                def RealityKitStruct "m_pose"
+                {
+                }
+            }
+
+            def RealityKitStruct "material"
+            {
+            }
+        }
+    }
+
+    def Cube "back" (
+        active = true
+        prepend apiSchemas = ["MaterialBindingAPI"]
+        customData = {
+            float3 rotationEulerHint = (1.5584964, 1.5707963, 0)
+        }
+    )
+    {
+        rel material:binding = </Root/right/M_wall> (
+            bindMaterialAs = "weakerThanDescendants"
+        )
+        double size = 4
+        float2 ui:nodegraph:node:pos = (80, 80)
+        int ui:nodegraph:node:stackingOrder = 4
+        quatf xformOp:orient = (0.503075, 0.49692485, 0.5001268, -0.49985436)
+        float3 xformOp:scale = (0.9999998, 3.9999988, 4.9999995)
+        float3 xformOp:translate = (0.63281405, -0.8400459, -11.858301)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def RealityKitComponent "Collider"
+        {
+            uint group = 1
+            uniform token info:id = "RealityKit.Collider"
+            uint mask = 4294967295
+            token type = "Default"
+
+            def RealityKitStruct "Shape"
+            {
+                float3 extent = (4, 5, 5)
+                float height = 4
+                float radius = 2
+                token shapeType = "Box"
+
+                def RealityKitStruct "pose"
+                {
+                }
+            }
+        }
+
+        def RealityKitCustomComponent "RealityKitContent_BloodVesselWallComponent"
+        {
+            uniform token info:id = "RealityKitContent.BloodVesselWallComponent"
+        }
+
+        def RealityKitComponent "RigidBody"
+        {
+            bool gravityEnabled = 0
+            uniform token info:id = "RealityKit.RigidBody"
+            token motionType = "Static"
+
+            def RealityKitStruct "massFrame"
+            {
+                def RealityKitStruct "m_pose"
+                {
+                }
+            }
+
+            def RealityKitStruct "material"
+            {
+            }
         }
     }
 }

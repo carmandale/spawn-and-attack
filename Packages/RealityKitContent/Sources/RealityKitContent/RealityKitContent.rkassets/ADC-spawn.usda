@@ -15,7 +15,7 @@ def Xform "Root"
         prepend references = @Assets/ADC/antibodyProtein_complex.usdc@
     )
     {
-        float3 xformOp:scale = (0.5, 0.5, 0.5)
+        float3 xformOp:scale = (1, 1, 1)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
         over "RigidBody"
@@ -54,7 +54,7 @@ def Xform "Root"
     def RealityKitComponent "SpatialAudio"
     {
         uniform token info:id = "RealityKit.SpatialAudio"
-        float rolloffFactor = 0
+        float rolloffFactor = 1
     }
 
     def RealityKitAudioFile "Drones_01_wav"

@@ -23,8 +23,14 @@ struct LabView: View {
     // Store subscription to prevent deallocation
     @State private var subscription: EventSubscription?
     
+    // Hand tracking for debug window
+//    @State var handTrackedEntity: Entity = {
+//        let handAnchor = AnchorEntity(.hand(.left, location: .aboveHand))
+//        return handAnchor
+//    }()
+    
     var body: some View {
-        RealityView { content in
+        RealityView { content, attachments in
             do {     
                 // Create lab root
                 let root = Entity()
@@ -41,6 +47,13 @@ struct LabView: View {
                 content.add(labRoot)
                 content.add(headAnchor)
                 
+                // Add hand tracked debug window
+//                content.add(handTrackedEntity)
+//                if let attachmentEntity = attachments.entity(for: "DebugNavigation") {
+////                    attachmentEntity.components[BillboardComponent.self] = .init()
+//                    handTrackedEntity.addChild(attachmentEntity)
+//                }
+                
                 // Setup collision tracking separately
                 let collisionEntity = headTracker.setupCollisionTracking()
                 let collisionRoot = Entity()
@@ -52,25 +65,6 @@ struct LabView: View {
                 collisionRoot.addChild(collisionEntity)
                 content.add(collisionRoot)
                 
-                // First set up the microscope collision
-//                if let microscopeViewer = root.findEntity(named: "MicroscopeViewer") as? ModelEntity {
-//                    microscopeViewer.collision = CollisionComponent(
-//                        shapes: [.generateSphere(radius: 0.1)],
-//                        mode: .default,
-//                        filter: CollisionFilter(
-//                            group: CollisionGroup(rawValue: 1),
-//                            mask: .all
-//                        )
-//                    )
-//                    
-//                    let physicsBody = PhysicsBodyComponent(
-//                        shapes: [.generateSphere(radius: 0.1)],
-//                        mass: 1.0,
-//                        mode: .static
-//                    )
-//                    microscopeViewer.components.set(physicsBody)
-//                }
-                
                 // Then subscribe to collision events
                 subscription = content.subscribe(to: CollisionEvents.Began.self) { [weak appModel] event in
                     appModel?.handleCollisionBegan(event)
@@ -79,9 +73,12 @@ struct LabView: View {
             } catch {
                 print("Failed to load lab environment: \(error)")
             }
-        } update: { content in
-            // Update head collision position
-            // headTracker.updateHeadPosition()
+        } update: { content, attachments in
+            // Update content
+        } attachments: {
+            Attachment(id: "DebugNavigation") {
+                DebugNavigationWindow()
+            }
         }
         .installGestures()
         .task {
@@ -112,5 +109,3 @@ struct LabView: View {
         }
     }
 }
-
-

@@ -110,6 +110,7 @@ struct BuildADCView: View {
 
             Spacer()
         }
+        .frame(width: 200, height: 400)
         .padding()
         .onChange(of: appModel.labSpaceActive) {
             if !appModel.labSpaceActive {

@@ -17,8 +17,8 @@ extension AssetLoadingManager {
         let labAssets = [
             "autoclave", "beaker", "beaker_tall", "bin", "bottle_liquid",
             "bottle_pill", "bottle_square", "bottle_squat", "centrifuge",
-            "chair", "deskShelf_double", "deskShelf_single", "desktopPC",
-            "dish", "dryingRack", "flask_conical", "flask_conical_lg",
+            "chair", "deskShelf_double", "deskShelf_single", 
+            "dryingRack", "flask_conical", "flask_conical_lg",
             "flask_flatBottom", "flask_flatBottom_lg", "flask_volumetric",
             "flask_volumetric_lg", "fridge_sm", "glovesBox_A", "glovesBox_B",
             "jar_pill", "jar_pill_sm", "laptop", "mettlerBalance",

@@ -133,7 +133,7 @@ def Xform "Root"
 
             over "displace"
             {
-                float inputs:speed = 20
+                float inputs:speed = 2
                 float inputs:X = 80000
                 float inputs:Z = 100000
             }

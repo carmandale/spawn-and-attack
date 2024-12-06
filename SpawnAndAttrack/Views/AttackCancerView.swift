@@ -6,7 +6,6 @@ struct AttackCancerView: View {
     @Environment(AppModel.self) private var appModel
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.realityKitScene) private var scene
-    private let cellCount = 10
     
     // Store entities
     @State private var rootEntity: Entity?
@@ -21,12 +20,34 @@ struct AttackCancerView: View {
             let root = Entity()
             content.add(root)
             rootEntity = root
+
+            // Add Image-Based Lighting
+            do {
+                try await IBLUtility.addImageBasedLighting(to: root, imageName: "metro_noord_2k")
+            } catch {
+                print("Failed to setup IBL: \(error)")
+            }
             
             // Load Attack Cancer Environment from pre-loaded assets
             if let attackCancerScene = await appModel.assetLoadingManager.instantiateEntity("attack_cancer_environment") {
                 print("\n=== Loading Attack Cancer Environment ===")
                 appModel.assetLoadingManager.inspectEntityHierarchy(attackCancerScene)
                 root.addChild(attackCancerScene)
+
+                if let scene = attackCancerScene.scene {
+                    let query = EntityQuery(where: .has(BloodVesselWallComponent.self))
+                    let objectsToModify = scene.performQuery(query)
+                    
+                    for object in objectsToModify {
+                        if var collision = object.components[CollisionComponent.self] {
+                            collision.filter.group = .cancerCell
+                            collision.filter.mask = .adc
+                            object.components[CollisionComponent.self] = collision
+                        }
+                    }
+                }
+
+
             } else {
                 print("Failed to load AttackCancerEnvironment from asset manager")
             }
@@ -49,11 +70,9 @@ struct AttackCancerView: View {
                 print("\n=== Cancer Cell Template ===")
                 appModel.assetLoadingManager.inspectEntityHierarchy(cancerCellTemplate)
                 
-                // Spawn cancer cells
-                spawnCancerCells(in: root, from: cancerCellTemplate, count: cellCount)
+                spawnCancerCells(in: root, from: cancerCellTemplate, count: appModel.maxCancerCells)
                 
-                // Add UI attachments to each cancer cell
-                for i in 0..<cellCount {
+                for i in 0..<appModel.maxCancerCells {
                     if let meter = attachments.entity(for: "\(i)"),
                        let root = rootEntity,
                        root.findEntity(named: "cancer_cell_\(i)") != nil {
@@ -64,7 +83,7 @@ struct AttackCancerView: View {
                         meter.components[UIAttachmentComponent.self] = uiAttachment
                         
                         // Add BillboardComponent to make the hit counter face the camera
-                        meter.components.set(RealityKitContent.BillboardComponent())
+                        meter.components.set(BillboardComponent())
                     }
                 }
             }
@@ -74,7 +93,7 @@ struct AttackCancerView: View {
                 appModel?.handleCollisionBegan(event)
             }
         } attachments: {
-            ForEach(0..<cellCount, id: \.self) { i in
+            ForEach(0..<appModel.maxCancerCells, id: \.self) { i in
                 Attachment(id: "\(i)") {
                     HitCounterView(hits: Binding(
                         get: {

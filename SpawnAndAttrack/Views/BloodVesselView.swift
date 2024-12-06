@@ -18,9 +18,18 @@ struct BloodVesselView: View {
     
     var body: some View {
         RealityView { content in
-            if let immersiveContentEntity = try? await Entity(named: "BloodVesselScene", in: realityKitContentBundle) {
-                content.add(immersiveContentEntity)
-            }
+            // if let immersiveContentEntity = try? await Entity(named: "BloodCellEnvironment", in: realityKitContentBundle) {
+            //     content.add(immersiveContentEntity)
+            // }
+            
+           if let bloodCellEnvironmentEntity = await appModel.assetLoadingManager.instantiateEntity("blood_cell_environment") {
+               content.add(bloodCellEnvironmentEntity)
+           } else {
+               print("Failed to load blood_cell_environment from asset manager")
+           }
+        } update: { content in
+            
         }
+        .installGestures()
     }
 }

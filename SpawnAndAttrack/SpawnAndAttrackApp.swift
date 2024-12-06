@@ -22,11 +22,12 @@ struct SpawnAndAttrackApp: App {
         RealityKitContent.MovementComponent.registerComponent()
         RealityKitContent.UIAttachmentComponent.registerComponent()
         RealityKitContent.ADCComponent.registerComponent()
-        RealityKitContent.BillboardComponent.registerComponent()
+        // RealityKitContent.BillboardComponent.registerComponent()
         RealityKitContent.BreathingComponent.registerComponent()
         RealityKitContent.CellPhysicsComponent.registerComponent()
         RealityKitContent.MicroscopeViewerComponent.registerComponent()
         RealityKitContent.GestureComponent.registerComponent()
+//        BillboardComponent.registerComponent()
         
         /// Register systems
         RealityKitContent.AttachmentSystem.registerSystem()
@@ -36,10 +37,14 @@ struct SpawnAndAttrackApp: App {
         RealityKitContent.UIAttachmentSystem.registerSystem()
         RealityKitContent.ADCMovementSystem.registerSystem()
         RealityKitContent.UIStabilizerSystem.registerSystem()
-        RealityKitContent.BillboardSystem.registerSystem()
+        // RealityKitContent.BillboardSystem.registerSystem()
         
         // Add ClosureSystem registration
         ClosureSystem.registerSystem()
+        
+        // Add BillboardSystem registration
+//        BillboardSystem.registerSystem()
+        
     }
     
     let heightModifier: CGFloat = 0.25
@@ -64,6 +69,12 @@ struct SpawnAndAttrackApp: App {
         WindowGroup(id: AppModel.WindowState.adcBuilder.windowId) {
             BuildADCView()
                 .environment(appModel)
+        }
+        .defaultWindowPlacement { _, context in
+            if let mainWindow = context.windows.first {
+                return WindowPlacement(.leading(mainWindow))
+            }
+            return WindowPlacement(.none)
         }
 
         // ADC Volumetric Window
@@ -97,13 +108,14 @@ struct SpawnAndAttrackApp: App {
             BloodVesselView()
                 .environment(appModel)
         }
-        .immersionStyle(selection: .constant(.full), in: .full)
-        .upperLimbVisibility(.visible)
+        
 
         ImmersiveSpace(id: AppModel.SpaceState.attack.spaceId) {
             AttackCancerView()
                 .environment(appModel)
         }
+        .immersionStyle(selection: .constant(.full), in: .full)
+        .upperLimbVisibility(.visible)
 
         
         .onChange(of: appModel.gamePhase) { _, newPhase in

@@ -19,6 +19,9 @@ final class AppModel: HitCountTracking {
     }
 
     var currentPhase: AppPhase = .intro
+    
+    // MARK: - Game Configuration
+    var maxCancerCells: Int = 30  // Number of cancer cells to spawn in the game
 
     // MARK: - Space Management
     enum SpaceState: String, Identifiable, CaseIterable {
@@ -190,9 +193,6 @@ final class AppModel: HitCountTracking {
     /// Time interval between cancer cell spawns
     var spawnRate: TimeInterval = 2.0
     
-    /// Maximum number of cells allowed on screen
-    static let maxCancerCells: Int = 3
-    
     // MARK: - Asset Management
     let assetLoadingManager = AssetLoadingManager.shared
 
@@ -273,7 +273,7 @@ final class AppModel: HitCountTracking {
         completedDeaths.insert(cellID)
         
         // Check if all cells are fully destroyed
-        if completedDeaths.count >= Self.maxCancerCells {
+        if completedDeaths.count >= maxCancerCells {
             gamePhase = .completed
         }
     }
@@ -327,7 +327,7 @@ final class AppModel: HitCountTracking {
     // MARK: - Game Conditions
     private func checkGameConditions() {
         // Only track destroyed count, completion handled by death notifications
-        if cellsDestroyed >= Self.maxCancerCells {
+        if cellsDestroyed >= maxCancerCells {
             print("All cells destroyed, waiting for death animations...")
         }
     }
@@ -542,10 +542,10 @@ final class AppModel: HitCountTracking {
                 .first(where: { $0.name == "MicroscopeReferenceSphere" })?
                 .parent {  // Get the parent MicroscopeViewer which has the audio
                 microscopeEntity.stopAllAudio()
-                if let audioComponent = microscopeEntity.components[AudioLibraryComponent.self],
-                   let attachSound = audioComponent.resources["Sonic_Pulse_Hit_01.wav"] {
-                    microscopeEntity.playAudio(attachSound)
-                }
+//                if let audioComponent = microscopeEntity.components[AudioLibraryComponent.self],
+//                   let attachSound = audioComponent.resources["Sonic_Pulse_Hit_01.wav"] {
+//                    microscopeEntity.playAudio(attachSound)
+//                }
             }
         }
         

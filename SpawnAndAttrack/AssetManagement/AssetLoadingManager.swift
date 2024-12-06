@@ -11,8 +11,10 @@ struct LoadResult {
 
 /// Categories of assets in the lab environment
 enum AssetCategory {
+    case introEnvironment
     case labEnvironment
     case labEquipment
+    case bloodCellEnvironment
     case attackCancerEnvironment
     case cancerCell
     case adc
@@ -64,8 +66,10 @@ final class AssetLoadingManager {
         do {
             try await withThrowingTaskGroup(of: LoadResult.self) { group in
                 // Load different categories in parallel, updating totalAssets
+                loadIntroEnvironmentAssets(group: &group, taskCount: &totalAssets)
                 loadLabEnvironmentAssets(group: &group, taskCount: &totalAssets)
                 loadLabEquipmentAssets(group: &group, taskCount: &totalAssets)
+                loadBloodCellEnvironmentAssets(group: &group, taskCount: &totalAssets)
                 loadAttackCancerEnvironmentAssets(group: &group, taskCount: &totalAssets)
                 loadCancerCellAssets(group: &group, taskCount: &totalAssets)
                 loadTreatmentAssets(group: &group, taskCount: &totalAssets)
