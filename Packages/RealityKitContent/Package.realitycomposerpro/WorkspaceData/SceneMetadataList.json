@@ -176,6 +176,18 @@
       }
     ]
   },
+  "1D45D5A7-4DCF-4C23-8CDA-8C96A9858ADC" : {
+    "objectMetadataList" : [
+      [
+        "1D45D5A7-4DCF-4C23-8CDA-8C96A9858ADC",
+        "Root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      }
+    ]
+  },
   "1D572CEB-057A-41C3-B575-04C37501A3C0" : {
     "objectMetadataList" : [
       [
@@ -730,6 +742,29 @@
         "Root",
         "cancerCell_complex",
         "_materials"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "3C484B2E-DEF0-4302-B76F-681C274D34A5",
+        "Root",
+        "cancerCell_complex",
+        "body",
+        "Antigens"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "3C484B2E-DEF0-4302-B76F-681C274D34A5",
+        "Root",
+        "cancerCell_complex",
+        "body",
+        "Antigens",
+        "Cube_178_011"
       ],
       {
         "isExpanded" : true,
@@ -2586,6 +2621,27 @@
       [
         "A2548279-DFE4-4531-B168-2F779A16F301",
         "root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      }
+    ]
+  },
+  "A3DD4248-832E-457D-AECD-261D86190279" : {
+    "objectMetadataList" : [
+      [
+        "A3DD4248-832E-457D-AECD-261D86190279",
+        "Root",
+        "InnerSphere"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "A3DD4248-832E-457D-AECD-261D86190279",
+        "Root"
       ],
       {
         "isExpanded" : true,

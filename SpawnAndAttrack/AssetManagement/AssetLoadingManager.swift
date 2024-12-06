@@ -14,7 +14,7 @@ enum AssetCategory {
     case introEnvironment
     case labEnvironment
     case labEquipment
-    case bloodCellEnvironment
+    case buildADCEnvironment
     case attackCancerEnvironment
     case cancerCell
     case adc
@@ -69,7 +69,7 @@ final class AssetLoadingManager {
                 loadIntroEnvironmentAssets(group: &group, taskCount: &totalAssets)
                 loadLabEnvironmentAssets(group: &group, taskCount: &totalAssets)
                 loadLabEquipmentAssets(group: &group, taskCount: &totalAssets)
-                loadBloodCellEnvironmentAssets(group: &group, taskCount: &totalAssets)
+                loadBuildADCEnvironmentAssets(group: &group, taskCount: &totalAssets)
                 loadAttackCancerEnvironmentAssets(group: &group, taskCount: &totalAssets)
                 loadCancerCellAssets(group: &group, taskCount: &totalAssets)
                 loadTreatmentAssets(group: &group, taskCount: &totalAssets)

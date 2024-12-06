@@ -22,10 +22,10 @@ struct BloodVesselView: View {
             //     content.add(immersiveContentEntity)
             // }
             
-           if let bloodCellEnvironmentEntity = await appModel.assetLoadingManager.instantiateEntity("blood_cell_environment") {
+           if let bloodCellEnvironmentEntity = await appModel.assetLoadingManager.instantiateEntity("build_adc_environment") {
                content.add(bloodCellEnvironmentEntity)
            } else {
-               print("Failed to load blood_cell_environment from asset manager")
+               print("Failed to load build_adc_environment from asset manager")
            }
         } update: { content in
             
