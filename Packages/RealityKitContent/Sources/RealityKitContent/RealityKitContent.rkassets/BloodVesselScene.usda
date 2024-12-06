@@ -1,0 +1,137 @@
+#usda 1.0
+(
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+reorder rootPrims = ["Root", "GridMaterial"]
+
+def Xform "Root"
+{
+    reorder nameChildren = ["antibodyProtein_complex", "healthyCell_complex", "killCell", "CancerCells", "killCell_1", "killCell_2", "bloodVessel", "bloodCell", "extraCancerCells"]
+    rel material:binding = None (
+        bindMaterialAs = "weakerThanDescendants"
+    )
+    float3 xformOp:translate = (0, 1.02, -1)
+    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+    def RealityKitTimeline "killCell"
+    {
+        def RealityKitTrack "Track"
+        {
+            def RealityKitAction "Animation"
+            {
+                string actionKind = "animation"
+                string animation = "default subtree animation"
+                int blendLayer = 500
+                double duration = 0.3333333432674408
+                uniform token info:id = "57004F2E-DD54-41E8-A9C5-16228E5BE03F"
+                double loopCount = 1
+                bool separateAnimatedValue = 1
+                double startTime = 0.06596980851870583
+                rel target = </Root/CancerCells/cancerCell_complex>
+
+                def RealityKitStruct "handoffType"
+                {
+                    token type = "defaultHandoffType"
+                }
+            }
+
+            def RealityKitAction "Disable_Entity"
+            {
+                string actionKind = "disable"
+                double duration = 0
+                uniform token info:id = "22751843-390B-4CEF-8FBB-C78255EC2393"
+                double startTime = 0.3993031518861467
+                rel target = </Root/CancerCells/cancerCell_complex>
+            }
+        }
+    }
+
+    def RealityKitTimeline "killCell_1"
+    {
+        float2 ui:nodegraph:node:pos = (20, 20)
+        int ui:nodegraph:node:stackingOrder = 1
+
+        def RealityKitTrack "Track"
+        {
+            def RealityKitAction "Animation"
+            {
+                string actionKind = "animation"
+                string animation = "default subtree animation"
+                int blendLayer = 500
+                double duration = 0.3333333432674408
+                uniform token info:id = "57004F2E-DD54-41E8-A9C5-16228E5BE03F"
+                double loopCount = 1
+                bool separateAnimatedValue = 1
+                double startTime = 0.06596980851870583
+                rel target = </Root/CancerCells/cancerCell_complex_1>
+
+                def RealityKitStruct "handoffType"
+                {
+                    token type = "defaultHandoffType"
+                }
+            }
+
+            def RealityKitAction "Disable_Entity"
+            {
+                string actionKind = "disable"
+                double duration = 0
+                uniform token info:id = "22751843-390B-4CEF-8FBB-C78255EC2393"
+                double startTime = 0.3993031518861467
+                rel target = </Root/CancerCells/cancerCell_complex_1>
+            }
+        }
+    }
+
+    def RealityKitTimeline "killCell_2"
+    {
+        float2 ui:nodegraph:node:pos = (40, 40)
+        int ui:nodegraph:node:stackingOrder = 2
+
+        def RealityKitTrack "Track"
+        {
+            def RealityKitAction "Animation"
+            {
+                string actionKind = "animation"
+                string animation = "default subtree animation"
+                int blendLayer = 500
+                double duration = 0.3333333432674408
+                uniform token info:id = "57004F2E-DD54-41E8-A9C5-16228E5BE03F"
+                double loopCount = 1
+                bool separateAnimatedValue = 1
+                double startTime = 0.06596980851870583
+                rel target = </Root/CancerCells/cancerCell_complex_2>
+
+                def RealityKitStruct "handoffType"
+                {
+                    token type = "defaultHandoffType"
+                }
+            }
+
+            def RealityKitAction "Disable_Entity"
+            {
+                string actionKind = "disable"
+                double duration = 0
+                uniform token info:id = "22751843-390B-4CEF-8FBB-C78255EC2393"
+                double startTime = 0.3993031518861467
+                rel target = </Root/CancerCells/cancerCell_complex_2>
+            }
+        }
+    }
+
+    def "bloodVessel_v004_clean" (
+        active = true
+        customData = {
+            float3 rotationEulerHint = (-1.5707964, 0, 0)
+        }
+        prepend references = @Assets/Blood Vessel/bloodVessel_v004_clean.usdc@
+    )
+    {
+        quatf xformOp:orient = (0.70710677, -0.70710677, 0, 0)
+        float3 xformOp:scale = (4, 4, 4)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+    }
+}
+

@@ -20,7 +20,7 @@ func createEnvironment(on root: Entity, appModel: AppModel) async throws {
     assetRoot.addChild(equipmentScene)
     
     // Load the image-based lighting resource.
-    guard let iblURL = Bundle.main.url(forResource: "lab_v005.2k", withExtension: "exr") else {
+    guard let iblURL = Bundle.main.url(forResource: "lab_v005", withExtension: "exr") else {
         fatalError("Failed to load the Image-Based Lighting file.")
     }
     let iblEnv = try await EnvironmentResource(fromImage: iblURL)

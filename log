@@ -6,26 +6,26 @@ nw_socket_copy_info getsockopt TCP_INFO failed [102: Operation not supported on 
 cannot add handler to 0 from 1 - dropping
 Starting to load LabEnvironment
 Starting to load asset: beaker
+Starting to load asset: beaker_tall
 Starting to load asset: autoclave
+Starting to load asset: bottle_square
+Starting to load asset: bottle_pill
 Starting to load asset: bin
 Starting to load asset: bottle_liquid
-Starting to load asset: beaker_tall
-Starting to load asset: bottle_pill
-Starting to load asset: bottle_square
 Starting to load asset: centrifuge
-Starting to load asset: deskShelf_double
+Starting to load asset: desktopPC
 Starting to load asset: flask_conical
 Starting to load asset: flask_conical_lg
-Starting to load asset: bottle_squat
 Starting to load asset: deskShelf_single
+Starting to load asset: flask_flatBottom_lg
+Starting to load asset: flask_volumetric
 Starting to load asset: flask_volumetric_lg
 Starting to load asset: fridge_sm
 Starting to load asset: glovesBox_A
-Starting to load asset: glovesBox_B
+Starting to load asset: chair
 Starting to load asset: jar_pill
-Starting to load asset: jar_pill_sm
-Starting to load asset: laptop
-Starting to load asset: mettlerBalance
+Starting to load asset: dryingRack
+Starting to load asset: dish
 Starting to load asset: mettlerBalance_box
 Starting to load asset: microscope
 Starting to load asset: oven
@@ -38,45 +38,44 @@ Starting to load asset: squirter
 Starting to load asset: stool
 Starting to load asset: testTubes_lg_set
 Starting to load asset: testTubes_sm_set
-Starting to load asset: tester
+Starting to load asset: bottle_squat
+Starting to load asset: glovesBox_B
 Starting to load asset: uvBox
-Starting to load asset: vortex
-Starting to load asset: wasteBasket
+Starting to load asset: mettlerBalance
 Starting to load AttackCancerEnvironment
-Starting to load CancerCell-spawn
-Starting to load ADC-spawn
-Starting to load asset: chair
-Starting to load asset: dish
 Starting to load asset: flask_flatBottom
-Starting to load asset: flask_flatBottom_lg
-Starting to load asset: desktopPC
-Starting to load asset: flask_volumetric
-Starting to load asset: dryingRack
+Starting to load asset: laptop
+Starting to load asset: vortex
+Starting to load asset: deskShelf_double
+Starting to load asset: jar_pill_sm
+Starting to load asset: wasteBasket
+Starting to load CancerCell-spawn
+Starting to load asset: tester
+Starting to load ADC-spawn
 cannot add handler to 0 from 1 - dropping
 Registering library (/System/Library/PrivateFrameworks/CoreRE.framework/default.metallib) that already exists in shader manager. Library will be overwritten.
-cannot add handler to 0 from 1 - dropping
 Successfully loaded LabEnvironment
 Successfully loaded asset: beaker
-Successfully loaded asset: bin
-Successfully loaded asset: bottle_pill
-Successfully loaded asset: bottle_liquid
 Successfully loaded asset: autoclave
-Successfully loaded asset: bottle_square
 Successfully loaded asset: beaker_tall
+Successfully loaded asset: bottle_liquid
+Successfully loaded asset: bin
 Successfully loaded asset: centrifuge
-Successfully loaded asset: deskShelf_double
+Successfully loaded asset: bottle_square
+Successfully loaded asset: desktopPC
 Successfully loaded asset: flask_conical
 Successfully loaded asset: flask_conical_lg
-Successfully loaded asset: bottle_squat
+Successfully loaded asset: bottle_pill
 Successfully loaded asset: deskShelf_single
+Successfully loaded asset: flask_flatBottom_lg
+Successfully loaded asset: flask_volumetric
 Successfully loaded asset: flask_volumetric_lg
 Successfully loaded asset: fridge_sm
 Successfully loaded asset: glovesBox_A
-Successfully loaded asset: glovesBox_B
+Successfully loaded asset: chair
 Successfully loaded asset: jar_pill
-Successfully loaded asset: jar_pill_sm
-Successfully loaded asset: laptop
-Successfully loaded asset: mettlerBalance
+Successfully loaded asset: dryingRack
+Successfully loaded asset: dish
 Successfully loaded asset: mettlerBalance_box
 Successfully loaded asset: microscope
 Successfully loaded asset: oven
@@ -89,42 +88,52 @@ Successfully loaded asset: squirter
 Successfully loaded asset: stool
 Successfully loaded asset: testTubes_lg_set
 Successfully loaded asset: testTubes_sm_set
-Successfully loaded asset: tester
+Successfully loaded asset: bottle_squat
+Successfully loaded asset: glovesBox_B
 Successfully loaded asset: uvBox
-Successfully loaded asset: vortex
-Successfully loaded asset: wasteBasket
+Successfully loaded asset: mettlerBalance
 Successfully loaded AttackCancerEnvironment
-Successfully loaded CancerCell-spawn
-Successfully loaded ADC-spawn
-Successfully loaded asset: chair
-Successfully loaded asset: dish
 Successfully loaded asset: flask_flatBottom
-Successfully loaded asset: flask_flatBottom_lg
-Successfully loaded asset: desktopPC
-Successfully loaded asset: flask_volumetric
-Successfully loaded asset: dryingRack
-Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+Successfully loaded asset: laptop
+Successfully loaded asset: vortex
+Successfully loaded asset: deskShelf_double
+Successfully loaded asset: jar_pill_sm
+Successfully loaded asset: wasteBasket
+Successfully loaded CancerCell-spawn
+Successfully loaded asset: tester
+Successfully loaded ADC-spawn
 cannot add handler to 0 from 1 - dropping
 cannot add handler to 0 from 1 - dropping
+cannot add handler to 0 from 1 - dropping
+no completion handler found for request identifier: 498EEF29-32CA-44A7-ABF8-4648AB2084DF
+ARPredictorRemoteService <0x13db35240>: Query queue is not running.
+ARPredictorRemoteService <0x13bf95440>: Query queue is not running.
+[NetworkComponent] Trying to process with outdated syncable that has already been unbound, guid=14600043131041574314
 
 Cloned entity for key: lab_environment
 Entity: Root
 Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
   Entity: Root
   Components: [RealityKit.SynchronizationComponent, RealityFoundation.AudioMixGroupsComponent, RealityFoundation.AnimationLibraryComponent, RealityKit.Transform]
-    Entity: lab_v004
+    Entity: SkySphere
+    Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
+    Entity: lab
     Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-      Entity: ceiling_grid
+      Entity: floor
       Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-        Entity: Cube_011
+        Entity: floor_001
         Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-      Entity: desksRows
+      Entity: deskRows
       Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-        Entity: Mesh_002
+        Entity: Mesh_002_001
         Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-      Entity: ceiling_panels
+      Entity: wall_N_binders
       Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-        Entity: ceiling_panels
+        Entity: wall_N_binders_mesh_002
+        Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
+      Entity: wall_N_shelves
+      Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
+        Entity: wall_N_shelves
         Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
       Entity: wall_W_fridges
       Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
@@ -138,2482 +147,435 @@ Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
       Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
         Entity: wall_S
         Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-      Entity: wall_N_shelves
-      Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-        Entity: wall_N_shelves
-        Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
       Entity: wall_N_cabinets
       Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
         Entity: wall_N_cabinets
-        Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-      Entity: wall_E
-      Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-        Entity: wall_E
-        Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-      Entity: room_lightblocker
-      Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-        Entity: room_lightblocker
-        Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-      Entity: glass
-      Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-        Entity: glass
-        Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-      Entity: floor
-      Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-        Entity: floor
         Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
       Entity: ceiling_lights
       Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
         Entity: ceiling_lights
         Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-    Entity: SkySphere
-    Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-    Entity: AUDIO_26
-    Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-    Entity: AUDIO_25
-    Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-    Entity: AUDIO_transforms
-    Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-      Entity: Keyboard1
-      Components: [RealityKit.SynchronizationComponent, RealityFoundation.AudioLibraryComponent, RealityFoundation.SpatialAudioComponent, RealityKit.Transform]
-      Entity: Keyboard2
-      Components: [RealityKit.SynchronizationComponent, RealityFoundation.AudioLibraryComponent, RealityFoundation.SpatialAudioComponent, RealityKit.Transform]
-      Entity: Beaker
-      Components: [RealityKit.SynchronizationComponent, RealityFoundation.AudioLibraryComponent, RealityFoundation.SpatialAudioComponent, RealityKit.Transform]
-      Entity: Paperwork1
-      Components: [RealityKit.SynchronizationComponent, RealityFoundation.AudioLibraryComponent, RealityFoundation.SpatialAudioComponent, RealityKit.Transform]
-      Entity: Paperwork1_1
-      Components: [RealityKit.SynchronizationComponent, RealityFoundation.AudioLibraryComponent, RealityFoundation.SpatialAudioComponent, RealityKit.Transform]
-      Entity: Beaker_1
-      Components: [RealityKit.SynchronizationComponent, RealityFoundation.AudioLibraryComponent, RealityFoundation.SpatialAudioComponent, RealityKit.Transform]
-      Entity: Room_ambience
+      Entity: glass
       Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-        Entity: Front_Left_Upper
-        Components: [RealityKit.SynchronizationComponent, RealityFoundation.AudioLibraryComponent, RealityFoundation.SpatialAudioComponent, RealityKit.Transform]
-        Entity: Front_Right_Upper
-        Components: [RealityKit.SynchronizationComponent, RealityFoundation.AudioLibraryComponent, RealityFoundation.SpatialAudioComponent, RealityKit.Transform]
-        Entity: Rear_Left
-        Components: [RealityKit.SynchronizationComponent, RealityFoundation.AudioLibraryComponent, RealityFoundation.SpatialAudioComponent, RealityKit.Transform]
-        Entity: Rear_Right
-        Components: [RealityKit.SynchronizationComponent, RealityFoundation.AudioLibraryComponent, RealityFoundation.SpatialAudioComponent, RealityKit.Transform]
-Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
-ARPredictorRemoteService <0x14181ef70>: Query queue is not running.
-ARPredictorRemoteService <0x100d3bdd0>: Query queue is not running.
-Initializing hosting entity without a context
-Initializing hosting entity without a context
-Initializing hosting entity without a context
-Initializing hosting entity without a context
-Initializing hosting entity without a context
-Initializing hosting entity without a context
-Initializing hosting entity without a context
-Initializing hosting entity without a context
-Initializing hosting entity without a context
-Initializing hosting entity without a context
-
-=== RealityView Make Closure Start ===
-
-Cloned entity for key: attack_cancer_environment
-Entity: Root
-Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-  Entity: Root
-  Components: [RealityKit.SynchronizationComponent, RealityFoundation.AnimationLibraryComponent, RealityKit.Transform]
-    Entity: Left
-    Components: [RealityKit.SynchronizationComponent, RealityFoundation.AudioLibraryComponent, RealityFoundation.SpatialAudioComponent, RealityKit.Transform]
-    Entity: Right
-    Components: [RealityKit.SynchronizationComponent, RealityFoundation.AudioLibraryComponent, RealityFoundation.SpatialAudioComponent, RealityKit.Transform]
-    Entity: Front_Right_Upper
-    Components: [RealityKit.SynchronizationComponent, RealityFoundation.AudioLibraryComponent, RealityFoundation.SpatialAudioComponent, RealityKit.Transform]
-    Entity: Front_Left_Upper
-    Components: [RealityKit.SynchronizationComponent, RealityFoundation.AudioLibraryComponent, RealityFoundation.SpatialAudioComponent, RealityKit.Transform]
-    Entity: Rear_Left
-    Components: [RealityKit.SynchronizationComponent, RealityFoundation.AudioLibraryComponent, RealityFoundation.SpatialAudioComponent, RealityKit.Transform]
-    Entity: Rear_Right
-    Components: [RealityKit.SynchronizationComponent, RealityFoundation.AudioLibraryComponent, RealityFoundation.SpatialAudioComponent, RealityKit.Transform]
-    Entity: Front_Right_Lower
-    Components: [RealityKit.SynchronizationComponent, RealityFoundation.AudioLibraryComponent, RealityFoundation.SpatialAudioComponent, RealityKit.Transform]
-    Entity: Front_Left_Lower
-    Components: [RealityKit.SynchronizationComponent, RealityFoundation.AudioLibraryComponent, RealityFoundation.SpatialAudioComponent, RealityKit.Transform]
-
-=== Loading Attack Cancer Environment ===
-Entity: Root
-Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-  Entity: Root
-  Components: [RealityKit.SynchronizationComponent, RealityFoundation.AnimationLibraryComponent, RealityKit.Transform]
-    Entity: Left
-    Components: [RealityKit.SynchronizationComponent, RealityFoundation.AudioLibraryComponent, RealityFoundation.SpatialAudioComponent, RealityKit.Transform]
-    Entity: Right
-    Components: [RealityKit.SynchronizationComponent, RealityFoundation.AudioLibraryComponent, RealityFoundation.SpatialAudioComponent, RealityKit.Transform]
-    Entity: Front_Right_Upper
-    Components: [RealityKit.SynchronizationComponent, RealityFoundation.AudioLibraryComponent, RealityFoundation.SpatialAudioComponent, RealityKit.Transform]
-    Entity: Front_Left_Upper
-    Components: [RealityKit.SynchronizationComponent, RealityFoundation.AudioLibraryComponent, RealityFoundation.SpatialAudioComponent, RealityKit.Transform]
-    Entity: Rear_Left
-    Components: [RealityKit.SynchronizationComponent, RealityFoundation.AudioLibraryComponent, RealityFoundation.SpatialAudioComponent, RealityKit.Transform]
-    Entity: Rear_Right
-    Components: [RealityKit.SynchronizationComponent, RealityFoundation.AudioLibraryComponent, RealityFoundation.SpatialAudioComponent, RealityKit.Transform]
-    Entity: Front_Right_Lower
-    Components: [RealityKit.SynchronizationComponent, RealityFoundation.AudioLibraryComponent, RealityFoundation.SpatialAudioComponent, RealityKit.Transform]
-    Entity: Front_Left_Lower
-    Components: [RealityKit.SynchronizationComponent, RealityFoundation.AudioLibraryComponent, RealityFoundation.SpatialAudioComponent, RealityKit.Transform]
-
-Cloned entity for key: adc
-Entity: Root
-Components: [RealityKit.SynchronizationComponent, RealityFoundation.AudioLibraryComponent, RealityFoundation.SpatialAudioComponent, RealityKitContent.ADCComponent, RealityKit.Transform]
-  Entity: antibodyProtein_complex
-  Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-    Entity: ADC_complex_001
-    Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-      Entity: ADC_complex
-      Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-      Entity: Cube_012
-      Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-        Entity: Cube_013
+        Entity: glass
         Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-      Entity: Cube_013
+      Entity: ceiling_panels
       Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-        Entity: Cube_014
+        Entity: ceiling_panels
         Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-      Entity: Cube_017
+      Entity: room_lightblocker
       Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-        Entity: Cube_018
+        Entity: room_lightblocker
         Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-      Entity: Cube_018
+      Entity: ceiling_grid
       Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-        Entity: Cube_019
+        Entity: celing_grid_mesh
         Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-      Entity: Cube_019
+      Entity: wall_E
       Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-        Entity: Cube_020
+        Entity: wall_E
         Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-      Entity: Cube_014
-      Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-        Entity: Cube_015
-        Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-      Entity: Cube_015
-      Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-        Entity: Cube_016
-        Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-      Entity: Cube_016
-      Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-        Entity: Cube_017
-        Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-
-=== Loading ADC Template ===
-Entity: Root
-Components: [RealityKit.SynchronizationComponent, RealityFoundation.AudioLibraryComponent, RealityFoundation.SpatialAudioComponent, RealityKitContent.ADCComponent, RealityKit.Transform]
-  Entity: antibodyProtein_complex
-  Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-    Entity: ADC_complex_001
-    Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-      Entity: ADC_complex
-      Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-      Entity: Cube_012
-      Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-        Entity: Cube_013
-        Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-      Entity: Cube_013
-      Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-        Entity: Cube_014
-        Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-      Entity: Cube_017
-      Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-        Entity: Cube_018
-        Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-      Entity: Cube_018
-      Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-        Entity: Cube_019
-        Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-      Entity: Cube_019
-      Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-        Entity: Cube_020
-        Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-      Entity: Cube_014
-      Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-        Entity: Cube_015
-        Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-      Entity: Cube_015
-      Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-        Entity: Cube_016
-        Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-      Entity: Cube_016
-      Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-        Entity: Cube_017
-        Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-
-Cloned entity for key: cancer_cell
-Entity: Root
-Components: [RealityKit.SynchronizationComponent, RealityKit.Transform, RealityFoundation.AnimationLibraryComponent]
-  Entity: Root
-  Components: [RealityKit.SynchronizationComponent, RealityFoundation.AnimationLibraryComponent, RealityKit.Transform]
-    Entity: cancerCell_complex
-    Components: [RealityKit.SynchronizationComponent, RealityFoundation.AnimationLibraryComponent, RealityFoundation.InputTargetComponent, RealityKitContent.CancerCellComponent, RealityKitContent.MovementComponent, RealityFoundation.AudioLibraryComponent, RealityFoundation.SpatialAudioComponent, RealityKit.Transform]
-      Entity: body
-      Components: [RealityKit.SynchronizationComponent, RealityFoundation.AnimationLibraryComponent, RealityKit.Transform]
-        Entity: veins
-        Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-          Entity: Cube_001
-          Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-        Entity: Stems
-        Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-          Entity: Cube_008_013
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_008_013
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_008_014
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_008_014
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_008_015
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_008_015
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_008_016
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_008_016
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_137_015
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_137_015
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_137_016
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_137_016
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_137_017
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_137_017
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_137_018
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_137_018
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_137_008
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_137_008
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_137_009
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_137_009
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_137_010
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_137_010
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_137_011
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_137_011
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_137_012
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_137_012
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_137_013
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_137_013
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_137_014
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_137_014
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_137_001
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_137_001
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_137_002
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_137_002
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_137_003
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_137_003
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_137_004
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_137_004
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_137_005
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_137_005
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_137_006
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_137_006
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_137_007
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_137_007
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_008_017
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_008_017
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_008_018
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_008_018
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_008_019
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_008_019
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_008_021
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_008_021
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_008_028
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_008_028
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_008_029
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_008_029
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_008_030
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_008_030
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_008_031
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_008_031
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_008_032
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_008_032
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_008_033
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_008_033
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_008_034
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_008_034
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_008_035
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_008_035
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_008_036
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_008_036
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_008_038
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_008_038
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_008_039
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_008_039
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_137
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_137
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_008_004
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_008_004
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_008_012
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_008_012
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-        Entity: cancerCellSurface
-        Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-          Entity: Cube
-          Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-        Entity: Antigens
-        Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-          Entity: Cube_178_011
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_178_011
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-            Entity: attach_12
-            Components: [RealityKit.SynchronizationComponent, RealityKitContent.AttachmentPoint, RealityKit.Transform]
-          Entity: Cube_178_012
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_178_012
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-            Entity: attach_13
-            Components: [RealityKit.SynchronizationComponent, RealityKitContent.AttachmentPoint, RealityKit.Transform]
-          Entity: Cube_178_013
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_178_013
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-            Entity: attach_14
-            Components: [RealityKit.SynchronizationComponent, RealityKitContent.AttachmentPoint, RealityKit.Transform]
-          Entity: Cube_178_014
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_178_014
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-            Entity: attach_15
-            Components: [RealityKit.SynchronizationComponent, RealityKitContent.AttachmentPoint, RealityKit.Transform]
-          Entity: Cube_178_015
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_178_015
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-            Entity: attach_16
-            Components: [RealityKit.SynchronizationComponent, RealityKitContent.AttachmentPoint, RealityKit.Transform]
-          Entity: Cube_178_016
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_178_016
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-            Entity: attach_17
-            Components: [RealityKit.SynchronizationComponent, RealityKitContent.AttachmentPoint, RealityKit.Transform]
-          Entity: Cube_178_017
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_178_017
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-            Entity: attach_18
-            Components: [RealityKit.SynchronizationComponent, RealityKitContent.AttachmentPoint, RealityKit.Transform]
-          Entity: Cube_178
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_178
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-            Entity: attach_1
-            Components: [RealityKit.SynchronizationComponent, RealityKitContent.AttachmentPoint, RealityKit.Transform]
-          Entity: Cube_178_001
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_178_001
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-            Entity: attach_2
-            Components: [RealityKit.SynchronizationComponent, RealityKitContent.AttachmentPoint, RealityKit.Transform]
-          Entity: Cube_178_002
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_178_002
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-            Entity: attach_3
-            Components: [RealityKit.SynchronizationComponent, RealityKitContent.AttachmentPoint, RealityKit.Transform]
-          Entity: Cube_178_003
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_178_003
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-            Entity: attach_4
-            Components: [RealityKit.SynchronizationComponent, RealityKitContent.AttachmentPoint, RealityKit.Transform]
-          Entity: Cube_178_004
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_178_004
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-            Entity: attach_5
-            Components: [RealityKit.SynchronizationComponent, RealityKitContent.AttachmentPoint, RealityKit.Transform]
-          Entity: Cube_178_005
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_178_005
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-            Entity: attach_6
-            Components: [RealityKit.SynchronizationComponent, RealityKitContent.AttachmentPoint, RealityKit.Transform]
-          Entity: Cube_178_006
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_178_006
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-            Entity: attach_7
-            Components: [RealityKit.SynchronizationComponent, RealityKitContent.AttachmentPoint, RealityKit.Transform]
-          Entity: Cube_178_007
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_178_007
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-            Entity: attach_8
-            Components: [RealityKit.SynchronizationComponent, RealityKitContent.AttachmentPoint, RealityKit.Transform]
-          Entity: Cube_178_008
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_178_008
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-            Entity: attach_9
-            Components: [RealityKit.SynchronizationComponent, RealityKitContent.AttachmentPoint, RealityKit.Transform]
-          Entity: Cube_178_009
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_178_009
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-            Entity: attach_10
-            Components: [RealityKit.SynchronizationComponent, RealityKitContent.AttachmentPoint, RealityKit.Transform]
-          Entity: Cube_178_010
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_178_010
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-            Entity: attach_11
-            Components: [RealityKit.SynchronizationComponent, RealityKitContent.AttachmentPoint, RealityKit.Transform]
-
-=== Cancer Cell Template ===
-Entity: Root
-Components: [RealityKit.SynchronizationComponent, RealityKit.Transform, RealityFoundation.AnimationLibraryComponent]
-  Entity: Root
-  Components: [RealityKit.SynchronizationComponent, RealityFoundation.AnimationLibraryComponent, RealityKit.Transform]
-    Entity: cancerCell_complex
-    Components: [RealityKit.SynchronizationComponent, RealityFoundation.AnimationLibraryComponent, RealityFoundation.InputTargetComponent, RealityKitContent.CancerCellComponent, RealityKitContent.MovementComponent, RealityFoundation.AudioLibraryComponent, RealityFoundation.SpatialAudioComponent, RealityKit.Transform]
-      Entity: body
-      Components: [RealityKit.SynchronizationComponent, RealityFoundation.AnimationLibraryComponent, RealityKit.Transform]
-        Entity: veins
-        Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-          Entity: Cube_001
-          Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-        Entity: Stems
-        Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-          Entity: Cube_008_013
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_008_013
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_008_014
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_008_014
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_008_015
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_008_015
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_008_016
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_008_016
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_137_015
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_137_015
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_137_016
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_137_016
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_137_017
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_137_017
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_137_018
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_137_018
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_137_008
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_137_008
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_137_009
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_137_009
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_137_010
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_137_010
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_137_011
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_137_011
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_137_012
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_137_012
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_137_013
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_137_013
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_137_014
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_137_014
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_137_001
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_137_001
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_137_002
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_137_002
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_137_003
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_137_003
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_137_004
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_137_004
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_137_005
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_137_005
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_137_006
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_137_006
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_137_007
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_137_007
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_008_017
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_008_017
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_008_018
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_008_018
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_008_019
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_008_019
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_008_021
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_008_021
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_008_028
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_008_028
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_008_029
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_008_029
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_008_030
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_008_030
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_008_031
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_008_031
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_008_032
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_008_032
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_008_033
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_008_033
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_008_034
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_008_034
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_008_035
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_008_035
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_008_036
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_008_036
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_008_038
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_008_038
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_008_039
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_008_039
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_137
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_137
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_008_004
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_008_004
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-          Entity: Cube_008_012
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_008_012
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-        Entity: cancerCellSurface
-        Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-          Entity: Cube
-          Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-        Entity: Antigens
-        Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-          Entity: Cube_178_011
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_178_011
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-            Entity: attach_12
-            Components: [RealityKit.SynchronizationComponent, RealityKitContent.AttachmentPoint, RealityKit.Transform]
-          Entity: Cube_178_012
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_178_012
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-            Entity: attach_13
-            Components: [RealityKit.SynchronizationComponent, RealityKitContent.AttachmentPoint, RealityKit.Transform]
-          Entity: Cube_178_013
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_178_013
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-            Entity: attach_14
-            Components: [RealityKit.SynchronizationComponent, RealityKitContent.AttachmentPoint, RealityKit.Transform]
-          Entity: Cube_178_014
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_178_014
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-            Entity: attach_15
-            Components: [RealityKit.SynchronizationComponent, RealityKitContent.AttachmentPoint, RealityKit.Transform]
-          Entity: Cube_178_015
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_178_015
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-            Entity: attach_16
-            Components: [RealityKit.SynchronizationComponent, RealityKitContent.AttachmentPoint, RealityKit.Transform]
-          Entity: Cube_178_016
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_178_016
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-            Entity: attach_17
-            Components: [RealityKit.SynchronizationComponent, RealityKitContent.AttachmentPoint, RealityKit.Transform]
-          Entity: Cube_178_017
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_178_017
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-            Entity: attach_18
-            Components: [RealityKit.SynchronizationComponent, RealityKitContent.AttachmentPoint, RealityKit.Transform]
-          Entity: Cube_178
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_178
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-            Entity: attach_1
-            Components: [RealityKit.SynchronizationComponent, RealityKitContent.AttachmentPoint, RealityKit.Transform]
-          Entity: Cube_178_001
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_178_001
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-            Entity: attach_2
-            Components: [RealityKit.SynchronizationComponent, RealityKitContent.AttachmentPoint, RealityKit.Transform]
-          Entity: Cube_178_002
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_178_002
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-            Entity: attach_3
-            Components: [RealityKit.SynchronizationComponent, RealityKitContent.AttachmentPoint, RealityKit.Transform]
-          Entity: Cube_178_003
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_178_003
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-            Entity: attach_4
-            Components: [RealityKit.SynchronizationComponent, RealityKitContent.AttachmentPoint, RealityKit.Transform]
-          Entity: Cube_178_004
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_178_004
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-            Entity: attach_5
-            Components: [RealityKit.SynchronizationComponent, RealityKitContent.AttachmentPoint, RealityKit.Transform]
-          Entity: Cube_178_005
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_178_005
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-            Entity: attach_6
-            Components: [RealityKit.SynchronizationComponent, RealityKitContent.AttachmentPoint, RealityKit.Transform]
-          Entity: Cube_178_006
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_178_006
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-            Entity: attach_7
-            Components: [RealityKit.SynchronizationComponent, RealityKitContent.AttachmentPoint, RealityKit.Transform]
-          Entity: Cube_178_007
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_178_007
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-            Entity: attach_8
-            Components: [RealityKit.SynchronizationComponent, RealityKitContent.AttachmentPoint, RealityKit.Transform]
-          Entity: Cube_178_008
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_178_008
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-            Entity: attach_9
-            Components: [RealityKit.SynchronizationComponent, RealityKitContent.AttachmentPoint, RealityKit.Transform]
-          Entity: Cube_178_009
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_178_009
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-            Entity: attach_10
-            Components: [RealityKit.SynchronizationComponent, RealityKitContent.AttachmentPoint, RealityKit.Transform]
-          Entity: Cube_178_010
-          Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-            Entity: Cube_178_010
-            Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
-            Entity: attach_11
-            Components: [RealityKit.SynchronizationComponent, RealityKitContent.AttachmentPoint, RealityKit.Transform]
-Set cellID 0 for attachment point attach_12
-Set cellID 0 for attachment point attach_13
-Set cellID 0 for attachment point attach_14
-Set cellID 0 for attachment point attach_15
-Set cellID 0 for attachment point attach_16
-Set cellID 0 for attachment point attach_17
-Set cellID 0 for attachment point attach_18
-Set cellID 0 for attachment point attach_1
-Set cellID 0 for attachment point attach_2
-Set cellID 0 for attachment point attach_3
-Set cellID 0 for attachment point attach_4
-Set cellID 0 for attachment point attach_5
-Set cellID 0 for attachment point attach_6
-Set cellID 0 for attachment point attach_7
-Set cellID 0 for attachment point attach_8
-Set cellID 0 for attachment point attach_9
-Set cellID 0 for attachment point attach_10
-Set cellID 0 for attachment point attach_11
-Set cellID 1 for attachment point attach_12
-Set cellID 1 for attachment point attach_13
-Set cellID 1 for attachment point attach_14
-Set cellID 1 for attachment point attach_15
-Set cellID 1 for attachment point attach_16
-Set cellID 1 for attachment point attach_17
-Set cellID 1 for attachment point attach_18
-Set cellID 1 for attachment point attach_1
-Set cellID 1 for attachment point attach_2
-Set cellID 1 for attachment point attach_3
-Set cellID 1 for attachment point attach_4
-Set cellID 1 for attachment point attach_5
-Set cellID 1 for attachment point attach_6
-Set cellID 1 for attachment point attach_7
-Set cellID 1 for attachment point attach_8
-Set cellID 1 for attachment point attach_9
-Set cellID 1 for attachment point attach_10
-Set cellID 1 for attachment point attach_11
-Set cellID 2 for attachment point attach_12
-Set cellID 2 for attachment point attach_13
-Set cellID 2 for attachment point attach_14
-Set cellID 2 for attachment point attach_15
-Set cellID 2 for attachment point attach_16
-Set cellID 2 for attachment point attach_17
-Set cellID 2 for attachment point attach_18
-Set cellID 2 for attachment point attach_1
-Set cellID 2 for attachment point attach_2
-Set cellID 2 for attachment point attach_3
-Set cellID 2 for attachment point attach_4
-Set cellID 2 for attachment point attach_5
-Set cellID 2 for attachment point attach_6
-Set cellID 2 for attachment point attach_7
-Set cellID 2 for attachment point attach_8
-Set cellID 2 for attachment point attach_9
-Set cellID 2 for attachment point attach_10
-Set cellID 2 for attachment point attach_11
-Set cellID 3 for attachment point attach_12
-Set cellID 3 for attachment point attach_13
-Set cellID 3 for attachment point attach_14
-Set cellID 3 for attachment point attach_15
-Set cellID 3 for attachment point attach_16
-Set cellID 3 for attachment point attach_17
-Set cellID 3 for attachment point attach_18
-Set cellID 3 for attachment point attach_1
-Set cellID 3 for attachment point attach_2
-Set cellID 3 for attachment point attach_3
-Set cellID 3 for attachment point attach_4
-Set cellID 3 for attachment point attach_5
-Set cellID 3 for attachment point attach_6
-Set cellID 3 for attachment point attach_7
-Set cellID 3 for attachment point attach_8
-Set cellID 3 for attachment point attach_9
-Set cellID 3 for attachment point attach_10
-Set cellID 3 for attachment point attach_11
-Set cellID 4 for attachment point attach_12
-Set cellID 4 for attachment point attach_13
-Set cellID 4 for attachment point attach_14
-Set cellID 4 for attachment point attach_15
-Set cellID 4 for attachment point attach_16
-Set cellID 4 for attachment point attach_17
-Set cellID 4 for attachment point attach_18
-Set cellID 4 for attachment point attach_1
-Set cellID 4 for attachment point attach_2
-Set cellID 4 for attachment point attach_3
-Set cellID 4 for attachment point attach_4
-Set cellID 4 for attachment point attach_5
-Set cellID 4 for attachment point attach_6
-Set cellID 4 for attachment point attach_7
-Set cellID 4 for attachment point attach_8
-Set cellID 4 for attachment point attach_9
-Set cellID 4 for attachment point attach_10
-Set cellID 4 for attachment point attach_11
-Set cellID 5 for attachment point attach_12
-Set cellID 5 for attachment point attach_13
-Set cellID 5 for attachment point attach_14
-Set cellID 5 for attachment point attach_15
-Set cellID 5 for attachment point attach_16
-Set cellID 5 for attachment point attach_17
-Set cellID 5 for attachment point attach_18
-Set cellID 5 for attachment point attach_1
-Set cellID 5 for attachment point attach_2
-Set cellID 5 for attachment point attach_3
-Set cellID 5 for attachment point attach_4
-Set cellID 5 for attachment point attach_5
-Set cellID 5 for attachment point attach_6
-Set cellID 5 for attachment point attach_7
-Set cellID 5 for attachment point attach_8
-Set cellID 5 for attachment point attach_9
-Set cellID 5 for attachment point attach_10
-Set cellID 5 for attachment point attach_11
-Set cellID 6 for attachment point attach_12
-Set cellID 6 for attachment point attach_13
-Set cellID 6 for attachment point attach_14
-Set cellID 6 for attachment point attach_15
-Set cellID 6 for attachment point attach_16
-Set cellID 6 for attachment point attach_17
-Set cellID 6 for attachment point attach_18
-Set cellID 6 for attachment point attach_1
-Set cellID 6 for attachment point attach_2
-Set cellID 6 for attachment point attach_3
-Set cellID 6 for attachment point attach_4
-Set cellID 6 for attachment point attach_5
-Set cellID 6 for attachment point attach_6
-Set cellID 6 for attachment point attach_7
-Set cellID 6 for attachment point attach_8
-Set cellID 6 for attachment point attach_9
-Set cellID 6 for attachment point attach_10
-Set cellID 6 for attachment point attach_11
-Set cellID 7 for attachment point attach_12
-Set cellID 7 for attachment point attach_13
-Set cellID 7 for attachment point attach_14
-Set cellID 7 for attachment point attach_15
-Set cellID 7 for attachment point attach_16
-Set cellID 7 for attachment point attach_17
-Set cellID 7 for attachment point attach_18
-Set cellID 7 for attachment point attach_1
-Set cellID 7 for attachment point attach_2
-Set cellID 7 for attachment point attach_3
-Set cellID 7 for attachment point attach_4
-Set cellID 7 for attachment point attach_5
-Set cellID 7 for attachment point attach_6
-Set cellID 7 for attachment point attach_7
-Set cellID 7 for attachment point attach_8
-Set cellID 7 for attachment point attach_9
-Set cellID 7 for attachment point attach_10
-Set cellID 7 for attachment point attach_11
-Set cellID 8 for attachment point attach_12
-Set cellID 8 for attachment point attach_13
-Set cellID 8 for attachment point attach_14
-Set cellID 8 for attachment point attach_15
-Set cellID 8 for attachment point attach_16
-Set cellID 8 for attachment point attach_17
-Set cellID 8 for attachment point attach_18
-Set cellID 8 for attachment point attach_1
-Set cellID 8 for attachment point attach_2
-Set cellID 8 for attachment point attach_3
-Set cellID 8 for attachment point attach_4
-Set cellID 8 for attachment point attach_5
-Set cellID 8 for attachment point attach_6
-Set cellID 8 for attachment point attach_7
-Set cellID 8 for attachment point attach_8
-Set cellID 8 for attachment point attach_9
-Set cellID 8 for attachment point attach_10
-Set cellID 8 for attachment point attach_11
-Set cellID 9 for attachment point attach_12
-Set cellID 9 for attachment point attach_13
-Set cellID 9 for attachment point attach_14
-Set cellID 9 for attachment point attach_15
-Set cellID 9 for attachment point attach_16
-Set cellID 9 for attachment point attach_17
-Set cellID 9 for attachment point attach_18
-Set cellID 9 for attachment point attach_1
-Set cellID 9 for attachment point attach_2
-Set cellID 9 for attachment point attach_3
-Set cellID 9 for attachment point attach_4
-Set cellID 9 for attachment point attach_5
-Set cellID 9 for attachment point attach_6
-Set cellID 9 for attachment point attach_7
-Set cellID 9 for attachment point attach_8
-Set cellID 9 for attachment point attach_9
-Set cellID 9 for attachment point attach_10
-Set cellID 9 for attachment point attach_11
-ar_world_tracking_provider_query_device_anchor_at_timestamp <0x3001b2c60>: The device_anchor can only be queried when the world tracking provider is running.
-ar_world_tracking_provider_query_device_anchor_at_timestamp <0x3001b2c60>: The device_anchor can only be queried when the world tracking provider is running.
-Cannot find a BindPoint for any bind path: "", "", ""
-Cannot find a BindPoint for any bind path: "", "", ""
-Cannot find a BindPoint for any bind path: "", "", ""
-Cannot find a BindPoint for any bind path: "", "", ""
-Cannot find a BindPoint for any bind path: "", "", ""
-Cannot find a BindPoint for any bind path: "", "", ""
-Cannot find a BindPoint for any bind path: "", "", ""
-Cannot find a BindPoint for any bind path: "", "", ""
-Cannot find a BindPoint for any bind path: "", "", ""
-Cannot find a BindPoint for any bind path: "", "", ""
-Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
-ar_world_tracking_provider_query_device_anchor_at_timestamp <0x3001b2c60>: The device_anchor can only be queried when the world tracking provider is running.
-ar_world_tracking_provider_query_device_anchor_at_timestamp <0x3001b2c60>: The device_anchor can only be queried when the world tracking provider is running.
-ar_world_tracking_provider_query_device_anchor_at_timestamp <0x3001b2c60>: The device_anchor can only be queried when the world tracking provider is running.
-ar_world_tracking_provider_query_device_anchor_at_timestamp <0x3001b2c60>: The device_anchor can only be queried when the world tracking provider is running.
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 1
-Found attach point: attach_12
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(0.028928608, 0.74814934, -0.14352113)
-Target Entity: attach_12
-Target Position: SIMD3<Float>(0.41803807, 2.249704, -3.7905931)
-ADC Components: RealityKit.Entity.ComponentSet
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 1
-Found attach point: attach_13
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(0.06990558, 0.86364913, -0.34642237)
-Target Entity: attach_13
-Target Position: SIMD3<Float>(0.14671056, 2.2681036, -3.7150908)
-ADC Components: RealityKit.Entity.ComponentSet
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 1
-Found attach point: attach_14
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(-0.1040896, 0.37591293, -0.3317207)
-Target Entity: attach_14
-Target Position: SIMD3<Float>(0.20460084, 2.4039056, -3.7813234)
-ADC Components: RealityKit.Entity.ComponentSet
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 1
-Found attach point: attach_15
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(0.100107744, 0.32822508, -0.3568818)
-Target Entity: attach_15
-Target Position: SIMD3<Float>(0.27609402, 2.5556033, -3.7526941)
-ADC Components: RealityKit.Entity.ComponentSet
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 1
-Found attach point: attach_16
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(0.09658091, 1.0410271, -0.12746122)
-Target Entity: attach_16
-Target Position: SIMD3<Float>(0.20176156, 2.3695426, -3.3402956)
-ADC Components: RealityKit.Entity.ComponentSet
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 1
-Found attach point: attach_17
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(-0.063526094, 0.8804413, -0.3382895)
-Target Entity: attach_17
-Target Position: SIMD3<Float>(0.47944155, 2.3202736, -3.5327973)
-ADC Components: RealityKit.Entity.ComponentSet
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 1
-Found attach point: attach_18
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(0.059470475, 0.33717245, -0.16920415)
-Target Entity: attach_18
-Target Position: SIMD3<Float>(0.30557084, 2.1591327, -3.4544857)
-ADC Components: RealityKit.Entity.ComponentSet
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 1
-Found attach point: attach_1
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(0.018735006, 0.35722983, -0.16470015)
-Target Entity: attach_1
-Target Position: SIMD3<Float>(-0.0017487854, 2.4939635, -3.4784563)
-ADC Components: RealityKit.Entity.ComponentSet
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.050838485, 0.40645403, -0.91225576)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.16627082, -0.0057836613, -0.01042466)
-New velocity: SIMD3<Float>(-0.1637289, 0.01453904, -0.05603745)
-New angular velocity: SIMD3<Float>(0.26569933, 0.06149388, 0.9428487)
-Updated physics on cancer cell
-Incremented hit count for cell 1 to 1
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 1
-Found attach point: attach_2
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(0.060692012, 0.7478063, -0.42808375)
-Target Entity: attach_2
-Target Position: SIMD3<Float>(0.270958, 2.358353, -3.4192152)
-ADC Components: RealityKit.Entity.ComponentSet
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 1
-Found attach point: attach_3
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(-0.027442098, 0.79121935, -0.2900017)
-Target Entity: attach_3
-Target Position: SIMD3<Float>(0.30814254, 2.2983484, -3.722856)
-ADC Components: RealityKit.Entity.ComponentSet
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 1
-Found attach point: attach_4
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(0.050507277, 0.3469569, -0.3065832)
-Target Entity: attach_4
-Target Position: SIMD3<Float>(0.23012668, 2.1788971, -3.676074)
-ADC Components: RealityKit.Entity.ComponentSet
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.00904257, 0.36635426, -0.9304316)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.16393363, 0.013214561, -0.0504456)
-New velocity: SIMD3<Float>(-0.1634815, 0.031532273, -0.09696718)
-New angular velocity: SIMD3<Float>(0.26569942, -0.038503986, 0.942849)
-Updated physics on cancer cell
-Incremented hit count for cell 1 to 2
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 1
-Found attach point: attach_5
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(-0.002661869, 0.770244, -0.4499274)
-Target Entity: attach_5
-Target Position: SIMD3<Float>(0.09928386, 2.1381454, -3.6033268)
-ADC Components: RealityKit.Entity.ComponentSet
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(-0.06311803, 0.52724075, -0.8473685)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.16351429, 0.031129265, -0.095267884)
-New velocity: SIMD3<Float>(-0.16667019, 0.057491302, -0.1376363)
-New angular velocity: SIMD3<Float>(0.26569974, 0.061496153, 0.9428497)
-Updated physics on cancer cell
-Incremented hit count for cell 1 to 3
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.014661983, 0.49005303, -0.87156934)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.16668212, 0.05727858, -0.13674115)
-New velocity: SIMD3<Float>(-0.16594903, 0.08178123, -0.1803196)
-New angular velocity: SIMD3<Float>(0.26569977, -0.03850365, 0.94284993)
-Updated physics on cancer cell
-Incremented hit count for cell 1 to 4
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(-0.01997911, 0.3458271, -0.93808556)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.16596296, 0.080516, -0.17504646)
-New velocity: SIMD3<Float>(-0.16696192, 0.09780736, -0.22195074)
-New angular velocity: SIMD3<Float>(0.26569957, 0.061496515, 0.94285125)
-Updated physics on cancer cell
-Incremented hit count for cell 1 to 5
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.019540437, 0.4578473, -0.8888161)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.1669538, 0.097564794, -0.22095032)
-New velocity: SIMD3<Float>(-0.16597678, 0.12045716, -0.2653911)
-New angular velocity: SIMD3<Float>(0.2656995, -0.03850322, 0.9428513)
-Updated physics on cancer cell
-Incremented hit count for cell 1 to 6
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(-0.044190176, 0.48213366, -0.8749825)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.16596508, 0.120206736, -0.26436248)
-New velocity: SIMD3<Float>(-0.1681746, 0.14431342, -0.3081116)
-New angular velocity: SIMD3<Float>(0.2656993, -0.13850316, 0.94285166)
-Updated physics on cancer cell
-Incremented hit count for cell 1 to 7
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 1
-Found attach point: attach_6
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(0.04011941, 0.31100968, -0.45980212)
-Target Entity: attach_6
-Target Position: SIMD3<Float>(-0.03635659, 2.2756345, -3.7505007)
-ADC Components: RealityKit.Entity.ComponentSet
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(-0.028425714, 0.47499606, -0.87952876)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.16810264, 0.14330289, -0.30400214)
-New velocity: SIMD3<Float>(-0.16952392, 0.16705269, -0.34797856)
-New angular velocity: SIMD3<Float>(0.2656986, -0.23850423, 0.9428522)
-Updated physics on cancer cell
-Incremented hit count for cell 1 to 8
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(-0.00048328936, 0.5195907, -0.8544153)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.16951475, 0.1669526, -0.34757516)
-New velocity: SIMD3<Float>(-0.16953892, 0.19293213, -0.39029592)
-New angular velocity: SIMD3<Float>(0.26569852, -0.1385043, 0.94285214)
-Updated physics on cancer cell
-Incremented hit count for cell 1 to 9
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.0031231921, 0.4465085, -0.89477396)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.16953892, 0.19293213, -0.39029592)
-New velocity: SIMD3<Float>(-0.16938275, 0.21525756, -0.43503463)
-New angular velocity: SIMD3<Float>(0.26569852, -0.23850429, 0.94285214)
-Updated physics on cancer cell
-Incremented hit count for cell 1 to 10
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 1
-Found attach point: attach_7
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(-0.10387005, 0.82334685, -0.34258085)
-Target Entity: attach_7
-Target Position: SIMD3<Float>(-0.25365785, 2.5450442, -3.8347266)
-ADC Components: RealityKit.Entity.ComponentSet
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 1
-Found attach point: attach_8
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(-0.018414512, 0.8022895, -0.13886255)
-Target Entity: attach_8
-Target Position: SIMD3<Float>(-0.1840968, 2.6271815, -3.9346037)
-ADC Components: RealityKit.Entity.ComponentSet
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(-0.010242029, 0.52121824, -0.85336196)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.16922966, 0.21393509, -0.4297949)
-New velocity: SIMD3<Float>(-0.16974176, 0.239996, -0.472463)
-New angular velocity: SIMD3<Float>(0.26569834, -0.33850607, 0.9428527)
-Updated physics on cancer cell
-Incremented hit count for cell 1 to 11
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 1
-Found attach point: attach_9
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(0.0010697246, 0.60881543, -0.40520328)
-Target Entity: attach_9
-Target Position: SIMD3<Float>(-0.24169396, 2.4896595, -3.8259447)
-ADC Components: RealityKit.Entity.ComponentSet
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 1
-Found attach point: attach_10
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(-0.05273217, 1.0339026, -0.40016487)
-Target Entity: attach_10
-Target Position: SIMD3<Float>(-0.3111369, 2.4478405, -4.0485563)
-ADC Components: RealityKit.Entity.ComponentSet
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(-0.015783101, 0.45751005, -0.88906443)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.16934688, 0.23769277, -0.4637458)
-New velocity: SIMD3<Float>(-0.17013603, 0.26056826, -0.50819904)
-New angular velocity: SIMD3<Float>(0.26569852, -0.2385073, 0.9428529)
-Updated physics on cancer cell
-Incremented hit count for cell 1 to 12
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(-0.044987228, 0.5220677, -0.85171676)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.16971464, 0.2586098, -0.50108665)
-New velocity: SIMD3<Float>(-0.171964, 0.28471318, -0.5436725)
-New angular velocity: SIMD3<Float>(0.26569858, -0.33850747, 0.94285285)
-Updated physics on cancer cell
-Incremented hit count for cell 1 to 13
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(-0.06591894, 0.40919054, -0.9100647)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.17142594, 0.2824114, -0.53549004)
-New velocity: SIMD3<Float>(-0.17472188, 0.30287093, -0.5809933)
-New angular velocity: SIMD3<Float>(0.26569888, -0.23850775, 0.9428529)
-Updated physics on cancer cell
-Incremented hit count for cell 1 to 14
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(-0.07962987, 0.45529774, -0.88677114)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.17393799, 0.29979542, -0.5703604)
-New velocity: SIMD3<Float>(-0.17791948, 0.3225603, -0.614699)
-New angular velocity: SIMD3<Float>(0.26569885, -0.13850781, 0.942854)
-Updated physics on cancer cell
-Incremented hit count for cell 1 to 15
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 2
-Found attach point: attach_12
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(0.033825725, 0.5021683, -0.4560117)
-Target Entity: attach_12
-Target Position: SIMD3<Float>(0.845964, 1.9469029, -3.2906744)
-ADC Components: RealityKit.Entity.ComponentSet
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(-0.08788023, 0.41040462, -0.90765905)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.17757466, 0.3212815, -0.61036944)
-New velocity: SIMD3<Float>(-0.18196867, 0.34180173, -0.6557524)
-New angular velocity: SIMD3<Float>(0.26569864, -0.0385079, 0.94285434)
-Updated physics on cancer cell
-Incremented hit count for cell 1 to 16
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 2
-Found attach point: attach_13
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(0.08949825, 1.0637774, -0.44500458)
-Target Entity: attach_13
-Target Position: SIMD3<Float>(0.80761594, 1.7378881, -3.166769)
-ADC Components: RealityKit.Entity.ComponentSet
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(-0.064724155, 0.37994355, -0.9227424)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.18124345, 0.33918068, -0.64697987)
-New velocity: SIMD3<Float>(-0.18447965, 0.35817784, -0.69311696)
-New angular velocity: SIMD3<Float>(0.26569888, -0.13850796, 0.9428549)
-Updated physics on cancer cell
-Incremented hit count for cell 1 to 17
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 2
-Found attach point: attach_14
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(-0.03790772, 0.894412, -0.22625035)
-Target Entity: attach_14
-Target Position: SIMD3<Float>(0.7058761, 1.8899263, -3.1542923)
-ADC Components: RealityKit.Entity.ComponentSet
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 2
-Found attach point: attach_15
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(0.08843222, 0.71086544, -0.18883881)
-Target Entity: attach_15
-Target Position: SIMD3<Float>(0.6726622, 2.0547504, -3.1003082)
-ADC Components: RealityKit.Entity.ComponentSet
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 2
-Found attach point: attach_16
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(-0.03344436, 0.98510647, -0.17701095)
-Target Entity: attach_16
-Target Position: SIMD3<Float>(1.0114658, 1.8913636, -2.9067419)
-ADC Components: RealityKit.Entity.ComponentSet
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 2
-Found attach point: attach_17
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(-0.1164068, 0.2919308, -0.42589217)
-Target Entity: attach_17
-Target Position: SIMD3<Float>(1.0358212, 2.0509605, -3.2355137)
-ADC Components: RealityKit.Entity.ComponentSet
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 2
-Found attach point: attach_18
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(0.049104393, 0.73748654, -0.29743883)
-Target Entity: attach_18
-Target Position: SIMD3<Float>(1.0534006, 1.8333118, -3.1573925)
-ADC Components: RealityKit.Entity.ComponentSet
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 2
-Found attach point: attach_1
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(0.00015646219, 1.0126166, -0.30270728)
-Target Entity: attach_1
-Target Position: SIMD3<Float>(0.68964684, 1.9535736, -2.9020636)
-ADC Components: RealityKit.Entity.ComponentSet
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.17954326, 0.44011688, -0.87980753)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.17005458, -0.010137794, -0.043538775)
-New velocity: SIMD3<Float>(-0.16107742, 0.011868051, -0.08752915)
-New angular velocity: SIMD3<Float>(0.3082224, -0.11640933, 0.3836633)
-Updated physics on cancer cell
-Incremented hit count for cell 2 to 1
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 2
-Found attach point: attach_2
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(-0.10199982, 0.9060891, -0.20255178)
-Target Entity: attach_2
-Target Position: SIMD3<Float>(0.9428656, 2.0062633, -3.0754275)
-ADC Components: RealityKit.Entity.ComponentSet
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 2
-Found attach point: attach_3
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(0.023368806, 0.9305247, -0.14805311)
-Target Entity: attach_3
-Target Position: SIMD3<Float>(0.8209142, 1.9203718, -3.3645046)
-ADC Components: RealityKit.Entity.ComponentSet
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 2
-Found attach point: attach_4
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(-0.006756127, 1.0765184, -0.30648744)
-Target Entity: attach_4
-Target Position: SIMD3<Float>(0.84476817, 1.7938924, -3.3002653)
-ADC Components: RealityKit.Entity.ComponentSet
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.18898417, 0.23032857, -0.95458555)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.16266876, 0.010945065, -0.08052627)
-New velocity: SIMD3<Float>(-0.15321955, 0.022461493, -0.12825555)
-New angular velocity: SIMD3<Float>(0.30822346, -0.016411476, 0.3836639)
-Updated physics on cancer cell
-Incremented hit count for cell 2 to 2
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.105986014, 0.37062752, -0.9227146)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.15333407, 0.02238953, -0.12770979)
-New velocity: SIMD3<Float>(-0.14803477, 0.040920906, -0.17384553)
-New angular velocity: SIMD3<Float>(0.3082236, -0.11641167, 0.38366383)
-Updated physics on cancer cell
-Incremented hit count for cell 2 to 3
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.2622893, 0.29175425, -0.9198282)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.14812392, 0.040864225, -0.17341606)
-New velocity: SIMD3<Float>(-0.13500945, 0.055451937, -0.21940747)
-New angular velocity: SIMD3<Float>(0.30822375, -0.21641177, 0.38366383)
-Updated physics on cancer cell
-Incremented hit count for cell 2 to 4
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 8
-Found attach point: attach_12
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(0.023499563, 0.37993088, -0.45073697)
-Target Entity: attach_12
-Target Position: SIMD3<Float>(1.406078, 0.7074922, -2.170703)
-ADC Components: RealityKit.Entity.ComponentSet
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.17033464, 0.2859271, -0.94299096)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.13542847, 0.055178586, -0.21734536)
-New velocity: SIMD3<Float>(-0.12691174, 0.06947494, -0.2644949)
-New angular velocity: SIMD3<Float>(0.3082238, -0.116412185, 0.38366395)
-Updated physics on cancer cell
-Incremented hit count for cell 2 to 5
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 8
-Found attach point: attach_13
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(-0.03868723, 0.8860694, -0.27314934)
-Target Entity: attach_13
-Target Position: SIMD3<Float>(1.5736736, 0.8916976, -2.2064831)
-ADC Components: RealityKit.Entity.ComponentSet
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.22974773, 0.37420517, -0.89843553)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.12771079, 0.06891936, -0.26035833)
-New velocity: SIMD3<Float>(-0.1162234, 0.087629616, -0.30528012)
-New angular velocity: SIMD3<Float>(0.3082236, -0.016413137, 0.3836634)
-Updated physics on cancer cell
-Incremented hit count for cell 2 to 6
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 8
-Found attach point: attach_14
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(0.07896368, 0.5620539, -0.17505544)
-Target Entity: attach_14
-Target Position: SIMD3<Float>(1.5810748, 0.75930214, -2.2803888)
-ADC Components: RealityKit.Entity.ComponentSet
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.16525234, 0.2820344, -0.94506514)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.117189996, 0.08689349, -0.29991636)
-New velocity: SIMD3<Float>(-0.10892738, 0.10099521, -0.3471696)
-New angular velocity: SIMD3<Float>(0.3082238, 0.08358672, 0.38366336)
-Updated physics on cancer cell
-Incremented hit count for cell 2 to 7
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 8
-Found attach point: attach_15
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(-0.11001101, 0.44108593, -0.424361)
-Target Entity: attach_15
-Target Position: SIMD3<Float>(1.6343887, 0.63246626, -2.3005252)
-ADC Components: RealityKit.Entity.ComponentSet
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 8
-Found attach point: attach_16
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(-0.111019075, 0.77724385, -0.34828472)
-Target Entity: attach_16
-Target Position: SIMD3<Float>(1.6070193, 0.7066497, -1.868956)
-ADC Components: RealityKit.Entity.ComponentSet
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.201261, 0.5205577, -0.8297673)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.10951051, 0.10051797, -0.3437577)
-New velocity: SIMD3<Float>(-0.09944746, 0.12654586, -0.38524604)
-New angular velocity: SIMD3<Float>(0.30822426, 0.18358713, 0.3836634)
-Updated physics on cancer cell
-Incremented hit count for cell 2 to 8
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.16622742, 0.31377086, -0.9348349)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.099576406, 0.12643644, -0.38447174)
-New velocity: SIMD3<Float>(-0.09126504, 0.14212498, -0.4312135)
-New angular velocity: SIMD3<Float>(0.30822432, 0.28358713, 0.38366333)
-Updated physics on cancer cell
-Incremented hit count for cell 2 to 9
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 8
-Found attach point: attach_17
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(-0.09256415, 0.82330537, -0.43270075)
-Target Entity: attach_17
-Target Position: SIMD3<Float>(1.3049682, 0.55161124, -2.1162684)
-ADC Components: RealityKit.Entity.ComponentSet
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.20912814, 0.33916846, -0.91718596)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.09214735, 0.14134024, -0.425753)
-New velocity: SIMD3<Float>(-0.081690945, 0.15829867, -0.4716123)
-New angular velocity: SIMD3<Float>(0.30822453, 0.38358864, 0.38366348)
-Updated physics on cancer cell
-Incremented hit count for cell 2 to 10
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 8
-Found attach point: attach_18
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(0.111739665, 0.61086845, -0.2460227)
-Target Entity: attach_18
-Target Position: SIMD3<Float>(1.2616551, 0.6932475, -1.9869206)
-ADC Components: RealityKit.Entity.ComponentSet
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 8
-Found attach point: attach_1
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(-0.0078757405, 1.0037525, -0.4823999)
-Target Entity: attach_1
-Target Position: SIMD3<Float>(1.6648598, 0.7630756, -2.0641239)
-ADC Components: RealityKit.Entity.ComponentSet
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.16369675, 0.27994153, -0.9459577)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.08409253, 0.15583764, -0.45535418)
-New velocity: SIMD3<Float>(-0.07590769, 0.16983472, -0.50265205)
-New angular velocity: SIMD3<Float>(0.30822456, 0.48359317, 0.38366392)
-Updated physics on cancer cell
-Incremented hit count for cell 2 to 11
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 8
-Found attach point: attach_2
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(-0.0867825, 0.5541612, -0.40689772)
-Target Entity: attach_2
-Target Position: SIMD3<Float>(1.3843353, 0.53348875, -2.1246874)
-ADC Components: RealityKit.Entity.ComponentSet
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 8
-Found attach point: attach_3
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(-0.085471496, 0.5441468, -0.4956193)
-Target Entity: attach_3
-Target Position: SIMD3<Float>(1.1926268, 0.74562407, -2.3761766)
-ADC Components: RealityKit.Entity.ComponentSet
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.54681957, 0.22644253, -0.8060474)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.14907369, 0.048588965, -0.12065389)
-New velocity: SIMD3<Float>(-0.12173271, 0.05991109, -0.16095626)
-New angular velocity: SIMD3<Float>(0.83755046, -0.6354954, 0.8839005)
-Updated physics on cancer cell
-Incremented hit count for cell 8 to 1
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.5281738, 0.012523189, -0.8490439)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.12247348, 0.060301825, -0.15975292)
-New velocity: SIMD3<Float>(-0.09606479, 0.060927983, -0.20220512)
-New angular velocity: SIMD3<Float>(0.8375506, -0.73549575, 0.8839006)
-Updated physics on cancer cell
-Incremented hit count for cell 8 to 2
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.6355527, 0.22921802, -0.7372463)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.09800935, 0.06195251, -0.19897051)
-New velocity: SIMD3<Float>(-0.06623171, 0.07341341, -0.23583283)
-New angular velocity: SIMD3<Float>(0.83755094, -0.8354961, 0.8839002)
-Updated physics on cancer cell
-Incremented hit count for cell 8 to 3
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.48053747, 0.16490704, -0.86133003)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.067773215, 0.07422136, -0.23319629)
-New velocity: SIMD3<Float>(-0.04374634, 0.08246671, -0.2762628)
-New angular velocity: SIMD3<Float>(0.8375511, -0.73549694, 0.88390017)
-Updated physics on cancer cell
-Incremented hit count for cell 8 to 4
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 0
-Found attach point: attach_12
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(-0.02523528, 0.9423319, -0.15644854)
-Target Entity: attach_12
-Target Position: SIMD3<Float>(1.7794235, 1.2493863, -1.1679742)
-ADC Components: RealityKit.Entity.ComponentSet
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 0
-Found attach point: attach_13
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(-0.11668038, 0.47440052, -0.27955163)
-Target Entity: attach_13
-Target Position: SIMD3<Float>(1.9520093, 1.4203883, -1.2291213)
-ADC Components: RealityKit.Entity.ComponentSet
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.6064483, -0.053978596, -0.79328865)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.04685133, 0.084071085, -0.27079672)
-New velocity: SIMD3<Float>(-0.016528914, 0.08137216, -0.31046116)
-New angular velocity: SIMD3<Float>(0.837551, -0.8354971, 0.8839015)
-Updated physics on cancer cell
-Incremented hit count for cell 8 to 5
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 0
-Found attach point: attach_14
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(-0.0936577, 0.9802548, -0.12863502)
-Target Entity: attach_14
-Target Position: SIMD3<Float>(1.9169312, 1.262288, -1.2613231)
-ADC Components: RealityKit.Entity.ComponentSet
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 0
-Found attach point: attach_15
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(-0.06726119, 0.51750803, -0.15588391)
-Target Entity: attach_15
-Target Position: SIMD3<Float>(1.8825978, 1.112273, -1.2251105)
-ADC Components: RealityKit.Entity.ComponentSet
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.59052736, 0.045836378, -0.8057148)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.02159035, 0.08389555, -0.30108425)
-New velocity: SIMD3<Float>(0.007936018, 0.08618737, -0.34137)
-New angular velocity: SIMD3<Float>(0.83755076, -0.9354992, 0.8839014)
-Updated physics on cancer cell
-Incremented hit count for cell 8 to 6
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.47529507, 0.05657203, -0.87800586)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(0.007936018, 0.08618737, -0.34137)
-New velocity: SIMD3<Float>(0.03170077, 0.08901597, -0.38527027)
-New angular velocity: SIMD3<Float>(0.83755076, -0.83549917, 0.8839014)
-Updated physics on cancer cell
-Incremented hit count for cell 8 to 7
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 0
-Found attach point: attach_16
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(0.027013779, 0.5455549, -0.35490215)
-Target Entity: attach_16
-Target Position: SIMD3<Float>(2.039347, 1.340013, -0.9197502)
-ADC Components: RealityKit.Entity.ComponentSet
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.5935714, 0.09628124, -0.79900116)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(0.031353567, 0.089184165, -0.38460463)
-New velocity: SIMD3<Float>(0.06103214, 0.09399822, -0.4245547)
-New angular velocity: SIMD3<Float>(0.8375508, -0.73549944, 0.88390154)
-Updated physics on cancer cell
-Incremented hit count for cell 8 to 8
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.5622023, -0.0985334, -0.82110894)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(0.059680987, 0.09464269, -0.42193788)
-New velocity: SIMD3<Float>(0.0877911, 0.089716025, -0.46299332)
-New angular velocity: SIMD3<Float>(0.8375514, -0.83550036, 0.883902)
-Updated physics on cancer cell
-Incremented hit count for cell 8 to 9
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 0
-Found attach point: attach_17
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(-0.021479532, 0.34126893, -0.25750616)
-Target Entity: attach_17
-Target Position: SIMD3<Float>(1.6656299, 1.3356655, -0.953269)
-ADC Components: RealityKit.Entity.ComponentSet
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 0
-Found attach point: attach_18
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(0.061834723, 1.0293009, -0.2618276)
-Target Entity: attach_18
-Target Position: SIMD3<Float>(1.8280289, 1.5062594, -0.972974)
-ADC Components: RealityKit.Entity.ComponentSet
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.5240211, 0.16532488, -0.83550555)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(0.08311566, 0.09185916, -0.4537363)
-New velocity: SIMD3<Float>(0.109316714, 0.1001254, -0.4955116)
-New angular velocity: SIMD3<Float>(0.8375518, -0.9355015, 0.88390285)
-Updated physics on cancer cell
-Incremented hit count for cell 8 to 10
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.76902276, 0.21958655, -0.6003212)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.117437094, 0.038570907, -0.17604315)
-New velocity: SIMD3<Float>(-0.07898596, 0.049550235, -0.20605922)
-New angular velocity: SIMD3<Float>(0.48687285, 0.09173333, 0.14051571)
-Updated physics on cancer cell
-Incremented hit count for cell 0 to 1
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.78973645, 0.2000754, -0.579902)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.08107938, 0.04971071, -0.20455573)
-New velocity: SIMD3<Float>(-0.041592557, 0.05971448, -0.23355083)
-New angular velocity: SIMD3<Float>(0.48687267, 0.19173332, 0.14051567)
-Updated physics on cancer cell
-Incremented hit count for cell 0 to 2
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.75358576, 0.3241845, -0.5718505)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.04441074, 0.05992184, -0.23148128)
-New velocity: SIMD3<Float>(-0.0067314506, 0.07613106, -0.2600738)
-New angular velocity: SIMD3<Float>(0.48687258, 0.091733314, 0.14051555)
-Updated physics on cancer cell
-Incremented hit count for cell 0 to 3
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 0
-Found attach point: attach_1
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(-0.06415935, 0.88542366, -0.24500567)
-Target Entity: attach_1
-Target Position: SIMD3<Float>(1.9337285, 1.2561164, -1.4093499)
-ADC Components: RealityKit.Entity.ComponentSet
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 0
-Found attach point: attach_2
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(-0.03928356, 0.39954, -0.14136332)
-Target Entity: attach_2
-Target Position: SIMD3<Float>(1.7966462, 1.2935797, -1.1924738)
-ADC Components: RealityKit.Entity.ComponentSet
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.7543538, 0.45888746, -0.46943858)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.014796578, 0.07666134, -0.2539098)
-New velocity: SIMD3<Float>(0.022921115, 0.09960572, -0.27738172)
-New angular velocity: SIMD3<Float>(0.48687235, 0.19173324, 0.1405155)
-Updated physics on cancer cell
-Incremented hit count for cell 0 to 4
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.7705449, 0.43685216, -0.46413437)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(0.02020731, 0.0997623, -0.2752367)
-New velocity: SIMD3<Float>(0.05873456, 0.121604905, -0.2984434)
-New angular velocity: SIMD3<Float>(0.48687226, 0.09173315, 0.14051549)
-Updated physics on cancer cell
-Incremented hit count for cell 0 to 5
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 0
-Found attach point: attach_3
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(-0.102896065, 0.30208907, -0.2720556)
-Target Entity: attach_3
-Target Position: SIMD3<Float>(1.610101, 1.4838158, -1.309192)
-ADC Components: RealityKit.Entity.ComponentSet
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 0
-Found attach point: attach_4
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(-0.091351435, 0.5041424, -0.1747047)
-Target Entity: attach_4
-Target Position: SIMD3<Float>(1.7431406, 1.5753663, -1.3269136)
-ADC Components: RealityKit.Entity.ComponentSet
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.82188225, 0.35825467, -0.44290298)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(0.05126843, 0.12195039, -0.29235825)
-New velocity: SIMD3<Float>(0.09236254, 0.13986312, -0.3145034)
-New angular velocity: SIMD3<Float>(0.48687238, -0.008266889, 0.1405155)
-Updated physics on cancer cell
-Incremented hit count for cell 0 to 6
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.8133337, 0.203613, -0.5450045)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(0.07410024, 0.14019407, -0.29870498)
-New velocity: SIMD3<Float>(0.114766926, 0.15037473, -0.3259552)
-New angular velocity: SIMD3<Float>(0.48687214, -0.10826753, 0.14051558)
-Updated physics on cancer cell
-Incremented hit count for cell 0 to 7
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 9
-Found attach point: attach_12
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(0.12149519, 0.8162618, -0.31400472)
-Target Entity: attach_12
-Target Position: SIMD3<Float>(2.6582825, 1.7163202, -0.67299265)
-ADC Components: RealityKit.Entity.ComponentSet
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.7562639, 0.25947422, -0.6006147)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(0.0969842, 0.14999698, -0.30947366)
-New velocity: SIMD3<Float>(0.1347974, 0.16297069, -0.3395044)
-New angular velocity: SIMD3<Float>(0.48687276, -0.20826827, 0.14051542)
-Updated physics on cancer cell
-Incremented hit count for cell 0 to 8
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 9
-Found attach point: attach_13
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(-0.06955917, 0.8500668, -0.12600821)
-Target Entity: attach_13
-Target Position: SIMD3<Float>(2.6324632, 1.4998543, -0.8445141)
-ADC Components: RealityKit.Entity.ComponentSet
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 9
-Found attach point: attach_14
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(-0.10648905, 0.5145273, -0.1704449)
-Target Entity: attach_14
-Target Position: SIMD3<Float>(2.546756, 1.5112067, -0.7358434)
-ADC Components: RealityKit.Entity.ComponentSet
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.70668906, 0.3791427, -0.597362)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(0.12641081, 0.162518, -0.33133748)
-New velocity: SIMD3<Float>(0.16174527, 0.18147513, -0.36120558)
-New angular velocity: SIMD3<Float>(0.48687264, -0.10826903, 0.1405153)
-Updated physics on cancer cell
-Incremented hit count for cell 0 to 9
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.6808385, 0.46881643, -0.5627344)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(0.15888225, 0.18127675, -0.35836035)
-New velocity: SIMD3<Float>(0.19292417, 0.20471758, -0.38649708)
-New angular velocity: SIMD3<Float>(0.4868726, -0.008269206, 0.1405152)
-Updated physics on cancer cell
-Incremented hit count for cell 0 to 10
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 9
-Found attach point: attach_15
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(-0.006944403, 0.30749136, -0.23305967)
-Target Entity: attach_15
-Target Position: SIMD3<Float>(2.5162733, 1.4669733, -0.61339176)
-ADC Components: RealityKit.Entity.ComponentSet
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 9
-Found attach point: attach_16
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(0.066028625, 0.33395326, -0.12540656)
-Target Entity: attach_16
-Target Position: SIMD3<Float>(2.9543138, 1.373761, -0.67169034)
-ADC Components: RealityKit.Entity.ComponentSet
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.69539785, 0.4115577, -0.58910286)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(0.18065834, 0.20365877, -0.37408808)
-New velocity: SIMD3<Float>(0.21542823, 0.22423667, -0.40354323)
-New angular velocity: SIMD3<Float>(0.48687342, 0.091730386, 0.14051484)
-Updated physics on cancer cell
-Incremented hit count for cell 0 to 11
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 9
-Found attach point: attach_17
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(0.12412405, 0.3853227, -0.24019837)
-Target Entity: attach_17
-Target Position: SIMD3<Float>(2.7867403, 1.7113314, -0.6203652)
-ADC Components: RealityKit.Entity.ComponentSet
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 9
-Found attach point: attach_18
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(0.040066004, 0.78909695, -0.39743745)
-Target Entity: attach_18
-Target Position: SIMD3<Float>(2.9318137, 1.6672286, -0.7899997)
-ADC Components: RealityKit.Entity.ComponentSet
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 9
-Found attach point: attach_1
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(-0.108216524, 0.518662, -0.32308197)
-Target Entity: attach_1
-Target Position: SIMD3<Float>(2.7743125, 1.2608862, -0.7902473)
-ADC Components: RealityKit.Entity.ComponentSet
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 9
-Found attach point: attach_2
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(0.087710515, 0.6829535, -0.31887984)
-Target Entity: attach_2
-Target Position: SIMD3<Float>(2.7937531, 1.5680327, -0.6553411)
-ADC Components: RealityKit.Entity.ComponentSet
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.920937, 0.28315046, -0.2677702)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.058007598, -0.0010950072, -0.17832708)
-New velocity: SIMD3<Float>(-0.011960749, 0.013062516, -0.1917156)
-New angular velocity: SIMD3<Float>(0.6119295, -0.4851391, 0.8231638)
-Updated physics on cancer cell
-Incremented hit count for cell 9 to 1
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.9124545, 0.25644305, -0.3188475)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.013930721, 0.013054455, -0.1910651)
-New velocity: SIMD3<Float>(0.031692006, 0.025876608, -0.20700748)
-New angular velocity: SIMD3<Float>(0.6119298, -0.38513947, 0.823164)
-Updated physics on cancer cell
-Incremented hit count for cell 9 to 2
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 9
-Found attach point: attach_3
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(0.06736484, 0.6023197, -0.3907898)
-Target Entity: attach_3
-Target Position: SIMD3<Float>(2.595328, 1.7028425, -0.92048264)
-ADC Components: RealityKit.Entity.ComponentSet
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.8989002, 0.31356442, -0.3060323)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(0.030981842, 0.025873354, -0.2067686)
-New velocity: SIMD3<Float>(0.075926855, 0.041551575, -0.22207022)
-New angular velocity: SIMD3<Float>(0.6119297, -0.4851394, 0.8231636)
-Updated physics on cancer cell
-Incremented hit count for cell 9 to 3
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 9
-Found attach point: attach_4
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(-0.011707231, 0.82233024, -0.16239387)
-Target Entity: attach_4
-Target Position: SIMD3<Float>(2.7375128, 1.719127, -0.97569084)
-ADC Components: RealityKit.Entity.ComponentSet
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.8912316, 0.34921885, -0.2894001)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(0.07023567, 0.04151259, -0.22008997)
-New velocity: SIMD3<Float>(0.11479725, 0.058973532, -0.23455998)
-New angular velocity: SIMD3<Float>(0.6119296, -0.38513932, 0.82316464)
-Updated physics on cancer cell
-Incremented hit count for cell 9 to 4
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 9
-Found attach point: attach_5
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(-0.053133205, 0.89195275, -0.40305832)
-Target Entity: attach_5
-Target Position: SIMD3<Float>(2.8695006, 1.6818583, -1.0024356)
-ADC Components: RealityKit.Entity.ComponentSet
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 9
-Found attach point: attach_6
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(-0.10402258, 0.74492383, -0.33595097)
-Target Entity: attach_6
-Target Position: SIMD3<Float>(2.9397311, 1.5790453, -1.032349)
-ADC Components: RealityKit.Entity.ComponentSet
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.8874665, 0.38939646, -0.24652323)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(0.106721394, 0.058870956, -0.23156875)
-New velocity: SIMD3<Float>(0.15109472, 0.07834078, -0.24389492)
-New angular velocity: SIMD3<Float>(0.61192864, -0.4851389, 0.8231639)
-Updated physics on cancer cell
-Incremented hit count for cell 9 to 5
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.8889066, 0.38536882, -0.24766093)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(0.14994566, 0.078320794, -0.24345192)
-New velocity: SIMD3<Float>(0.194391, 0.09758924, -0.25583497)
-New angular velocity: SIMD3<Float>(0.6119288, -0.38513875, 0.8231637)
-Updated physics on cancer cell
-Incremented hit count for cell 9 to 6
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.936036, 0.2946907, -0.19233832)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(0.19175091, 0.09753661, -0.25480297)
-New velocity: SIMD3<Float>(0.23855272, 0.112271145, -0.26441988)
-New angular velocity: SIMD3<Float>(0.6119289, -0.2851389, 0.82316387)
-Updated physics on cancer cell
-Incremented hit count for cell 9 to 7
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.9305778, 0.28078166, -0.23491852)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(0.23140186, 0.11208487, -0.26155123)
-New velocity: SIMD3<Float>(0.27793074, 0.12612395, -0.27329716)
-New angular velocity: SIMD3<Float>(0.6119289, -0.18513855, 0.8231646)
-Updated physics on cancer cell
-Incremented hit count for cell 9 to 8
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.91326255, 0.31565538, -0.25751358)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(0.27088937, 0.12587214, -0.27037144)
-New velocity: SIMD3<Float>(0.3165525, 0.14165491, -0.2832471)
-New angular velocity: SIMD3<Float>(0.61192846, -0.28513858, 0.82316434)
-Updated physics on cancer cell
-Incremented hit count for cell 9 to 9
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.9018275, 0.27940458, -0.32960632)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(0.31345236, 0.14152156, -0.28192967)
-New velocity: SIMD3<Float>(0.35854375, 0.15549178, -0.29841)
-New angular velocity: SIMD3<Float>(0.6119285, -0.38513875, 0.82316464)
-Updated physics on cancer cell
-Incremented hit count for cell 9 to 10
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.8949793, 0.32427904, -0.30635792)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(0.34880108, 0.15500107, -0.29419258)
-New velocity: SIMD3<Float>(0.39355004, 0.17121503, -0.30951047)
-New angular velocity: SIMD3<Float>(0.61192894, -0.2851391, 0.82316446)
-Updated physics on cancer cell
-Incremented hit count for cell 9 to 11
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.9300948, 0.26709294, -0.25216085)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(0.39355004, 0.17121503, -0.30951047)
-New velocity: SIMD3<Float>(0.44005477, 0.18456967, -0.32211852)
-New angular velocity: SIMD3<Float>(0.61192894, -0.18513912, 0.82316446)
-Updated physics on cancer cell
-Incremented hit count for cell 9 to 12
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 7
-Found attach point: attach_12
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(0.036914483, 0.58230764, -0.26939505)
-Target Entity: attach_12
-Target Position: SIMD3<Float>(-3.1766648, 1.5565256, -1.4642888)
-ADC Components: RealityKit.Entity.ComponentSet
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(0.909264, 0.29271096, -0.295904)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(0.39719823, 0.18139659, -0.30268893)
-New velocity: SIMD3<Float>(0.44266143, 0.19603214, -0.31748414)
-New angular velocity: SIMD3<Float>(0.61193067, -0.08513645, 0.8231664)
-Updated physics on cancer cell
-Incremented hit count for cell 9 to 13
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 7
-Found attach point: attach_13
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(0.03903371, 0.74726033, -0.25914052)
-Target Entity: attach_13
-Target Position: SIMD3<Float>(-3.0775454, 1.7169899, -1.3044086)
-ADC Components: RealityKit.Entity.ComponentSet
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 7
-Found attach point: attach_14
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(0.11693457, 0.75535166, -0.3856457)
-Target Entity: attach_14
-Target Position: SIMD3<Float>(-3.2212634, 1.6559895, -1.3519719)
-ADC Components: RealityKit.Entity.ComponentSet
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 7
-Found attach point: attach_15
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(0.099178225, 1.0720148, -0.1749326)
-Target Entity: attach_15
-Target Position: SIMD3<Float>(-3.348453, 1.6342767, -1.4336555)
-ADC Components: RealityKit.Entity.ComponentSet
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 7
-Found attach point: attach_16
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(0.10070327, 1.0886482, -0.34330505)
-Target Entity: attach_16
-Target Position: SIMD3<Float>(-3.1570525, 2.0020533, -1.473309)
-ADC Components: RealityKit.Entity.ComponentSet
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 7
-Found attach point: attach_17
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(-0.06265469, 0.44249964, -0.19726396)
-Target Entity: attach_17
-Target Position: SIMD3<Float>(-3.1145709, 1.7727755, -1.6899697)
-ADC Components: RealityKit.Entity.ComponentSet
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 7
-Found attach point: attach_18
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(-0.05082658, 0.3352766, -0.35960257)
-Target Entity: attach_18
-Target Position: SIMD3<Float>(-3.0168028, 1.9306577, -1.4966853)
-ADC Components: RealityKit.Entity.ComponentSet
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 7
-Found attach point: attach_1
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(0.021504983, 1.0393909, -0.14242598)
-Target Entity: attach_1
-Target Position: SIMD3<Float>(-3.3482883, 1.7500865, -1.1793195)
-ADC Components: RealityKit.Entity.ComponentSet
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 7
-Found attach point: attach_2
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(0.00013533235, 0.75021607, -0.34462494)
-Target Entity: attach_2
-Target Position: SIMD3<Float>(-3.296002, 1.9509017, -1.3781509)
-ADC Components: RealityKit.Entity.ComponentSet
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(-0.90288234, 0.27138728, -0.33339503)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.067383096, -0.016080972, 0.15533909)
-New velocity: SIMD3<Float>(-0.112527214, -0.0025116075, 0.13866934)
-New angular velocity: SIMD3<Float>(0.714162, 0.97262514, 0.4145901)
-Updated physics on cancer cell
-Incremented hit count for cell 7 to 1
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 7
-Found attach point: attach_3
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(0.067815766, 0.32626146, -0.22962019)
-Target Entity: attach_3
-Target Position: SIMD3<Float>(-3.141069, 1.7937733, -1.5146122)
-ADC Components: RealityKit.Entity.ComponentSet
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(-0.89936733, 0.27879128, -0.33676982)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.110778384, -0.0026390573, 0.13939404)
-New velocity: SIMD3<Float>(-0.15574676, 0.011300507, 0.122555554)
-New angular velocity: SIMD3<Float>(0.7141619, 0.87262547, 0.41459036)
-Updated physics on cancer cell
-Incremented hit count for cell 7 to 2
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 7
-Found attach point: attach_4
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(-0.054618448, 0.69280577, -0.40414357)
-Target Entity: attach_4
-Target Position: SIMD3<Float>(-3.0893652, 1.8740603, -1.3800465)
-ADC Components: RealityKit.Entity.ComponentSet
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 6
-Found attach point: attach_12
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(0.054996923, 1.0759926, -0.3263616)
-Target Entity: attach_12
-Target Position: SIMD3<Float>(-3.4815404, 1.518574, 0.7839551)
-ADC Components: RealityKit.Entity.ComponentSet
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(-0.9303188, 0.23873161, -0.2784135)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.15170704, 0.011007326, 0.12416491)
-New velocity: SIMD3<Float>(-0.19822298, 0.022943906, 0.11024424)
-New angular velocity: SIMD3<Float>(0.71416235, 0.972627, 0.41459042)
-Updated physics on cancer cell
-Incremented hit count for cell 7 to 3
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(-0.95581216, 0.20869654, -0.20704778)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.19741052, 0.02288488, 0.1105573)
-New velocity: SIMD3<Float>(-0.24520114, 0.033319708, 0.100204915)
-New angular velocity: SIMD3<Float>(0.7141622, 1.072627, 0.41459006)
-Updated physics on cancer cell
-Incremented hit count for cell 7 to 4
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(-0.9426191, 0.12793753, -0.3083851)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.24504258, 0.033308174, 0.10026568)
-New velocity: SIMD3<Float>(-0.29217353, 0.03970505, 0.08484643)
-New angular velocity: SIMD3<Float>(0.71416205, 0.9726269, 0.41459015)
-Updated physics on cancer cell
-Incremented hit count for cell 7 to 5
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 6
-Found attach point: attach_13
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(-0.105024576, 0.6174933, -0.25205746)
-Target Entity: attach_13
-Target Position: SIMD3<Float>(-3.435557, 1.7245661, 0.9677788)
-ADC Components: RealityKit.Entity.ComponentSet
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(-0.89755255, 0.35804406, -0.2573008)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.28849933, 0.039435096, 0.08622584)
-New velocity: SIMD3<Float>(-0.33337694, 0.0573373, 0.0733608)
-New angular velocity: SIMD3<Float>(0.71416247, 1.0726274, 0.41459018)
-Updated physics on cancer cell
-Incremented hit count for cell 7 to 6
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 6
-Found attach point: attach_14
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(0.048253015, 0.27745625, -0.25023735)
-Target Entity: attach_14
-Target Position: SIMD3<Float>(-3.2898548, 1.6250426, 0.98380774)
-ADC Components: RealityKit.Entity.ComponentSet
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(-0.944965, 0.16585594, -0.28201565)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.3310907, 0.057166345, 0.07419346)
-New velocity: SIMD3<Float>(-0.37833893, 0.06545914, 0.06009268)
-New angular velocity: SIMD3<Float>(0.7141623, 1.1726278, 0.41459042)
-Updated physics on cancer cell
-Incremented hit count for cell 7 to 7
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(-0.8888266, 0.41244024, -0.19970056)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.37514445, 0.0652159, 0.061231583)
-New velocity: SIMD3<Float>(-0.4195858, 0.085837916, 0.051246554)
-New angular velocity: SIMD3<Float>(0.71416223, 1.0726281, 0.41459018)
-Updated physics on cancer cell
-Incremented hit count for cell 7 to 8
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 6
-Found attach point: attach_15
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(-0.041124597, 0.79351926, -0.20784229)
-Target Entity: attach_15
-Target Position: SIMD3<Float>(-3.1556401, 1.5288398, 1.1933999)
-ADC Components: RealityKit.Entity.ComponentSet
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(-0.94347876, 0.2770654, -0.18188575)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.4132492, 0.08533509, 0.053421106)
-New velocity: SIMD3<Float>(-0.46042314, 0.09918836, 0.04432682)
-New angular velocity: SIMD3<Float>(0.7141624, 1.1726274, 0.41459036)
-Updated physics on cancer cell
-Incremented hit count for cell 7 to 9
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(-0.92532253, 0.32287693, -0.1988186)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.4568907, 0.09889538, 0.045493886)
-New velocity: SIMD3<Float>(-0.50315684, 0.11503923, 0.035552956)
-New angular velocity: SIMD3<Float>(0.71416277, 1.0726272, 0.41459027)
-Updated physics on cancer cell
-Incremented hit count for cell 7 to 10
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 6
-Found attach point: attach_16
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(0.100630924, 0.6459669, -0.45580846)
-Target Entity: attach_16
-Target Position: SIMD3<Float>(-3.5419903, 1.3458613, 1.3652529)
-ADC Components: RealityKit.Entity.ComponentSet
-Tapped entity: cancerCell_complex
-Found cancer cell with ID: 6
-Found attach point: attach_17
-
-=== Starting ADC Movement ===
-ADC Entity: Root
-Start Position: SIMD3<Float>(0.048180968, 0.8154665, -0.26420668)
-Target Entity: attach_17
-Target Position: SIMD3<Float>(-3.4062788, 1.3458594, 1.0260872)
-ADC Components: RealityKit.Entity.ComponentSet
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(-0.87400043, 0.2889318, 0.39069387)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(0.058038495, 0.0004106453, 0.15599084)
-New velocity: SIMD3<Float>(0.014338475, 0.014857234, 0.17552553)
-New angular velocity: SIMD3<Float>(0.33835918, -0.71139425, 0.45338035)
-Updated physics on cancer cell
-Incremented hit count for cell 6 to 1
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(-0.9134907, 0.35862923, -0.19214499)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.49158937, 0.11402311, 0.039212666)
-New velocity: SIMD3<Float>(-0.53726393, 0.13195458, 0.029605417)
-New angular velocity: SIMD3<Float>(0.7141633, 0.97262573, 0.41458967)
-Updated physics on cancer cell
-Incremented hit count for cell 7 to 11
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(-0.8886256, 0.16266954, 0.42881614)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(0.01728085, 0.014860376, 0.17440605)
-New velocity: SIMD3<Float>(-0.02715043, 0.022993853, 0.19584686)
-New angular velocity: SIMD3<Float>(0.33835882, -0.6113934, 0.45338073)
-Updated physics on cancer cell
-Incremented hit count for cell 6 to 2
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(-0.84028643, 0.3412296, 0.42128494)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.024686236, 0.022992745, 0.19487219)
-New velocity: SIMD3<Float>(-0.06670056, 0.040054224, 0.21593644)
-New angular velocity: SIMD3<Float>(0.3383592, -0.5113938, 0.45338175)
-Updated physics on cancer cell
-Incremented hit count for cell 6 to 3
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(-0.86974907, 0.16811766, 0.46397525)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.05878671, 0.04001542, 0.21261567)
-New velocity: SIMD3<Float>(-0.102274165, 0.048421305, 0.23581444)
-New angular velocity: SIMD3<Float>(0.33836064, -0.41139278, 0.45338416)
-Updated physics on cancer cell
-Incremented hit count for cell 6 to 4
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(-0.85221267, 0.19917482, 0.48380065)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.10198939, 0.048418865, 0.23569001)
-New velocity: SIMD3<Float>(-0.14460002, 0.058377605, 0.25988004)
-New angular velocity: SIMD3<Float>(0.33836064, -0.51139295, 0.45338422)
-Updated physics on cancer cell
-Incremented hit count for cell 6 to 5
-
-=== ADC Impact Debug ===
-Impact direction: SIMD3<Float>(-0.8708346, 0.20014043, 0.4489887)
-Found cancer cell: cancerCell_complex
-Initial velocity: SIMD3<Float>(-0.1416642, 0.05834641, 0.25857615)
-New velocity: SIMD3<Float>(-0.18520594, 0.06835343, 0.2810256)
-New angular velocity: SIMD3<Float>(0.3383607, -0.6113921, 0.45338503)
-Updated physics on cancer cell
-Incremented hit count for cell 6 to 6
+    Entity: MicroscopeViewer
+    Components: [RealityKit.SynchronizationComponent, RealityFoundation.AudioLibraryComponent, RealityKitContent.MicroscopeViewerComponent, RealityKit.Transform]
+      Entity: MicroscopeReferenceSphere
+      Components: [RealityKit.SynchronizationComponent, RealityFoundation.InputTargetComponent, RealityKit.CollisionComponent, RealityKitContent.MicroscopeViewerComponent, RealityKit.ModelComponent, RealityKit.Transform]
+      Entity: diagnosticSphere
+      Components: [RealityKit.SynchronizationComponent, RealityFoundation.InputTargetComponent, RealityKit.CollisionComponent, RealityKitContent.MicroscopeViewerComponent, RealityKitContent.GestureComponent, RealityKit.ModelComponent, RealityKit.Transform]
+cannot add handler to 0 from 1 - dropping
+HeadTracker: Started tracking
+No color named 'blue' found in asset catalog for main bundle (/private/var/containers/Bundle/Application/9034FCF7-E2A5-437E-8040-E91F8E7AA41F/SpawnAndAttrack.app)
+No color named 'green' found in asset catalog for main bundle (/private/var/containers/Bundle/Application/9034FCF7-E2A5-437E-8040-E91F8E7AA41F/SpawnAndAttrack.app)
+No color named 'red' found in asset catalog for main bundle (/private/var/containers/Bundle/Application/9034FCF7-E2A5-437E-8040-E91F8E7AA41F/SpawnAndAttrack.app)
+cannot add handler to 0 from 1 - dropping
+Sync object without snapshot while removing view (id: 15538919358344162874, type: 6373420419761316588[SelectableSceneContentIdentifierComponent]).
+
+=== Head Collision Details ===
+Entity A Name: MicroscopeReferenceSphere
+Entity A World Position: SIMD3<Float>(0.40769023, 1.3467324, -0.38462305)
+Entity A Local Position: SIMD3<Float>(0.0, 0.0, 0.0)
+Entity A Components: RealityKit.Entity.ComponentSet
+Entity A Collision Group: Optional(RealityKit.CollisionGroup(rawValue: 1))
+Entity B Name: diagnosticSphere
+Entity B World Position: SIMD3<Float>(0.55624706, 1.3439449, -0.37875792)
+Entity B Local Position: SIMD3<Float>(-0.14801452, 0.013972878, -0.0027874708)
+Entity B Components: RealityKit.Entity.ComponentSet
+Entity B Collision Group: Optional(RealityKit.CollisionGroup(rawValue: 1))
+Contact World Position: SIMD3<Float>(0.44616485, 1.1768227, -0.33318543)
+  Has MicroscopeViewer component:
+    Entity A: true
+    Entity B: true
+Head collision with microscope detected
+
+=== Head Collision Details ===
+Entity A Name: MicroscopeReferenceSphere
+Entity A World Position: SIMD3<Float>(0.40769023, 1.3467324, -0.38462305)
+Entity A Local Position: SIMD3<Float>(0.0, 0.0, 0.0)
+Entity A Components: RealityKit.Entity.ComponentSet
+Entity A Collision Group: Optional(RealityKit.CollisionGroup(rawValue: 1))
+Entity B Name: diagnosticSphere
+Entity B World Position: SIMD3<Float>(0.53840667, 1.3640137, -0.40414312)
+Entity B Local Position: SIMD3<Float>(-0.13158771, -0.012349129, 0.017281294)
+Entity B Components: RealityKit.Entity.ComponentSet
+Entity B Collision Group: Optional(RealityKit.CollisionGroup(rawValue: 1))
+Contact World Position: SIMD3<Float>(0.37671852, 1.0184677, -0.29899073)
+  Has MicroscopeViewer component:
+    Entity A: true
+    Entity B: true
+Head collision with microscope detected
+
+=== Head Collision Details ===
+Entity A Name: MicroscopeReferenceSphere
+Entity A World Position: SIMD3<Float>(0.40769023, 1.3467324, -0.38462305)
+Entity A Local Position: SIMD3<Float>(0.0, 0.0, 0.0)
+Entity A Components: RealityKit.Entity.ComponentSet
+Entity A Collision Group: Optional(RealityKit.CollisionGroup(rawValue: 1))
+Entity B Name: diagnosticSphere
+Entity B World Position: SIMD3<Float>(0.5340335, 1.3548485, -0.4099304)
+Entity B Local Position: SIMD3<Float>(-0.12753722, -0.018366694, 0.008116126)
+Entity B Components: RealityKit.Entity.ComponentSet
+Entity B Collision Group: Optional(RealityKit.CollisionGroup(rawValue: 1))
+Contact World Position: SIMD3<Float>(0.43966228, 1.1830345, -0.35296518)
+  Has MicroscopeViewer component:
+    Entity A: true
+    Entity B: true
+Head collision with microscope detected
+
+=== Head Collision Details ===
+Entity A Name: MicroscopeReferenceSphere
+Entity A World Position: SIMD3<Float>(0.40769023, 1.3467324, -0.38462305)
+Entity A Local Position: SIMD3<Float>(0.0, 0.0, 0.0)
+Entity A Components: RealityKit.Entity.ComponentSet
+Entity A Collision Group: Optional(RealityKit.CollisionGroup(rawValue: 1))
+Entity B Name: diagnosticSphere
+Entity B World Position: SIMD3<Float>(0.5463532, 1.364354, -0.39201254)
+Entity B Local Position: SIMD3<Float>(-0.1388596, 0.00019749999, 0.017621636)
+Entity B Components: RealityKit.Entity.ComponentSet
+Entity B Collision Group: Optional(RealityKit.CollisionGroup(rawValue: 1))
+Contact World Position: SIMD3<Float>(0.38044178, 1.0183803, -0.2941523)
+  Has MicroscopeViewer component:
+    Entity A: true
+    Entity B: true
+Head collision with microscope detected
+
+=== Head Collision Details ===
+Entity A Name: MicroscopeReferenceSphere
+Entity A World Position: SIMD3<Float>(0.40769023, 1.3467324, -0.38462305)
+Entity A Local Position: SIMD3<Float>(0.0, 0.0, 0.0)
+Entity A Components: RealityKit.Entity.ComponentSet
+Entity A Collision Group: Optional(RealityKit.CollisionGroup(rawValue: 1))
+Entity B Name: diagnosticSphere
+Entity B World Position: SIMD3<Float>(0.5074731, 1.3581654, -0.41971484)
+Entity B Local Position: SIMD3<Float>(-0.101551145, -0.029587656, 0.011433005)
+Entity B Components: RealityKit.Entity.ComponentSet
+Entity B Collision Group: Optional(RealityKit.CollisionGroup(rawValue: 1))
+Contact World Position: SIMD3<Float>(0.43241054, 1.1855105, -0.36130065)
+  Has MicroscopeViewer component:
+    Entity A: true
+    Entity B: true
+Head collision with microscope detected
+
+=== Head Collision Details ===
+Entity A Name: MicroscopeReferenceSphere
+Entity A World Position: SIMD3<Float>(0.40769023, 1.3467324, -0.38462305)
+Entity A Local Position: SIMD3<Float>(0.0, 0.0, 0.0)
+Entity A Components: RealityKit.Entity.ComponentSet
+Entity A Collision Group: Optional(RealityKit.CollisionGroup(rawValue: 1))
+Entity B Name: diagnosticSphere
+Entity B World Position: SIMD3<Float>(0.53706276, 1.3580643, -0.43672615)
+Entity B Local Position: SIMD3<Float>(-0.13202599, -0.044956923, 0.011331916)
+Entity B Components: RealityKit.Entity.ComponentSet
+Entity B Collision Group: Optional(RealityKit.CollisionGroup(rawValue: 1))
+Contact World Position: SIMD3<Float>(0.24754333, 0.67719376, -0.20991042)
+  Has MicroscopeViewer component:
+    Entity A: true
+    Entity B: true
+Head collision with microscope detected
+
+=== Head Collision Details ===
+Entity A Name: MicroscopeReferenceSphere
+Entity A World Position: SIMD3<Float>(0.40769023, 1.3467324, -0.38462305)
+Entity A Local Position: SIMD3<Float>(0.0, 0.0, 0.0)
+Entity A Components: RealityKit.Entity.ComponentSet
+Entity A Collision Group: Optional(RealityKit.CollisionGroup(rawValue: 1))
+Entity B Name: diagnosticSphere
+Entity B World Position: SIMD3<Float>(0.49187002, 1.2952383, -0.4634211)
+Entity B Local Position: SIMD3<Float>(-0.08835927, -0.07408115, -0.05149412)
+Entity B Components: RealityKit.Entity.ComponentSet
+Entity B Collision Group: Optional(RealityKit.CollisionGroup(rawValue: 1))
+Contact World Position: SIMD3<Float>(0.46511897, 1.2741266, -0.42495662)
+  Has MicroscopeViewer component:
+    Entity A: true
+    Entity B: true
+Head collision with microscope detected
+
+=== Head Collision Details ===
+Entity A Name: diagnosticSphere
+Entity A World Position: SIMD3<Float>(0.07080066, 1.1998683, -0.3352847)
+Entity A Local Position: SIMD3<Float>(0.33908203, 0.030858427, -0.14686406)
+Entity A Components: RealityKit.Entity.ComponentSet
+Entity A Collision Group: Optional(RealityKit.CollisionGroup(rawValue: 1))
+Entity B Name: HeadCollisionSphere
+Entity B World Position: SIMD3<Float>(-0.025678843, 1.1503582, -0.24276045)
+Entity B Local Position: SIMD3<Float>(-0.025678843, 1.1503582, -0.24276045)
+Entity B Components: RealityKit.Entity.ComponentSet
+Entity B Collision Group: Optional(RealityKit.CollisionGroup(rawValue: 1))
+Contact World Position: SIMD3<Float>(0.031785995, 1.0320709, -0.2802813)
+  Has MicroscopeViewer component:
+    Entity A: true
+    Entity B: true
+Head collision with microscope detected
+
+=== Head Collision Details ===
+Entity A Name: diagnosticSphere
+Entity A World Position: SIMD3<Float>(0.034588695, 1.1214372, -0.36170653)
+Entity A Local Position: SIMD3<Float>(0.37379634, 0.0024976134, -0.22529519)
+Entity A Components: RealityKit.Entity.ComponentSet
+Entity A Collision Group: Optional(RealityKit.CollisionGroup(rawValue: 1))
+Entity B Name: HeadCollisionSphere
+Entity B World Position: SIMD3<Float>(-0.024583464, 1.1508669, -0.24655874)
+Entity B Local Position: SIMD3<Float>(-0.024583464, 1.1508669, -0.24655874)
+Entity B Components: RealityKit.Entity.ComponentSet
+Entity B Collision Group: Optional(RealityKit.CollisionGroup(rawValue: 1))
+Contact World Position: SIMD3<Float>(0.014828373, 0.98819935, -0.29183006)
+  Has MicroscopeViewer component:
+    Entity A: true
+    Entity B: true
+Head collision with microscope detected
+
+=== Head Collision Details ===
+Entity A Name: diagnosticSphere
+Entity A World Position: SIMD3<Float>(-0.01567316, 1.1031618, -0.37565547)
+Entity A Local Position: SIMD3<Float>(0.42322102, -0.014176577, -0.24357057)
+Entity A Components: RealityKit.Entity.ComponentSet
+Entity A Collision Group: Optional(RealityKit.CollisionGroup(rawValue: 1))
+Entity B Name: HeadCollisionSphere
+Entity B World Position: SIMD3<Float>(-0.03009703, 1.1517488, -0.24922532)
+Entity B Local Position: SIMD3<Float>(-0.03009703, 1.1517488, -0.24922532)
+Entity B Components: RealityKit.Entity.ComponentSet
+Entity B Collision Group: Optional(RealityKit.CollisionGroup(rawValue: 1))
+Contact World Position: SIMD3<Float>(-0.017216086, 0.9758051, -0.30132395)
+  Has MicroscopeViewer component:
+    Entity A: true
+    Entity B: true
+Head collision with microscope detected
+
+=== Head Collision Details ===
+Entity A Name: diagnosticSphere
+Entity A World Position: SIMD3<Float>(-0.023868352, 1.1394522, -0.49105886)
+Entity A Local Position: SIMD3<Float>(0.42509884, -0.12985536, -0.20728016)
+Entity A Components: RealityKit.Entity.ComponentSet
+Entity A Collision Group: Optional(RealityKit.CollisionGroup(rawValue: 1))
+Entity B Name: FloatingDebugSphere
+Entity B World Position: SIMD3<Float>(-0.031964887, 1.1475914, -0.55431294)
+Entity B Local Position: SIMD3<Float>(-0.031964887, 1.1475914, -0.55431294)
+Entity B Components: RealityKit.Entity.ComponentSet
+Entity B Collision Group: Optional(RealityKit.CollisionGroup(rawValue: 1))
+Contact World Position: SIMD3<Float>(-0.029577728, 1.1446404, -0.5357455)
+  Has MicroscopeViewer component:
+    Entity A: true
+    Entity B: true
+Head collision with microscope detected
+
+=== Head Collision Details ===
+Entity A Name: diagnosticSphere
+Entity A World Position: SIMD3<Float>(-0.06338349, 1.1653196, -0.61685514)
+Entity A Local Position: SIMD3<Float>(0.45768198, -0.25762272, -0.18141282)
+Entity A Components: RealityKit.Entity.ComponentSet
+Entity A Collision Group: Optional(RealityKit.CollisionGroup(rawValue: 1))
+Entity B Name: FloatingDebugSphere
+Entity B World Position: SIMD3<Float>(-0.030024588, 1.1479847, -0.5575646)
+Entity B Local Position: SIMD3<Float>(-0.030024588, 1.1479847, -0.5575646)
+Entity B Components: RealityKit.Entity.ComponentSet
+Entity B Collision Group: Optional(RealityKit.CollisionGroup(rawValue: 1))
+Contact World Position: SIMD3<Float>(-0.03953135, 1.1534369, -0.57445973)
+  Has MicroscopeViewer component:
+    Entity A: true
+    Entity B: true
+Head collision with microscope detected
+
+=== Head Collision Details ===
+Entity A Name: diagnosticSphere
+Entity A World Position: SIMD3<Float>(0.02108863, 1.176127, -0.39687827)
+Entity A Local Position: SIMD3<Float>(0.38535464, -0.0333592, -0.17060542)
+Entity A Components: RealityKit.Entity.ComponentSet
+Entity A Collision Group: Optional(RealityKit.CollisionGroup(rawValue: 1))
+Entity B Name: HeadCollisionSphere
+Entity B World Position: SIMD3<Float>(-0.032000758, 1.1445352, -0.26080984)
+Entity B Local Position: SIMD3<Float>(-0.032000758, 1.1445352, -0.26080984)
+Entity B Components: RealityKit.Entity.ComponentSet
+Entity B Collision Group: Optional(RealityKit.CollisionGroup(rawValue: 1))
+Contact World Position: SIMD3<Float>(0.0015587636, 1.1645441, -0.35252303)
+  Has MicroscopeViewer component:
+    Entity A: true
+    Entity B: true
+Head collision with microscope detected
+
+=== Head Collision Details ===
+Entity A Name: diagnosticSphere
+Entity A World Position: SIMD3<Float>(-0.015948474, 1.1729378, -0.51383233)
+Entity A Local Position: SIMD3<Float>(0.4159465, -0.15216213, -0.17379463)
+Entity A Components: RealityKit.Entity.ComponentSet
+Entity A Collision Group: Optional(RealityKit.CollisionGroup(rawValue: 1))
+Entity B Name: FloatingDebugSphere
+Entity B World Position: SIMD3<Float>(-0.0276438, 1.1473571, -0.5611026)
+Entity B Local Position: SIMD3<Float>(-0.0276438, 1.1473571, -0.5611026)
+Entity B Components: RealityKit.Entity.ComponentSet
+Entity B Collision Group: Optional(RealityKit.CollisionGroup(rawValue: 1))
+Contact World Position: SIMD3<Float>(-0.023626372, 1.1451149, -0.5413003)
+  Has MicroscopeViewer component:
+    Entity A: true
+    Entity B: true
+Head collision with microscope detected
+
+=== Head Collision Details ===
+Entity A Name: MicroscopeReferenceSphere
+Entity A World Position: SIMD3<Float>(0.40769023, 1.3467324, -0.38462305)
+Entity A Local Position: SIMD3<Float>(0.0, 0.0, 0.0)
+Entity A Components: RealityKit.Entity.ComponentSet
+Entity A Collision Group: Optional(RealityKit.CollisionGroup(rawValue: 1))
+Entity B Name: HeadCollisionSphere
+Entity B World Position: SIMD3<Float>(0.30363816, 1.2090614, -0.283717)
+Entity B Local Position: SIMD3<Float>(0.30363816, 1.2090614, -0.283717)
+Entity B Components: RealityKit.Entity.ComponentSet
+Entity B Collision Group: Optional(RealityKit.CollisionGroup(rawValue: 1))
+Contact World Position: SIMD3<Float>(0.35676453, 1.2770258, -0.33210963)
+  Has MicroscopeViewer component:
+    Entity A: true
+    Entity B: true
+Head collision with microscope detected
+
+=== Head Collision Details ===
+Entity A Name: MicroscopeReferenceSphere
+Entity A World Position: SIMD3<Float>(0.40769023, 1.3467324, -0.38462305)
+Entity A Local Position: SIMD3<Float>(0.0, 0.0, 0.0)
+Entity A Components: RealityKit.Entity.ComponentSet
+Entity A Collision Group: Optional(RealityKit.CollisionGroup(rawValue: 1))
+Entity B Name: FloatingDebugSphere
+Entity B World Position: SIMD3<Float>(0.40185034, 1.3726362, -0.44369185)
+Entity B Local Position: SIMD3<Float>(0.40185034, 1.3726362, -0.44369185)
+Entity B Components: RealityKit.Entity.ComponentSet
+Entity B Collision Group: Optional(RealityKit.CollisionGroup(rawValue: 1))
+Contact World Position: SIMD3<Float>(0.20058167, 0.6878418, -0.22532028)
+  Has MicroscopeViewer component:
+    Entity A: true
+    Entity B: true
+Head collision with microscope detected
+
+=== Head Collision Details ===
+Entity A Name: MicroscopeReferenceSphere
+Entity A World Position: SIMD3<Float>(0.40769023, 1.3467324, -0.38462305)
+Entity A Local Position: SIMD3<Float>(0.0, 0.0, 0.0)
+Entity A Components: RealityKit.Entity.ComponentSet
+Entity A Collision Group: Optional(RealityKit.CollisionGroup(rawValue: 1))
+Entity B Name: FloatingDebugSphere
+Entity B World Position: SIMD3<Float>(0.31254694, 1.4026924, -0.42440724)
+Entity B Local Position: SIMD3<Float>(0.31254694, 1.4026924, -0.42440724)
+Entity B Components: RealityKit.Entity.ComponentSet
+Entity B Collision Group: Optional(RealityKit.CollisionGroup(rawValue: 1))
+Contact World Position: SIMD3<Float>(0.3254751, 1.39311, -0.41805595)
+  Has MicroscopeViewer component:
+    Entity A: true
+    Entity B: true
+Head collision with microscope detected
+
+=== Head Collision Details ===
+Entity A Name: MicroscopeReferenceSphere
+Entity A World Position: SIMD3<Float>(0.40769023, 1.3467324, -0.38462305)
+Entity A Local Position: SIMD3<Float>(0.0, 0.0, 0.0)
+Entity A Components: RealityKit.Entity.ComponentSet
+Entity A Collision Group: Optional(RealityKit.CollisionGroup(rawValue: 1))
+Entity B Name: HeadCollisionSphere
+Entity B World Position: SIMD3<Float>(0.38132432, 1.4228227, -0.2478893)
+Entity B Local Position: SIMD3<Float>(0.38132432, 1.4228227, -0.2478893)
+Entity B Components: RealityKit.Entity.ComponentSet
+Entity B Collision Group: Optional(RealityKit.CollisionGroup(rawValue: 1))
+Contact World Position: SIMD3<Float>(0.19725364, 0.6923888, -0.15812808)
+  Has MicroscopeViewer component:
+    Entity A: true
+    Entity B: true
+Head collision with microscope detected
+
+=== Head Collision Details ===
+Entity A Name: MicroscopeReferenceSphere
+Entity A World Position: SIMD3<Float>(0.40769023, 1.3467324, -0.38462305)
+Entity A Local Position: SIMD3<Float>(0.0, 0.0, 0.0)
+Entity A Components: RealityKit.Entity.ComponentSet
+Entity A Collision Group: Optional(RealityKit.CollisionGroup(rawValue: 1))
+Entity B Name: HeadCollisionSphere
+Entity B World Position: SIMD3<Float>(0.41902226, 1.3876047, -0.5747431)
+Entity B Local Position: SIMD3<Float>(0.41902226, 1.3876047, -0.5747431)
+Entity B Components: RealityKit.Entity.ComponentSet
+Entity B Collision Group: Optional(RealityKit.CollisionGroup(rawValue: 1))
+Contact World Position: SIMD3<Float>(0.41264755, 1.3619202, -0.48309922)
+  Has MicroscopeViewer component:
+    Entity A: true
+    Entity B: true
+Head collision with microscope detected
+
+=== Head Collision Details ===
+Entity A Name: MicroscopeReferenceSphere
+Entity A World Position: SIMD3<Float>(0.40769023, 1.3467324, -0.38462305)
+Entity A Local Position: SIMD3<Float>(0.0, 0.0, 0.0)
+Entity A Components: RealityKit.Entity.ComponentSet
+Entity A Collision Group: Optional(RealityKit.CollisionGroup(rawValue: 1))
+Entity B Name: HeadCollisionSphere
+Entity B World Position: SIMD3<Float>(0.4016012, 1.4914372, -0.2642869)
+Entity B Local Position: SIMD3<Float>(0.4016012, 1.4914372, -0.2642869)
+Entity B Components: RealityKit.Entity.ComponentSet
+Entity B Collision Group: Optional(RealityKit.CollisionGroup(rawValue: 1))
+Contact World Position: SIMD3<Float>(0.30326292, 1.0651778, -0.24116153)
+  Has MicroscopeViewer component:
+    Entity A: true
+    Entity B: true
+Head collision with microscope detected
+
+=== Head Collision Details ===
+Entity A Name: MicroscopeReferenceSphere
+Entity A World Position: SIMD3<Float>(0.40769023, 1.3467324, -0.38462305)
+Entity A Local Position: SIMD3<Float>(0.0, 0.0, 0.0)
+Entity A Components: RealityKit.Entity.ComponentSet
+Entity A Collision Group: Optional(RealityKit.CollisionGroup(rawValue: 1))
+Entity B Name: HeadCollisionSphere
+Entity B World Position: SIMD3<Float>(0.41020083, 1.3745028, -0.57681054)
+Entity B Local Position: SIMD3<Float>(0.41020083, 1.3745028, -0.57681054)
+Entity B Components: RealityKit.Entity.ComponentSet
+Entity B Collision Group: Optional(RealityKit.CollisionGroup(rawValue: 1))
+Contact World Position: SIMD3<Float>(0.40879202, 1.3569279, -0.48348832)
+  Has MicroscopeViewer component:
+    Entity A: true
+    Entity B: true
+Head collision with microscope detected
+
+=== Head Collision Details ===
+Entity A Name: MicroscopeReferenceSphere
+Entity A World Position: SIMD3<Float>(0.40769023, 1.3467324, -0.38462305)
+Entity A Local Position: SIMD3<Float>(0.0, 0.0, 0.0)
+Entity A Components: RealityKit.Entity.ComponentSet
+Entity A Collision Group: Optional(RealityKit.CollisionGroup(rawValue: 1))
+Entity B Name: HeadCollisionSphere
+Entity B World Position: SIMD3<Float>(0.41957203, 1.4968793, -0.2575648)
+Entity B Local Position: SIMD3<Float>(0.41957203, 1.4968793, -0.2575648)
+Entity B Components: RealityKit.Entity.ComponentSet
+Entity B Collision Group: Optional(RealityKit.CollisionGroup(rawValue: 1))
+Contact World Position: SIMD3<Float>(0.3099974, 1.066412, -0.24003536)
+  Has MicroscopeViewer component:
+    Entity A: true
+    Entity B: true
+Head collision with microscope detected
+
+=== Head Collision Details ===
+Entity A Name: MicroscopeReferenceSphere
+Entity A World Position: SIMD3<Float>(0.40769023, 1.3467324, -0.38462305)
+Entity A Local Position: SIMD3<Float>(0.0, 0.0, 0.0)
+Entity A Components: RealityKit.Entity.ComponentSet
+Entity A Collision Group: Optional(RealityKit.CollisionGroup(rawValue: 1))
+Entity B Name: HeadCollisionSphere
+Entity B World Position: SIMD3<Float>(0.42186207, 1.4938769, -0.25884163)
+Entity B Local Position: SIMD3<Float>(0.42186207, 1.4938769, -0.25884163)
+Entity B Components: RealityKit.Entity.ComponentSet
+Entity B Collision Group: Optional(RealityKit.CollisionGroup(rawValue: 1))
+Contact World Position: SIMD3<Float>(0.31108528, 1.0660067, -0.23968798)
+  Has MicroscopeViewer component:
+    Entity A: true
+    Entity B: true
+Head collision with microscope detected

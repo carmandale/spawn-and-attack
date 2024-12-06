@@ -14,6 +14,7 @@ final class AppModel: HitCountTracking {
     enum AppPhase {
         case intro
         case lab
+        case bloodVessel
         case attack
     }
 
@@ -23,6 +24,7 @@ final class AppModel: HitCountTracking {
     enum SpaceState: String, Identifiable, CaseIterable {
         case intro
         case lab
+        case bloodVessel
         case attack
         
         var id: Self { self }
@@ -98,6 +100,14 @@ final class AppModel: HitCountTracking {
             }
         }
     }
+
+    var bloodVesselSpaceActive: Bool = false {
+        didSet {
+            if !bloodVesselSpaceActive {
+                // Clean up when space becomes inactive
+            }
+        }
+    }
     
     var attackSpaceActive: Bool = false {
         didSet {
@@ -108,7 +118,7 @@ final class AppModel: HitCountTracking {
     }
 
     var immersiveSpaceActive: Bool {
-        return introSpaceActive || labSpaceActive || attackSpaceActive
+        return introSpaceActive || labSpaceActive || bloodVesselSpaceActive || attackSpaceActive
     }
 
     // MARK: - Game State
@@ -188,6 +198,12 @@ final class AppModel: HitCountTracking {
 
     // Add property to track completed deaths
     private var completedDeaths: Set<Int> = []
+    
+    // Add property for lab immersion style
+    var labImmersionStyle: ImmersionStyle = .progressive(
+        0.2...0.8,  // Same range as Garden14
+        initialAmount: 0.4
+    )
     
     init() {
         setupNotifications()
@@ -441,9 +457,13 @@ final class AppModel: HitCountTracking {
     private static let debounceThreshold: TimeInterval = 0.1
     
     func handleCollisionBegan(_ collision: CollisionEvents.Began) {
-        guard shouldHandleCollision(collision) else { 
-            // print("Collision debounced")
-            return 
+        guard shouldHandleCollision(collision) else { return }
+        
+        // Check for head-microscope collision - only play sound, no transition
+        if hasHeadCollision(collision) && hasMicroscopeCollision(collision) {
+            print("Head collision with microscope detected")
+            transitionToPhase(.bloodVessel)
+            return
         }
         
         let entities = UnorderedPair(collision.entityA, collision.entityB)
@@ -492,6 +512,61 @@ final class AppModel: HitCountTracking {
         return true
     }
     
+    private func hasHeadCollision(_ collision: CollisionEvents.Began) -> Bool {
+        let entityA = collision.entityA
+        let entityB = collision.entityB
+        
+        print("\n=== Head Collision Details ===")
+        // Entity A details
+        print("Entity A Name: \(entityA.name)")
+        print("Entity A World Position: \(entityA.position(relativeTo: nil))")  // World position
+        print("Entity A Local Position: \(entityA.position)")  // Local position
+        print("Entity A Components: \(entityA.components)")
+        print("Entity A Collision Group: \(String(describing: entityA.components[CollisionComponent.self]?.filter.group))")
+        
+        // Entity B details
+        print("Entity B Name: \(entityB.name)")
+        print("Entity B World Position: \(entityB.position(relativeTo: nil))")  // World position
+        print("Entity B Local Position: \(entityB.position)")  // Local position
+        print("Entity B Components: \(entityB.components)")
+        print("Entity B Collision Group: \(String(describing: entityB.components[CollisionComponent.self]?.filter.group))")
+        
+        print("Contact World Position: \(collision.position)")
+        
+        let hasCollision = entityA.components[CollisionComponent.self]?.filter.group == .default ||
+                          entityB.components[CollisionComponent.self]?.filter.group == .default
+        
+        if hasCollision {
+            // Look for MicroscopeViewer parent which has the AudioLibraryComponent
+            if let microscopeEntity = [entityA, entityB]
+                .first(where: { $0.name == "MicroscopeReferenceSphere" })?
+                .parent {  // Get the parent MicroscopeViewer which has the audio
+                microscopeEntity.stopAllAudio()
+                if let audioComponent = microscopeEntity.components[AudioLibraryComponent.self],
+                   let attachSound = audioComponent.resources["Sonic_Pulse_Hit_01.wav"] {
+                    microscopeEntity.playAudio(attachSound)
+                }
+            }
+        }
+        
+        return hasCollision
+    }
+
+    private func hasMicroscopeCollision(_ collision: CollisionEvents.Began) -> Bool {
+        let entityA = collision.entityA
+        let entityB = collision.entityB
+        
+        let hasA = entityA.components[MicroscopeViewerComponent.self] != nil
+        let hasB = entityB.components[MicroscopeViewerComponent.self] != nil
+        let hasCollision = hasA || hasB
+        
+        print("  Has MicroscopeViewer component:")
+        print("    Entity A: \(hasA)")
+        print("    Entity B: \(hasB)")
+        
+        return hasCollision
+    }
+    
     // MARK: - Immersive Space Management
     func setImmersiveSpaceActive(spaceID: String, isActive: Bool) {
         switch spaceID {
@@ -499,6 +574,8 @@ final class AppModel: HitCountTracking {
             introSpaceActive = isActive
         case "LabSpace":
             labSpaceActive = isActive
+        case "BloodVesselSpace":
+            bloodVesselSpaceActive = isActive
         case "AttackSpace":
             attackSpaceActive = isActive
         default:
@@ -513,6 +590,10 @@ final class AppModel: HitCountTracking {
             introSpaceActive = false
         case .lab:
             labSpaceActive = false
+            // Clear any collision debounce state
+            debounce.removeAll()
+        case .bloodVessel:
+            bloodVesselSpaceActive = false
         case .attack:
             attackSpaceActive = false
         }
@@ -529,6 +610,10 @@ final class AppModel: HitCountTracking {
 
     func startLabPhase() {
         currentPhase = .lab
+    }
+
+    func startBloodVesselPhase() {
+        currentPhase = .bloodVessel
     }
 
     func startAttackPhase() {

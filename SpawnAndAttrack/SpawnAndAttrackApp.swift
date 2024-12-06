@@ -25,6 +25,8 @@ struct SpawnAndAttrackApp: App {
         RealityKitContent.BillboardComponent.registerComponent()
         RealityKitContent.BreathingComponent.registerComponent()
         RealityKitContent.CellPhysicsComponent.registerComponent()
+        RealityKitContent.MicroscopeViewerComponent.registerComponent()
+        RealityKitContent.GestureComponent.registerComponent()
         
         /// Register systems
         RealityKitContent.AttachmentSystem.registerSystem()
@@ -35,6 +37,9 @@ struct SpawnAndAttrackApp: App {
         RealityKitContent.ADCMovementSystem.registerSystem()
         RealityKitContent.UIStabilizerSystem.registerSystem()
         RealityKitContent.BillboardSystem.registerSystem()
+        
+        // Add ClosureSystem registration
+        ClosureSystem.registerSystem()
     }
     
     let heightModifier: CGFloat = 0.25
@@ -67,7 +72,6 @@ struct SpawnAndAttrackApp: App {
                 .environment(appModel)
         }
         .windowStyle(.volumetric)
-        .windowResizability(.contentMinSize)
         .defaultWindowPlacement { _, context in
             if let mainWindow = context.windows.first {
                 return WindowPlacement(.leading(mainWindow))
@@ -86,11 +90,22 @@ struct SpawnAndAttrackApp: App {
             LabView()
                 .environment(appModel)
         }
+        .immersionStyle(selection: .constant(.full), in: .full)
+        .upperLimbVisibility(.visible)
+
+        ImmersiveSpace(id: AppModel.SpaceState.bloodVessel.spaceId) {
+            BloodVesselView()
+                .environment(appModel)
+        }
+        .immersionStyle(selection: .constant(.full), in: .full)
+        .upperLimbVisibility(.visible)
 
         ImmersiveSpace(id: AppModel.SpaceState.attack.spaceId) {
             AttackCancerView()
                 .environment(appModel)
         }
+
+        
         .onChange(of: appModel.gamePhase) { _, newPhase in
             if newPhase == .playing && !appModel.immersiveSpaceActive {
                 Task {
@@ -132,6 +147,17 @@ struct SpawnAndAttrackApp: App {
                         fallthrough
                     @unknown default:
                         appModel.labSpaceActive = false
+                    }
+
+                case .bloodVessel:
+                    await dismissImmersiveSpace()
+                    switch await openImmersiveSpace(id: AppModel.SpaceState.bloodVessel.spaceId) {
+                    case .opened:
+                        appModel.bloodVesselSpaceActive = true
+                    case .error, .userCancelled:
+                        fallthrough
+                    @unknown default:
+                        appModel.bloodVesselSpaceActive = false
                     }
                     
                 case .attack:
