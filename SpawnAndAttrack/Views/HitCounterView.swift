@@ -3,16 +3,16 @@ import SwiftUI
 struct HitCounterView: View {
     @Environment(AppModel.self) private var appModel: AppModel
     @Binding var hits: Int
+    let requiredHits: Int
     private let lineWidth: CGFloat = 12
     private let fontSize: CGFloat = 75
-    private let maxHits: Int = 18
     
     var progress: CGFloat {
-        CGFloat(hits) / CGFloat(maxHits)
+        CGFloat(hits) / CGFloat(requiredHits)
     }
     
     var body: some View {
-        if hits < maxHits {
+        if hits < requiredHits {
             ZStack {
                 // Background circle
                 Circle()
@@ -43,7 +43,6 @@ struct HitCounterView: View {
 }
 
 //#Preview {
-//    HitCounterView(hits: .constant(5))
+//    HitCounterView(hits: .constant(5), requiredHits: 18)
 //        .preferredColorScheme(.dark)
 //}
-

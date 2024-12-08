@@ -1,7 +1,9 @@
 {
   "advancedEditorSelectedIdentifier" : "ProjectBrowser",
   "openSceneRelativePaths" : [
-    "BloodCellEnvironment.usda"
+    "BuildADCEnvironment.usda",
+    "ADC-spawn.usda",
+    "CancerCell-spawn.usda"
   ],
   "recentIdentifiers" : {
     "00353439-B084-4161-BDD3-58325B62FD61" : [
@@ -5556,5 +5558,5 @@
   "sceneViewportBackgroundColors" : {
 
   },
-  "selectedSceneRelativePath" : "BloodCellEnvironment.usda"
+  "selectedSceneRelativePath" : "CancerCell-spawn.usda"
 }

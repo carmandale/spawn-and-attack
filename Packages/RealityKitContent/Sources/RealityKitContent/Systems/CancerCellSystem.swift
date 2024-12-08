@@ -19,7 +19,7 @@ public class CancerCellSystem: System {
             guard var component = entity.components[CancerCellComponent.self] else { continue }
             
             // Check for destruction first - highest priority
-            if component.hitCount >= CancerCellComponent.requiredHits && !component.isDestroyed {
+            if component.hitCount >= component.requiredHits && !component.isDestroyed {
                 // Mark as destroyed immediately
                 component.isDestroyed = true
                 entity.components[CancerCellComponent.self] = component
@@ -35,7 +35,7 @@ public class CancerCellSystem: System {
                 
                 // Play audio
                 if let audioComponent = entity.components[AudioLibraryComponent.self],
-                   let deathSound = audioComponent.resources["Distortion_Wave_01.wav"] {
+                   let deathSound = audioComponent.resources["Kill_Cell_2.wav"] {
                     let controller = entity.playAudio(deathSound)
                     
                     // Remove after animation and audio completes

@@ -10,7 +10,7 @@ import SwiftUI
 import RealityKit
 import RealityKitContent
 
-struct BloodVesselView: View {
+struct BuildADCEnvironmentView: View {
     @Environment(AppModel.self) private var appModel
     
     /// The root entity for other entities within the scene.
@@ -22,8 +22,8 @@ struct BloodVesselView: View {
             //     content.add(immersiveContentEntity)
             // }
             
-           if let bloodCellEnvironmentEntity = await appModel.assetLoadingManager.instantiateEntity("build_adc_environment") {
-               content.add(bloodCellEnvironmentEntity)
+           if let buildADCEnvironmentEntity = await appModel.assetLoadingManager.instantiateEntity("build_adc_environment") {
+               content.add(buildADCEnvironmentEntity)
            } else {
                print("Failed to load build_adc_environment from asset manager")
            }

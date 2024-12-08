@@ -4,11 +4,24 @@ import RealityKitContent
 
 extension AssetLoadingManager {
     internal func loadLabEnvironmentAssets(group: inout ThrowingTaskGroup<LoadResult, Error>, taskCount: inout Int) {
-        group.addTask {
-            print("Starting to load LabEnvironment")
-            let entity = try await Entity(named: "LabEnvironment", in: realityKitContentBundle)
-            print("Successfully loaded LabEnvironment")
-            return LoadResult(entity: entity, key: "lab_environment", category: .labEnvironment)
+        group.addTask { () async throws -> LoadResult in
+            print("Starting to load and assemble LabEnvironment")
+
+            let assetRoot = await Entity()
+
+            print("Loading base LabEnvironment")
+            let labEnvironmentScene = try await Entity(named: "LabEnvironment", in: realityKitContentBundle)
+            await assetRoot.addChild(labEnvironmentScene)
+
+            print("Loading lab equipment")
+            let equipmentScene = try await self.loadPopulatedLabScene()
+            await assetRoot.addChild(equipmentScene)
+
+            print("Setting up IBL lighting")
+            try await IBLUtility.addImageBasedLighting(to: assetRoot, imageName: "lab_v005")
+
+            print("Successfully assembled complete LabEnvironment")
+            return LoadResult(entity: assetRoot, key: "lab_environment", category: .labEnvironment)
         }
         taskCount += 1
     }
@@ -63,9 +76,21 @@ extension AssetLoadingManager {
         }
         
         // Apply final scene rotation
-        emptyScene.orientation = simd_quatf(angle: -.pi/2, axis: [1, 0, 0])
+        await MainActor.run {
+            emptyScene.orientation = simd_quatf(angle: -.pi/2, axis: [1, 0, 0])
+        }
         
         return emptyScene
+    }
+    
+    private func loadLabAsset(named assetName: String) async throws -> Entity {
+        if let cached = entityTemplates[assetName] {
+            return cached
+        }
+        
+        let asset = try await Entity(named: "\(labObjectsPath)/\(assetName)", in: realityKitContentBundle)
+        entityTemplates[assetName] = asset
+        return asset
     }
     
     // MARK: - Private Helper Methods
@@ -101,16 +126,6 @@ extension AssetLoadingManager {
             // If there's no underscore, return the entire name
             return nameWithoutPrefix
         }
-    }
-    
-    private func loadLabAsset(named assetName: String) async throws -> Entity {
-        if let cached = entityTemplates[assetName] {
-            return cached
-        }
-        
-        let asset = try await Entity(named: "\(labObjectsPath)/\(assetName)", in: realityKitContentBundle)
-        entityTemplates[assetName] = asset
-        return asset
     }
     
     private func configureLabInstance(_ instance: Entity, for empty: Entity) {

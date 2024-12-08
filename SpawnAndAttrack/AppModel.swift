@@ -205,6 +205,9 @@ final class AppModel: HitCountTracking {
         initialAmount: 0.4
     )
     
+    // Add this property
+    var hasFirstADCBeenFired: Bool = false
+    
     init() {
         setupNotifications()
         // Add observer for cell death completion

@@ -105,7 +105,7 @@ struct SpawnAndAttrackApp: App {
         .upperLimbVisibility(.visible)
 
         ImmersiveSpace(id: AppModel.SpaceState.bloodVessel.spaceId) {
-            BloodVesselView()
+            BuildADCEnvironmentView()
                 .environment(appModel)
         }
         
@@ -115,7 +115,7 @@ struct SpawnAndAttrackApp: App {
                 .environment(appModel)
         }
         .immersionStyle(selection: .constant(.full), in: .full)
-        .upperLimbVisibility(.visible)
+        .upperLimbVisibility(.automatic)
 
         
         .onChange(of: appModel.gamePhase) { _, newPhase in

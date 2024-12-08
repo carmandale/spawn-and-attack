@@ -10,6 +10,10 @@ struct AttackCancerView: View {
     // Store entities
     @State private var rootEntity: Entity?
     @State private var adcTemplate: Entity?
+    @State private var handTrackedEntity: Entity = {
+        let handAnchor = AnchorEntity(.hand(.left, location: .aboveHand))
+        return handAnchor
+    }()
     
     // Store subscription to prevent deallocation - needed for collision detection
     @State private var subscription: EventSubscription?
@@ -21,6 +25,13 @@ struct AttackCancerView: View {
             content.add(root)
             rootEntity = root
 
+            // Add hand-tracked menu
+            content.add(handTrackedEntity)
+            if let attachmentEntity = attachments.entity(for: "DebugNavigation") {
+                attachmentEntity.components[BillboardComponent.self] = .init()
+                handTrackedEntity.addChild(attachmentEntity)
+            }
+            
             // Add Image-Based Lighting
             do {
                 try await IBLUtility.addImageBasedLighting(to: root, imageName: "metro_noord_2k")
@@ -93,19 +104,35 @@ struct AttackCancerView: View {
                 appModel?.handleCollisionBegan(event)
             }
         } attachments: {
+            Attachment(id: "DebugNavigation") {
+                HStack(spacing: 12) {  // Match reference spacing
+                    DebugNavigationWindow()
+                }
+                .padding()  // Add padding like reference
+            }
+            
+            // Existing cancer cell counter attachments
             ForEach(0..<appModel.maxCancerCells, id: \.self) { i in
                 Attachment(id: "\(i)") {
-                    HitCounterView(hits: Binding(
-                        get: {
-                            appModel.cancerCells
-                                .first(where: { cell in
-                                    cell.components[CancerCellComponent.self]?.cellID == i
-                                })?
-                                .components[CancerCellComponent.self]?
-                                .hitCount ?? 0
-                        },
-                        set: { _ in }
-                    ))
+                    HitCounterView(
+                        hits: Binding(
+                            get: {
+                                appModel.cancerCells
+                                    .first(where: { cell in
+                                        cell.components[CancerCellComponent.self]?.cellID == i
+                                    })?
+                                    .components[CancerCellComponent.self]?
+                                    .hitCount ?? 0
+                            },
+                            set: { _ in }
+                        ),
+                        requiredHits: appModel.cancerCells
+                            .first(where: { cell in
+                                cell.components[CancerCellComponent.self]?.cellID == i
+                            })?
+                            .components[CancerCellComponent.self]?
+                            .requiredHits ?? 18  // Fallback to 18 if component not found
+                    )
                 }
             }
         }
@@ -157,6 +184,11 @@ struct AttackCancerView: View {
               let root = rootEntity else {
             print("No ADC template, root entity, or scene available")
             return
+        }
+        
+        // Set the flag for first ADC fired
+        if !appModel.hasFirstADCBeenFired {
+            appModel.hasFirstADCBeenFired = true
         }
         
         // Clone the template
@@ -335,6 +367,8 @@ struct AttackCancerView: View {
     private func setupCellIdentification(_ cell: Entity, cellID: Int) {
         if var cancerCell = cell.components[CancerCellComponent.self] {
             cancerCell.cellID = cellID
+            // Generate random required hits between 7 and 18 for new cells
+            cancerCell.requiredHits = Int.random(in: 7...18)
             cell.components[CancerCellComponent.self] = cancerCell
         }
     }

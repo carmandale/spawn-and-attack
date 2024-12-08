@@ -14,10 +14,12 @@ struct ContentView: View {
                     appModel.gamePhase = .playing
                 }
         case .playing, .paused:
-            VStack {
-                Text("Let's Outdo Cancer")
-                    .font(.largeTitle)
-                    .padding()
+            if !appModel.attackSpaceActive {
+                VStack {
+                    Text("Let's Outdo Cancer")
+                        .font(.largeTitle)
+                        .padding()
+                }
             }
         case .completed:
             CompletedView()

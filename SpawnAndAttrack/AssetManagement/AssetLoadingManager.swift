@@ -28,6 +28,12 @@ enum LoadingState {
     case error(Error)
 }
 
+/// Add at the top level, before the AssetLoadingManager class
+enum AssetError: Error {
+    case resourceNotFound
+    // Add other asset-related errors as needed
+}
+
 /// Manages the loading and instantiation of assets in the lab environment
 @MainActor
 final class AssetLoadingManager {

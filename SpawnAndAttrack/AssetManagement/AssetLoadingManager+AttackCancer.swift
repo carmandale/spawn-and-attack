@@ -2,13 +2,27 @@ import Foundation
 import RealityKit
 import RealityKitContent
 
+enum AssetLoadError: Error {
+    case loadFailed(String)
+}
+
 extension AssetLoadingManager {
+    
     internal func loadAttackCancerEnvironmentAssets(group: inout ThrowingTaskGroup<LoadResult, Error>, taskCount: inout Int) {
         group.addTask {
-            print("Starting to load AttackCancerEnvironment")
-            let entity = try await Entity(named: "AttackCancerEnvironment", in: realityKitContentBundle)
-            print("Successfully loaded AttackCancerEnvironment")
-            return LoadResult(entity: entity, key: "attack_cancer_environment", category: .attackCancerEnvironment)
+            print("Starting to load and assemble AttackCancerEnvironment")
+            
+            let assetRoot = await Entity()
+            
+            // Load base environment
+            let attackCancerScene = try await Entity(named: "AttackCancerEnvironment", in: realityKitContentBundle)
+            await assetRoot.addChild(attackCancerScene)
+            
+            // Add IBL
+            try await IBLUtility.addImageBasedLighting(to: assetRoot, imageName: "metro_noord_2k")
+            
+            print("Successfully assembled AttackCancerEnvironment")
+            return LoadResult(entity: assetRoot, key: "attack_cancer_environment", category: .attackCancerEnvironment)
         }
         taskCount += 1
     }
@@ -17,6 +31,7 @@ extension AssetLoadingManager {
         group.addTask {
             print("Starting to load CancerCell-spawn")
             let entity = try await Entity(named: "CancerCell-spawn", in: realityKitContentBundle)
+            
             print("Successfully loaded CancerCell-spawn")
             return LoadResult(entity: entity, key: "cancer_cell", category: .cancerCell)
         }

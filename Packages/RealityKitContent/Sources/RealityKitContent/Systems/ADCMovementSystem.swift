@@ -8,12 +8,15 @@ public class ADCMovementSystem: System {
     static let query = EntityQuery(where: .has(ADCComponent.self))
     
     // Movement parameters
-    private static let numSteps: Double = 60
-    private static let baseArcHeight: Float = 1.0
-    private static let arcHeightRange: ClosedRange<Float> = 0.65...1.0
-    private static let baseStepDuration: TimeInterval = 0.03
-    private static let speedRange: ClosedRange<Float> = 0.95...1.5
+    private static let numSteps: Double = 90  // Increased for smoother motion
+    private static let baseArcHeight: Float = 1.2  // Slightly higher base arc
+    private static let arcHeightRange: ClosedRange<Float> = 0.55...1.1  // More varied arcs
+    private static let baseStepDuration: TimeInterval = 0.02  // Faster updates for smoother motion
+    private static let speedRange: ClosedRange<Float> = 0.95...2.2  // Base speed range
+    private static let spinSpeedRange: ClosedRange<Float> = 6.0...10.0  // More varied spin speeds
     private static let totalDuration: TimeInterval = numSteps * baseStepDuration
+    private static let minDistance: Float = 0.5  // Minimum distance threshold
+    private static let maxDistance: Float = 3.0  // Maximum distance threshold
     
     /// Initialize the system with the RealityKit scene
     required public init(scene: Scene) {}
@@ -108,7 +111,7 @@ public class ADCMovementSystem: System {
                 // Stop drone sound and play attach sound
                 entity.stopAllAudio()
                 if let audioComponent = entity.components[AudioLibraryComponent.self],
-                   let attachSound = audioComponent.resources["Sonic_Pulse_Hit_01.wav"] {
+                   let attachSound = audioComponent.resources["ADC_Attach.wav"] {
                     entity.playAudio(attachSound)
                 }
                 
@@ -150,16 +153,43 @@ public class ADCMovementSystem: System {
                 let t1 = 1.0 - p
                 let position = t1 * t1 * start + 2 * t1 * p * controlPoint + p * p * target
                 
+                // Calculate tangent vector (derivative of Bezier curve)
+                let tangentStep1 = (controlPoint - start) * (1 - p)
+                let tangentStep2 = (target - controlPoint) * p
+                let tangent = normalize(2 * (tangentStep1 + tangentStep2))
+                
+                // Calculate up vector (trying to stay roughly upright while following curve)
+                let up = SIMD3<Float>(0, 1, 0)
+                let right = normalize(cross(tangent, up))
+                let adjustedUp = cross(right, tangent)
+                
+                // Calculate banking angle
+                let flatTangent = SIMD3<Float>(tangent.x, 0, tangent.z)
+                let normalizedFlatTangent = normalize(flatTangent)
+                let bankAngle = acos(dot(tangent, normalizedFlatTangent))
+                
+                // Determine bank direction
+                let crossProduct = cross(normalizedFlatTangent, tangent)
+                let bankSign: Float = crossProduct.y > 0 ? 1 : -1
+                
+                // Apply banking
+                let maxBankAngle: Float = .pi / 6 // 30 degrees max bank
+                let banking = simd_quatf(angle: bankAngle * bankSign * maxBankAngle, axis: tangent)
+                
+                // Create orientation that follows the curve
+                let baseOrientation = simd_quatf(from: SIMD3<Float>(0, 0, 1), to: tangent)
+                
+                // Apply banking and smooth rotation
+                let targetOrientation = banking * baseOrientation
+                
+                // Smoothly interpolate to target orientation
+                let rotationSpeed: Float = 8.0 // Adjust for smoother or quicker rotation
+                let currentOrientation = entity.orientation
+                let slerpFactor = min(Float(context.deltaTime) * rotationSpeed, 1)
+                entity.orientation = simd_slerp(currentOrientation, targetOrientation, slerpFactor)
+                
                 // Update position
                 entity.position = position
-                
-                // Apply rotation - spin around Z axis
-                let rotationSpeed = adcComponent.spinSpeed ?? Float.random(in: 3.0...5.0)
-                adcComponent.spinSpeed = rotationSpeed // Store for consistent speed
-                
-                let rotationAngle = rotationSpeed * Float(context.deltaTime)
-                let rotation = simd_quatf(angle: rotationAngle, axis: [0, 0, 1])
-                entity.orientation = entity.orientation * rotation
             }
             
             // Update component
@@ -192,7 +222,18 @@ public class ADCMovementSystem: System {
         
         // Add randomization factors
         adcComponent.arcHeightFactor = Float.random(in: arcHeightRange)
-        adcComponent.speedFactor = Float.random(in: speedRange)
+        
+        // Calculate distance-based speed adjustment
+        let distance = length(targetPoint.position(relativeTo: nil) - start)
+        let normalizedDistance = (distance - minDistance) / (maxDistance - minDistance)
+        let clampedDistance = max(0, min(1, normalizedDistance))
+        
+        // For close distances, increase the minimum speed
+        let adjustedSpeedRange = clampedDistance < 0.3 
+            ? ClosedRange(uncheckedBounds: (lower: 1.5, upper: 2.0))  // Faster for close targets
+            : speedRange
+        
+        adcComponent.speedFactor = Float.random(in: adjustedSpeedRange)
         
         // Update the component
         entity.components[ADCComponent.self] = adcComponent
@@ -202,7 +243,7 @@ public class ADCMovementSystem: System {
         
         // Start drone sound
         if let audioComponent = entity.components[AudioLibraryComponent.self],
-           let droneSound = audioComponent.resources["Drones_01.wav"] {
+           let droneSound = audioComponent.resources["SpinBus.wav"] {
             entity.playAudio(droneSound)
         }
     }
