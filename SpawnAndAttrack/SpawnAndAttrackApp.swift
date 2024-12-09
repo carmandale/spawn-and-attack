@@ -42,8 +42,9 @@ struct SpawnAndAttrackApp: App {
         // Add ClosureSystem registration
         ClosureSystem.registerSystem()
         
-        // Add BillboardSystem registration
-//        BillboardSystem.registerSystem()
+        // Add HeadTracking FollowSystem
+        FollowSystem.registerSystem()
+        FollowComponent.registerComponent()
         
     }
     

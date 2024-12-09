@@ -243,7 +243,7 @@ public class ADCMovementSystem: System {
         
         // Start drone sound
         if let audioComponent = entity.components[AudioLibraryComponent.self],
-           let droneSound = audioComponent.resources["SpinBus.wav"] {
+           let droneSound = audioComponent.resources["Drones_01.wav"] {
             entity.playAudio(droneSound)
         }
     }

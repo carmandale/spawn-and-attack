@@ -9,13 +9,13 @@ enum AssetLoadError: Error {
 extension AssetLoadingManager {
     
     internal func loadAttackCancerEnvironmentAssets(group: inout ThrowingTaskGroup<LoadResult, Error>, taskCount: inout Int) {
-        group.addTask {
+        group.addTask { [weak self] in
+            guard let self = self else { throw AssetLoadError.loadFailed("AssetLoadingManager deallocated") }
             print("Starting to load and assemble AttackCancerEnvironment")
-            
             let assetRoot = await Entity()
             
             // Load base environment
-            let attackCancerScene = try await Entity(named: "AttackCancerEnvironment", in: realityKitContentBundle)
+            let attackCancerScene = try await self.loadEntity(named: "AttackCancerEnvironment")
             await assetRoot.addChild(attackCancerScene)
             
             // Add IBL

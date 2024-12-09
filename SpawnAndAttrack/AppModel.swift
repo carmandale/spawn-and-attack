@@ -1,6 +1,7 @@
 import SwiftUI
 import RealityKit
 import RealityKitContent
+import ARKit
 
 /// Maintains app-wide state for the cancer cell targeting game
 /// This class is responsible for:
@@ -11,6 +12,17 @@ import RealityKitContent
 @Observable
 @MainActor
 final class AppModel: HitCountTracking {
+    /// Keeps track of whether the toggle is in head-position or follow mode.
+    var headTrackState: HeadTrackState = .headPosition
+
+    /// Track the state of the toggle.
+    /// Follow: Uses `queryDeviceAnchor` to follow the device's position.
+    /// HeadPosition: Uses `AnchorEntity` to launch at the head position in front of the wearer.
+    enum HeadTrackState: String, CaseIterable {
+        case follow
+        case headPosition = "head-position"
+    }
+
     enum AppPhase {
         case intro
         case lab

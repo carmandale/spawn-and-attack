@@ -4,22 +4,25 @@ import RealityKitContent
 
 extension AssetLoadingManager {
     internal func loadLabEnvironmentAssets(group: inout ThrowingTaskGroup<LoadResult, Error>, taskCount: inout Int) {
-        group.addTask { () async throws -> LoadResult in
+        group.addTask { [weak self] () async throws -> LoadResult in
+            guard let self = self else { throw AssetLoadError.loadFailed("AssetLoadingManager deallocated") }
             print("Starting to load and assemble LabEnvironment")
-
             let assetRoot = await Entity()
-
+            
+            // Load lab environment base
             print("Loading base LabEnvironment")
-            let labEnvironmentScene = try await Entity(named: "LabEnvironment", in: realityKitContentBundle)
+            let labEnvironmentScene = try await self.loadEntity(named: "LabEnvironment")
             await assetRoot.addChild(labEnvironmentScene)
-
-            print("Loading lab equipment")
+            
+            // Load and add lab equipment
+            print("Assembling lab equipment")
             let equipmentScene = try await self.loadPopulatedLabScene()
             await assetRoot.addChild(equipmentScene)
-
+            
+            // Setup IBL lighting
             print("Setting up IBL lighting")
             try await IBLUtility.addImageBasedLighting(to: assetRoot, imageName: "lab_v005")
-
+            
             print("Successfully assembled complete LabEnvironment")
             return LoadResult(entity: assetRoot, key: "lab_environment", category: .labEnvironment)
         }
@@ -84,13 +87,7 @@ extension AssetLoadingManager {
     }
     
     private func loadLabAsset(named assetName: String) async throws -> Entity {
-        if let cached = entityTemplates[assetName] {
-            return cached
-        }
-        
-        let asset = try await Entity(named: "\(labObjectsPath)/\(assetName)", in: realityKitContentBundle)
-        entityTemplates[assetName] = asset
-        return asset
+        return try await self.loadEntity(named: "\(labObjectsPath)/\(assetName)")
     }
     
     // MARK: - Private Helper Methods

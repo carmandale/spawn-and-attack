@@ -129,7 +129,7 @@ final class AssetLoadingManager {
         }
         let clone = template.clone(recursive: true)
         print("\nCloned entity for key: \(key)")
-        inspectEntityHierarchy(clone)
+//        inspectEntityHierarchy(clone)
         return clone
     }
     
@@ -162,5 +162,16 @@ final class AssetLoadingManager {
         for child in entity.children {
             inspectEntityHierarchy(child, level: level + 1, showComponents: showComponents)
         }
+    }
+    
+    /// Load an entity by name, using caching to avoid redundant loads
+    func loadEntity(named name: String) async throws -> Entity {
+        if let cachedEntity = entityTemplates[name] {
+            return cachedEntity.clone(recursive: true)
+        }
+
+        let entity = try await Entity(named: name, in: realityKitContentBundle)
+        entityTemplates[name] = entity
+        return entity.clone(recursive: true)
     }
 }
