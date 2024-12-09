@@ -58,7 +58,7 @@ struct SpawnAndAttrackApp: App {
         }
         .windowStyle(.volumetric)
 
-        // Debug Navigation Window - Adjusted to match Garden14 pattern
+        // Debug Navigation Window 
         WindowGroup(id: AppModel.WindowState.debugNavigation.windowId) {
             DebugNavigationWindow()
                 .environment(appModel)

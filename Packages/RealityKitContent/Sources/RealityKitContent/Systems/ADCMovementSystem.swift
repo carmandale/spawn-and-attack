@@ -8,15 +8,125 @@ public class ADCMovementSystem: System {
     static let query = EntityQuery(where: .has(ADCComponent.self))
     
     // Movement parameters
-    private static let numSteps: Double = 90  // Increased for smoother motion
-    private static let baseArcHeight: Float = 1.2  // Slightly higher base arc
-    private static let arcHeightRange: ClosedRange<Float> = 0.55...1.1  // More varied arcs
-    private static let baseStepDuration: TimeInterval = 0.02  // Faster updates for smoother motion
-    private static let speedRange: ClosedRange<Float> = 0.95...2.2  // Base speed range
-    private static let spinSpeedRange: ClosedRange<Float> = 6.0...10.0  // More varied spin speeds
+    private static let numSteps: Double = 120  // Increased for even smoother motion
+    private static let baseArcHeight: Float = 1.2
+    private static let arcHeightRange: ClosedRange<Float> = 0.6...1.2  // Slightly increased range
+    private static let baseStepDuration: TimeInterval = 0.016  // ~60fps for smoother updates
+    private static let speedRange: ClosedRange<Float> = 1.2...3.0  // Adjusted for more consistent speed
+    private static let spinSpeedRange: ClosedRange<Float> = 4.0...8.0  // Reduced for smoother rotation
     private static let totalDuration: TimeInterval = numSteps * baseStepDuration
-    private static let minDistance: Float = 0.5  // Minimum distance threshold
-    private static let maxDistance: Float = 3.0  // Maximum distance threshold
+    private static let minDistance: Float = 0.5
+    private static let maxDistance: Float = 3.0
+    
+    // Rotation parameters
+    private static let rotationSmoothingFactor: Float = 12.0  // Increased for smoother rotation
+    private static let maxBankAngle: Float = .pi / 8  // Reduced maximum banking angle
+    private static let bankingSmoothingFactor: Float = 6.0  // New parameter for banking smoothing
+    
+    // Spin configuration
+    private static let proteinSpinSpeed: Float = Float.random(in: 8.0...12.0)  // Random spin speed between 8-15
+    private static let landingTransitionStart: Float = 0.85  // Start transition earlier
+    
+    // Helper functions for interpolation
+    private static func mix(_ a: Float, _ b: Float, t: Float) -> Float {
+        return a * (1 - t) + b * t
+    }
+    
+    private static func mix(_ a: SIMD3<Float>, _ b: SIMD3<Float>, t: Float) -> SIMD3<Float> {
+        return a * (1 - t) + b * t
+    }
+    
+    private static func smoothstep(_ edge0: Float, _ edge1: Float, _ x: Float) -> Float {
+        let t = max(0, min((x - edge0) / (edge1 - edge0), 1))
+        return t * t * (3 - 2 * t)
+    }
+    
+    private static func calculateOrientation(progress: Float,
+                                          direction: SIMD3<Float>,
+                                          deltaTime: TimeInterval,
+                                          currentOrientation: simd_quatf,
+                                          entity: Entity) -> simd_quatf {
+        // Calculate base orientation to face movement direction
+        let baseOrientation = simd_quatf(from: [0, 0, 1], to: direction)
+        
+        // Update protein complex spin
+        if let proteinComplex = entity.findEntity(named: "antibodyProtein_complex") {
+            let spinRotation = simd_quatf(angle: Float(deltaTime) * proteinSpinSpeed, axis: [-1, 0, 0])
+            proteinComplex.orientation = proteinComplex.orientation * spinRotation
+        }
+        
+        // During landing phase, maintain forward orientation
+        if progress > landingTransitionStart {
+            let landingBlend = smoothstep(landingTransitionStart, 1.0, progress)
+            return simd_slerp(currentOrientation, baseOrientation, landingBlend)
+        }
+        
+        return baseOrientation
+    }
+    
+    // Acceleration parameters
+    private static let accelerationPhase: Float = 0.2  // First 20% of movement
+    private static let decelerationPhase: Float = 0.2  // Last 20% of movement
+    private static let minSpeedMultiplier: Float = 0.4  // Minimum speed during accel/decel
+    
+    // Quaternion validation
+    private static func validateQuaternion(_ quat: simd_quatf) -> Bool {
+        // Check if any component is NaN
+        if quat.vector.x.isNaN || quat.vector.y.isNaN || quat.vector.z.isNaN || quat.vector.w.isNaN {
+            return false
+        }
+        // Check if quaternion is normalized (length ≈ 1)
+        let length = sqrt(quat.vector.x * quat.vector.x + 
+                        quat.vector.y * quat.vector.y + 
+                        quat.vector.z * quat.vector.z + 
+                        quat.vector.w * quat.vector.w)
+        return abs(length - 1.0) < 0.001
+    }
+    
+    // Debug logging functions
+    private static func debugMovementState(entity: Entity, 
+                                         progress: Float, 
+                                         speedFactor: Float, 
+                                         position: SIMD3<Float>, 
+                                         target: SIMD3<Float>) {
+        print("\n🚀 === ADC Movement State ===")
+        print("⏱️ Progress: \(String(format: "%.2f", progress))")
+        print("💨 Speed Factor: \(String(format: "%.2f", speedFactor))")
+        print("📍 Current: (\(String(format: "%.2f, %.2f, %.2f", position.x, position.y, position.z)))")
+        print("🎯 Target: (\(String(format: "%.2f, %.2f, %.2f", target.x, target.y, target.z)))")
+        
+        // Movement phase
+        if progress < Self.accelerationPhase {
+            print("🏃‍♂️ Phase: Acceleration")
+        } else if progress > (1.0 - Self.decelerationPhase) {
+            print("🛑 Phase: Deceleration")
+        } else {
+            print("✈️ Phase: Cruising")
+        }
+    }
+
+    private static func debugRotationState(position: SIMD3<Float>,
+                                         tangent: SIMD3<Float>,
+                                         bankAngle: Float?,
+                                         verticalComponent: Float,
+                                         currentOrientation: simd_quatf,
+                                         targetOrientation: simd_quatf) {
+        print("\n🔄 === Rotation State ===")
+        print("📍 Position: (\(String(format: "%.2f, %.2f, %.2f", position.x, position.y, position.z)))")
+        print("➡️ Direction: (\(String(format: "%.2f, %.2f, %.2f", tangent.x, tangent.y, tangent.z)))")
+        if let bankAngle = bankAngle {
+            print("🛩️ Bank: \(String(format: "%.2f°", bankAngle * 180 / .pi))")
+        }
+        print("⬆️ Vertical Component: \(String(format: "%.2f", verticalComponent))")
+        
+        // Quaternion validation
+        if !validateQuaternion(currentOrientation) {
+            print("⚠️ Warning: Invalid current orientation quaternion")
+        }
+        if !validateQuaternion(targetOrientation) {
+            print("⚠️ Warning: Invalid target orientation quaternion")
+        }
+    }
     
     /// Initialize the system with the RealityKit scene
     required public init(scene: Scene) {}
@@ -32,7 +142,41 @@ public class ADCMovementSystem: System {
             // Find target entity using ID
             let query = EntityQuery(where: .has(AttachmentPoint.self))
             let entities = context.scene.performQuery(query)
-            guard let targetEntity = entities.first(where: { $0.id == Entity.ID(targetID) }) else { continue }
+            guard let targetEntity = entities.first(where: { $0.id == Entity.ID(targetID) }) else {
+                print("⚠️ Target entity not found - aborting ADC movement")
+                adcComponent.state = .idle
+                entity.components[ADCComponent.self] = adcComponent
+                continue
+            }
+            
+            // Validate target before proceeding
+            if !Self.validateTarget(targetEntity, adcComponent, in: context.scene) {
+                print("⚠️ Target no longer valid - attempting to find new target")
+                
+                // Try to find new target
+                if Self.retargetADC(entity, 
+                                  &adcComponent, 
+                                  currentPosition: entity.position(relativeTo: nil),
+                                  in: context.scene) {
+                    // Successfully retargeted - update component and continue
+                    entity.components[ADCComponent.self] = adcComponent
+                    continue
+                } else {
+                    // No valid targets found - reset ADC
+                    print("⚠️ No valid targets found - resetting ADC")
+                    adcComponent.state = .idle
+                    adcComponent.targetEntityID = nil
+                    adcComponent.targetCellID = nil
+                    adcComponent.movementProgress = 0
+                    entity.components[ADCComponent.self] = adcComponent
+                    
+                    // Stop any ongoing animations/audio
+                    entity.stopAllAnimations()
+                    entity.stopAllAudio()
+                    
+                    continue
+                }
+            }
             
             // Get current target position
             let target = targetEntity.position(relativeTo: nil)
@@ -41,15 +185,43 @@ public class ADCMovementSystem: System {
             let speedFactor = adcComponent.speedFactor ?? 1.0
             let arcHeightFactor = adcComponent.arcHeightFactor ?? 1.0
             
-            // Update progress with randomized speed
-            adcComponent.movementProgress += Float(context.deltaTime / (Self.baseStepDuration * TimeInterval(1/speedFactor) * Self.numSteps))
+            // Calculate speed multiplier based on movement phase
+            let speedMultiplier: Float
+            if adcComponent.movementProgress < Self.accelerationPhase {
+                // Acceleration phase: gradually increase from minSpeedMultiplier to 1.0
+                let t = adcComponent.movementProgress / Self.accelerationPhase
+                speedMultiplier = Self.mix(Self.minSpeedMultiplier, 1.0, t: Self.smoothstep(0, 1, t))
+                if Int(t * 100) % 50 == 0 { // Print at 0% and 50% of acceleration
+                    print("🏃‍♂️ Acceleration - Speed Multiplier: \(String(format: "%.2f", speedMultiplier))")
+                }
+            } else if adcComponent.movementProgress > (1.0 - Self.decelerationPhase) {
+                // Deceleration phase: gradually decrease from 1.0 to minSpeedMultiplier
+                let t = (adcComponent.movementProgress - (1.0 - Self.decelerationPhase)) / Self.decelerationPhase
+                speedMultiplier = Self.mix(1.0, Self.minSpeedMultiplier, t: Self.smoothstep(0, 1, t))
+                if Int(t * 100) % 50 == 0 { // Print at 0% and 50% of deceleration
+                    print("🛑 Deceleration - Speed Multiplier: \(String(format: "%.2f", speedMultiplier))")
+                }
+            } else {
+                // Cruising phase: full speed
+                speedMultiplier = 1.0
+            }
+            
+            // Debug print for movement phase and speed (at key points)
+            if Int(adcComponent.movementProgress * 100) % 25 == 0 { // Print at 0%, 25%, 50%, 75%
+                print("\n🚀 === ADC Progress [Entity: \(entity.name)] ===")
+                print("⏱️ Progress: \(String(format: "%.2f", adcComponent.movementProgress))")
+                print("💨 Speed Factor: \(String(format: "%.2f", speedFactor))")
+                print("🎚️ Speed Multiplier: \(String(format: "%.2f", speedMultiplier))")
+            }
+            
+            // Update progress with randomized speed and phase-based multiplier
+            adcComponent.movementProgress += Float(context.deltaTime / (Self.baseStepDuration * TimeInterval(1/speedFactor) * Self.numSteps)) * speedMultiplier
             
             if adcComponent.movementProgress >= 1.0 {
                 // Movement complete
-                
-                print("\n=== ADC Impact Debug ===")
+                print("\n=== ADC Impact ===")
                 let impactDirection = normalize(target - start)
-                print("Impact direction: \(impactDirection)")
+                print("💥 Direction: (\(String(format: "%.2f, %.2f, %.2f", impactDirection.x, impactDirection.y, impactDirection.z)))")
                 
                 // Find the parent cancer cell using our utility function
                 if let cancerCell = findParentCancerCell(for: targetEntity, in: context.scene),
@@ -145,7 +317,7 @@ public class ADCMovementSystem: System {
                 // Calculate current position on curve using Bezier curve
                 let p = adcComponent.movementProgress
                 let distance = length(target - start)
-                let midPoint = mix(start, target, t: 0.5)
+                let midPoint = Self.mix(start, target, t: 0.5)
                 let heightOffset = distance * 0.5 * arcHeightFactor
                 let controlPoint = midPoint + SIMD3<Float>(0, heightOffset, 0)
                 
@@ -158,43 +330,172 @@ public class ADCMovementSystem: System {
                 let tangentStep2 = (target - controlPoint) * p
                 let tangent = normalize(2 * (tangentStep1 + tangentStep2))
                 
-                // Calculate up vector (trying to stay roughly upright while following curve)
-                let up = SIMD3<Float>(0, 1, 0)
-                let right = normalize(cross(tangent, up))
-                let adjustedUp = cross(right, tangent)
-                
-                // Calculate banking angle
-                let flatTangent = SIMD3<Float>(tangent.x, 0, tangent.z)
-                let normalizedFlatTangent = normalize(flatTangent)
-                let bankAngle = acos(dot(tangent, normalizedFlatTangent))
-                
-                // Determine bank direction
-                let crossProduct = cross(normalizedFlatTangent, tangent)
-                let bankSign: Float = crossProduct.y > 0 ? 1 : -1
-                
-                // Apply banking
-                let maxBankAngle: Float = .pi / 6 // 30 degrees max bank
-                let banking = simd_quatf(angle: bankAngle * bankSign * maxBankAngle, axis: tangent)
-                
-                // Create orientation that follows the curve
-                let baseOrientation = simd_quatf(from: SIMD3<Float>(0, 0, 1), to: tangent)
-                
-                // Apply banking and smooth rotation
-                let targetOrientation = banking * baseOrientation
-                
-                // Smoothly interpolate to target orientation
-                let rotationSpeed: Float = 8.0 // Adjust for smoother or quicker rotation
-                let currentOrientation = entity.orientation
-                let slerpFactor = min(Float(context.deltaTime) * rotationSpeed, 1)
-                entity.orientation = simd_slerp(currentOrientation, targetOrientation, slerpFactor)
+                // Debug prints every 10% progress
+                if Int(adcComponent.movementProgress * 100) % 10 == 0 {
+                    Self.debugMovementState(entity: entity,
+                                         progress: adcComponent.movementProgress,
+                                         speedFactor: speedFactor,
+                                         position: position,
+                                         target: target)
+                    
+                    // Calculate banking parameters
+                    let flatTangent = SIMD3<Float>(tangent.x, 0, tangent.z)
+                    let normalizedFlatTangent = normalize(flatTangent)
+                    let crossProduct = cross(normalizedFlatTangent, tangent)
+                    let verticalComponent = abs(tangent.y)
+                    
+                    Self.debugRotationState(position: position,
+                                         tangent: tangent,
+                                         bankAngle: adcComponent.currentBankAngle,
+                                         verticalComponent: verticalComponent,
+                                         currentOrientation: entity.orientation,
+                                         targetOrientation: simd_quatf(from: SIMD3<Float>(0, 0, 1), to: tangent))
+                }
                 
                 // Update position
                 entity.position = position
+                
+                // Apply spin rotation to antibodyProtein_complex
+                if let proteinComplex = entity.findEntity(named: "antibodyProtein_complex") {
+                    let spinRotation = simd_quatf(angle: Float(context.deltaTime) * Self.proteinSpinSpeed, axis: [-1, 0, 0])
+                    proteinComplex.orientation = proteinComplex.orientation * spinRotation
+                }
+                
+                // Calculate up vector (trying to stay roughly upright while following curve)
+                // let up = SIMD3<Float>(0, 1, 0)
+                // let right = normalize(cross(tangent, up))
+                // let adjustedUp = cross(right, tangent)
+                
+                // // Calculate banking angle with improved smoothing
+                // let targetBankAngle = Self.maxBankAngle * Self.smoothstep(0, 0.7, abs(tangent.y))
+                
+                // // Smoothly interpolate banking angle
+                // if adcComponent.currentBankAngle == nil {
+                //     adcComponent.currentBankAngle = 0
+                // }
+                // let currentBank = adcComponent.currentBankAngle!
+                // let bankDelta = targetBankAngle - currentBank
+                // adcComponent.currentBankAngle = currentBank + bankDelta * min(Float(context.deltaTime) * Self.bankingSmoothingFactor, 1)
+                
+                // // Apply smoothed banking
+                // let banking = simd_quatf(angle: adcComponent.currentBankAngle!, axis: tangent)
+                
+                // // Create base orientation that follows the curve
+                // let baseOrientation = simd_quatf(from: SIMD3<Float>(0, 0, 1), to: tangent)
+                
+                // // Apply banking and calculate target orientation
+                // let targetOrientation = banking * baseOrientation
+                
+                // Calculate and apply orientation with spin
+                // let orientation = Self.calculateOrientation(
+                //     progress: adcComponent.movementProgress,
+                //     direction: tangent,
+                //     deltaTime: context.deltaTime,
+                //     currentOrientation: entity.orientation,
+                //     entity: entity
+                // )
+                // entity.orientation = orientation
+                
             }
             
             // Update component
             entity.components[ADCComponent.self] = adcComponent
         }
+    }
+    
+    private static func findParentCancerCell(for attachPoint: Entity, in scene: Scene) -> Entity? {
+        var current = attachPoint
+        while let parent = current.parent {
+            if parent.components[CancerCellComponent.self] != nil {
+                return parent
+            }
+            current = parent
+        }
+        return nil
+    }
+    
+    private static func validateTarget(_ targetEntity: Entity, _ adcComponent: ADCComponent, in scene: Scene) -> Bool {
+        // Check if target entity still exists and is valid
+        if targetEntity.parent == nil {
+            print("⚠️ Target attachment point has been removed from scene")
+            return false
+        }
+        
+        // Check if parent cancer cell still exists
+        guard let cancerCell = findParentCancerCell(for: targetEntity, in: scene) else {
+            print("⚠️ Parent cancer cell no longer exists")
+            return false
+        }
+        
+        // Check if cancer cell is still valid (not being destroyed)
+        guard let cellComponent = cancerCell.components[CancerCellComponent.self],
+              let cellID = adcComponent.targetCellID,
+              cellComponent.cellID == cellID else {
+            print("⚠️ Cancer cell component mismatch or missing")
+            return false
+        }
+        
+        return true
+    }
+    
+    private static func findNewTarget(for adcEntity: Entity, currentPosition: SIMD3<Float>, in scene: Scene) -> (Entity, Int)? {
+        let cellQuery = EntityQuery(where: .has(CancerCellComponent.self))
+        var closestDistance = Float.infinity
+        var bestTarget: (attachPoint: Entity, cellID: Int)? = nil
+        
+        // Find all cancer cells
+        for cellEntity in scene.performQuery(cellQuery) {
+            guard let cellComponent = cellEntity.components[CancerCellComponent.self],
+                  let cellID = cellComponent.cellID else { continue }  // Skip cells without IDs
+            
+            // Skip if cell is already at or past required hits
+            if cellComponent.hitCount >= cellComponent.requiredHits {
+                continue
+            }
+            
+            // Find available attachment points
+            for child in cellEntity.children {
+                guard child.components[AttachmentPoint.self] != nil,
+                      child.components[ADCComponent.self] == nil else { continue }
+                
+                // Calculate distance to this attachment point
+                let attachPosition = child.position(relativeTo: nil)
+                let distance = length(attachPosition - currentPosition)
+                
+                // Update if this is the closest valid target
+                if distance < closestDistance {
+                    closestDistance = distance
+                    bestTarget = (attachPoint: child, cellID: cellID)
+                }
+            }
+        }
+        
+        return bestTarget
+    }
+    
+    private static func retargetADC(_ entity: Entity, 
+                                  _ adcComponent: inout ADCComponent,
+                                  currentPosition: SIMD3<Float>,
+                                  in scene: Scene) -> Bool {
+        // Find new target
+        guard let (newTarget, newCellID) = findNewTarget(for: entity, currentPosition: currentPosition, in: scene) else {
+            print("⚠️ No valid targets found for retargeting")
+            return false
+        }
+        
+        print("🎯 Retargeting ADC to new cancer cell (ID: \(newCellID))")
+        
+        // Update component with new target
+        adcComponent.targetEntityID = newTarget.id
+        adcComponent.targetCellID = newCellID
+        adcComponent.startWorldPosition = currentPosition  // Start from current position
+        adcComponent.movementProgress = 0  // Reset progress for new path
+        
+        // Generate new random factors for variety
+        adcComponent.speedFactor = Float.random(in: Self.speedRange)
+        adcComponent.arcHeightFactor = Float.random(in: Self.arcHeightRange)
+        
+        return true
     }
     
     // MARK: - Public API

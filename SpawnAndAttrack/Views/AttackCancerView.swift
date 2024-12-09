@@ -10,12 +10,11 @@ struct AttackCancerView: View {
     // Store entities
     @State private var rootEntity: Entity?
     @State private var adcTemplate: Entity?
-    @State private var handTrackedEntity: Entity = {
-        let handAnchor = AnchorEntity(.hand(.left, location: .aboveHand))
-        return handAnchor
-    }()
     
-    // Store subscription to prevent deallocation - needed for collision detection
+    // Hand tracking view model
+    @State private var handTracking = HandTrackingViewModel()
+    
+    // Store subscription to prevent deallocation
     @State private var subscription: EventSubscription?
     
     var body: some View {
@@ -24,13 +23,11 @@ struct AttackCancerView: View {
             let root = Entity()
             content.add(root)
             rootEntity = root
-
-            // Add hand-tracked menu
-            content.add(handTrackedEntity)
-            if let attachmentEntity = attachments.entity(for: "DebugNavigation") {
-                attachmentEntity.components[BillboardComponent.self] = .init()
-                handTrackedEntity.addChild(attachmentEntity)
-            }
+            
+            // Add hand tracking content
+            let handTrackingContent = handTracking.setupContentEntity()
+            
+            content.add(handTrackingContent)
             
             // Add Image-Based Lighting
             do {
@@ -140,8 +137,13 @@ struct AttackCancerView: View {
             SpatialTapGesture()
                 .targetedToAnyEntity()
                 .onEnded { value in
+                    let location3D = value.convert(value.location3D, from: .local, to: .scene)
+                    print("\n=== Tap Location ===")
+                    print("Location: \(location3D)")
+                    print("========================")
+                    
                     Task {
-                        await handleTap(on: value.entity)
+                        await handleTap(on: value.entity, location: location3D)
                     }
                 }
         )
@@ -157,10 +159,25 @@ struct AttackCancerView: View {
         }
     }
     
-    // Mark: Private Methods 
-    private func handleTap(on entity: Entity) async {
+    // MARK: - Private Methods 
+    private func handleTap(on entity: Entity, location: SIMD3<Float>) async {
         print("Tapped entity: \(entity.name)")
         
+        // Get pinch distances for both hands to determine which hand tapped
+        let leftPinchDistance = handTracking.getPinchDistance(.left) ?? Float.infinity
+        let rightPinchDistance = handTracking.getPinchDistance(.right) ?? Float.infinity
+        
+        // Determine which hand's position to use
+        let handPosition: SIMD3<Float>?
+        if leftPinchDistance < rightPinchDistance {
+            handPosition = handTracking.getFingerPosition(.left)
+            print("Left hand tap detected")
+        } else{
+            handPosition = handTracking.getFingerPosition(.right)
+            print("Right hand tap detected")
+        }
+        
+        // Proceed with existing cancer cell logic
         guard let scene = scene,
               let cellComponent = entity.components[CancerCellComponent.self],
               let cellID = cellComponent.cellID else {
@@ -176,10 +193,13 @@ struct AttackCancerView: View {
         print("Found attach point: \(attachPoint.name)")
         
         AttachmentSystem.markPointAsOccupied(attachPoint)
-        await spawnADC(targetPoint: attachPoint, forCellID: cellID)
+        
+        // Use the detected hand position if available, otherwise fall back to tap location
+        let spawnPosition = handPosition ?? location
+        await spawnADC(from: spawnPosition, targetPoint: attachPoint, forCellID: cellID)
     }
     
-    private func spawnADC(targetPoint: Entity, forCellID cellID: Int) async {
+    private func spawnADC(from position: SIMD3<Float>, targetPoint: Entity, forCellID cellID: Int) async {
         guard let template = adcTemplate,
               let root = rootEntity else {
             print("No ADC template, root entity, or scene available")
@@ -197,36 +217,39 @@ struct AttackCancerView: View {
         // Update ADCComponent properties
         guard var adcComponent = adc.components[ADCComponent.self] else { return }
         adcComponent.targetCellID = cellID
+        adcComponent.startWorldPosition = position  // Use the hand position
         adc.components[ADCComponent.self] = adcComponent
         
-        // Generate random spawn position
-        let spawnPoint = SIMD3<Float>(
-            Float.random(in: -0.125...0.125),
-            Float.random(in: 0.25...1.1),
-            Float.random(in: -0.5...(-0.125))
-        )
-        
         // Set initial position
-        adc.position = spawnPoint
+        adc.position = position
         
-        // Add to root first
+        // Add to scene
         root.addChild(adc)
         
-        // Start movement using static method
-        ADCMovementSystem.startMovement(entity: adc, from: spawnPoint, to: targetPoint)
+        // Start movement
+        ADCMovementSystem.startMovement(entity: adc, from: position, to: targetPoint)
+    }
+    
+    private func spawnADC(at position: SIMD3<Float>) async {
+        guard let template = adcTemplate,
+              let root = rootEntity else {
+            print("No ADC template, root entity, or scene available")
+            return
+        }
         
-        // let shape = ShapeResource.generateSphere(radius: 0.076)  // ADC size
-        // let collisionComponent = CollisionComponent(
-        //     shapes: [shape],
-        //     filter: .init(group: .adc, mask: .cancerCell)
-        // )
-        // adc.components.set(collisionComponent)
+        // Set the flag for first ADC fired
+        if !appModel.hasFirstADCBeenFired {
+            appModel.hasFirstADCBeenFired = true
+        }
         
-        // var physicsBody = PhysicsBodyComponent(mode: .dynamic)
-        // physicsBody.isAffectedByGravity = false
-        // physicsBody.linearDamping = 0.2
-        // physicsBody.massProperties.mass = 0.4
-        // adc.components[PhysicsBodyComponent.self] = physicsBody
+        // Clone the template
+        let adc = template.clone(recursive: true)
+        
+        // Set initial position
+        adc.position = position
+        
+        // Add to scene
+        root.addChild(adc)
     }
     
     private func spawnCancerCells(in root: Entity, from template: Entity, count: Int) {

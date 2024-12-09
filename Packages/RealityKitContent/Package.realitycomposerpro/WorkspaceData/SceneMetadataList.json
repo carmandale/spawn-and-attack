@@ -2999,6 +2999,15 @@
       {
         "isExpanded" : true,
         "isLocked" : false
+      },
+      [
+        "E2AD027D-0D91-4F9B-B113-E36E1C293338",
+        "Root",
+        "antibodyProtein_complex"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
       }
     ]
   },

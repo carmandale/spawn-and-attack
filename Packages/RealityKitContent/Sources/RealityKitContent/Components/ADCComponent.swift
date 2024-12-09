@@ -37,5 +37,8 @@ public struct ADCComponent: Component, Codable {
     public var arcHeightFactor: Float? = nil
     public var speedFactor: Float? = nil
     
+    /// Current banking angle for smooth rotation
+    public var currentBankAngle: Float? = nil
+    
     public init() {}
 }

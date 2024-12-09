@@ -531,22 +531,22 @@ final class AppModel: HitCountTracking {
         let entityA = collision.entityA
         let entityB = collision.entityB
         
-        print("\n=== Head Collision Details ===")
+        // print("\n=== Head Collision Details ===")
         // Entity A details
-        print("Entity A Name: \(entityA.name)")
-        print("Entity A World Position: \(entityA.position(relativeTo: nil))")  // World position
-        print("Entity A Local Position: \(entityA.position)")  // Local position
-        print("Entity A Components: \(entityA.components)")
-        print("Entity A Collision Group: \(String(describing: entityA.components[CollisionComponent.self]?.filter.group))")
+        // print("Entity A Name: \(entityA.name)")
+        // print("Entity A World Position: \(entityA.position(relativeTo: nil))")  // World position
+        // print("Entity A Local Position: \(entityA.position)")  // Local position
+        // print("Entity A Components: \(entityA.components)")
+        // print("Entity A Collision Group: \(String(describing: entityA.components[CollisionComponent.self]?.filter.group))")
         
         // Entity B details
-        print("Entity B Name: \(entityB.name)")
-        print("Entity B World Position: \(entityB.position(relativeTo: nil))")  // World position
-        print("Entity B Local Position: \(entityB.position)")  // Local position
-        print("Entity B Components: \(entityB.components)")
-        print("Entity B Collision Group: \(String(describing: entityB.components[CollisionComponent.self]?.filter.group))")
+        // print("Entity B Name: \(entityB.name)")
+        // print("Entity B World Position: \(entityB.position(relativeTo: nil))")  // World position
+        // print("Entity B Local Position: \(entityB.position)")  // Local position
+        // print("Entity B Components: \(entityB.components)")
+        // print("Entity B Collision Group: \(String(describing: entityB.components[CollisionComponent.self]?.filter.group))")
         
-        print("Contact World Position: \(collision.position)")
+        // print("Contact World Position: \(collision.position)")
         
         let hasCollision = entityA.components[CollisionComponent.self]?.filter.group == .default ||
                           entityB.components[CollisionComponent.self]?.filter.group == .default
@@ -575,9 +575,9 @@ final class AppModel: HitCountTracking {
         let hasB = entityB.components[MicroscopeViewerComponent.self] != nil
         let hasCollision = hasA || hasB
         
-        print("  Has MicroscopeViewer component:")
-        print("    Entity A: \(hasA)")
-        print("    Entity B: \(hasB)")
+        // print("  Has MicroscopeViewer component:")
+        // print("    Entity A: \(hasA)")
+        // print("    Entity B: \(hasB)")
         
         return hasCollision
     }
