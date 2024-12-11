@@ -21,7 +21,7 @@ struct IntroView: View {
     /// The root for the entities in the head-anchored scene.
     let headPositionedEntitiesRoot: Entity = Entity()
     
-    /// The root entities for the hummingbird and feeder.
+    /// The root entities for the intro scene.
     let hummingbird: Entity = Entity()
     let immersiveSceneRoot: Entity = Entity()
     
@@ -30,24 +30,36 @@ struct IntroView: View {
     
     var body: some View {
         RealityView { content in
-
-            // Load Intro Environment from pre-loaded assets.
+            // Add the intro environment to the immersiveSceneRoot
             if let introEnvironmentEntity = await appModel.assetLoadingManager.instantiateEntity("intro_environment") {
                 immersiveSceneRoot.addChild(introEnvironmentEntity)
-            } else {
-                print("Failed to load IntroEnvironment from asset manager")
             }
-
-            // Add the head-anchor root. Later, you add `AnchorEntity` to this.
-            content.add(headAnchorRoot)
-                
-            // Show the hummingbird and feeder using `AnchorEntity`.
-            startHeadPositionMode(content: content)
-
-        } update: { content in
-            // Switch between head-position and follow cases.
-            toggleHeadPositionModeOrFollowMode(content: content)
-        }
+            
+            // Create portal and add to immersiveSceneRoot
+            let portal = await PortalManager.createPortal(appModel: appModel)
+            portal.position = [0, 0, -2.5]
+            immersiveSceneRoot.addChild(portal)
+            
+            // Add the immersiveSceneRoot to content
+            content.add(immersiveSceneRoot)
+//            print("Initial immersiveSceneRoot position: \(immersiveSceneRoot.position(relativeTo: nil))")
+            
+            // Create head anchor for initial Y position only
+            let headAnchor = AnchorEntity(.head)
+            headAnchor.anchoring.trackingMode = .once
+            headAnchor.name = "headAnchor"
+            content.add(headAnchor)
+            
+//            headAnchor.addChild(immersiveSceneRoot)
+            
+            // Get head Y position and offset the entire immersiveSceneRoot
+            let headY = headAnchor.position.y
+            print("Head anchor Y position: \(headY)")
+            print("Current immersiveSceneRoot position before setPosition: \(immersiveSceneRoot.position(relativeTo: nil))")
+            immersiveSceneRoot.setPosition([0, headY, 0], relativeTo: nil)
+            print("Final immersiveSceneRoot position after setPosition: \(immersiveSceneRoot.position(relativeTo: nil))")
+            
+        } 
     }
 }
 
@@ -95,8 +107,11 @@ extension IntroView {
         // hummingbird.setPosition([0, 0, -0.15], relativeTo: headPositionedEntitiesRoot)
         
         // Add the head-positioned entities to the anchor, and set the position to be in front of the wearer.
-        headAnchor.addChild(headPositionedEntitiesRoot)
-        headPositionedEntitiesRoot.setPosition([0, 0, -0.6], relativeTo: headAnchor)
+//        headAnchor.addChild(headPositionedEntitiesRoot)
+        let newYPosition: Float = -1.0
+        let lowerIntroSceneYPosition = headPositionedEntitiesRoot.position.y - newYPosition
+        
+        headPositionedEntitiesRoot.setPosition([0, lowerIntroSceneYPosition, -0.6], relativeTo: headAnchor)
     }
     
     /// Switches between the follow and head-position modes depending on the `HeadTrackState` case.
@@ -108,4 +123,5 @@ extension IntroView {
             startHeadPositionMode(content: content)
         }
     }
+
 }

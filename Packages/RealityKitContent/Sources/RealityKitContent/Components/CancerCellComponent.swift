@@ -25,8 +25,8 @@ public struct CancerCellComponent: Component, Codable {
     @MainActor
     public init(cellID: Int? = nil) {
         self.cellID = cellID
-        // Generate random required hits between 7 and 18 for new cells
-        self.requiredHits = Int.random(in: 7...18)
+        // Generate random required hits between 5 and 18 for new cells
+        self.requiredHits = Int.random(in: 5...18)
     }
     
     enum CodingKeys: CodingKey {

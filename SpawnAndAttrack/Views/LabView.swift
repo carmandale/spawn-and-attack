@@ -76,7 +76,7 @@ struct LabView: View {
                 
                 // Then subscribe to collision events
                 subscription = content.subscribe(to: CollisionEvents.Began.self) { [weak appModel] event in
-                    appModel?.handleCollisionBegan(event)
+                    appModel?.gameState.handleCollisionBegan(event)
                 }
             }
             //            } catch {

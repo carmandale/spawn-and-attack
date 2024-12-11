@@ -9,15 +9,27 @@ struct DebugNavigationWindow: View {
                 .font(.headline)
 
             Button("Go to Intro Space") {
-                appModel.startIntroPhase()
+                Task {
+                    await appModel.transitionToPhase(.intro)
+                }
             }
 
             Button("Go to Lab Space") {
-                appModel.startLabPhase()
+                Task {
+                    await appModel.transitionToPhase(.lab)
+                }
+            }
+
+            Button("Go to Building Space") {
+                Task {
+                    await appModel.transitionToPhase(.building)
+                }
             }
 
             Button("Go to Attack Space") {
-                appModel.startAttackPhase()
+                Task {
+                    await appModel.transitionToPhase(.playing)
+                }
             }
         }
         .padding(20)

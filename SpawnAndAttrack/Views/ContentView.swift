@@ -3,26 +3,24 @@ import SwiftUI
 struct ContentView: View {
     @Environment(AppModel.self) private var appModel
     @Environment(\.openWindow) private var openWindow
+    @Environment(\.scenePhase) private var scenePhase
 
     var body: some View {
-        switch appModel.gamePhase {
-        case .setup:
+        switch appModel.currentPhase {
+        case .loading:
             LoadingView()
                 .task {
                     await appModel.startLoading()
-                    openWindow(id: AppModel.WindowState.debugNavigation.windowId)
-                    appModel.gamePhase = .playing
+                    await appModel.transitionToPhase(.intro)
                 }
-        case .playing, .paused:
-            if !appModel.attackSpaceActive {
-                VStack {
-                    Text("Let's Outdo Cancer")
-                        .font(.largeTitle)
-                        .padding()
-                }
+        case .intro:
+            VStack {
+                Text("Let's Outdo Cancer")
+                    .font(.largeTitle)
+                    .padding()
             }
-        case .completed:
-            CompletedView()
+        case .playing, .completed, .lab, .building:
+            EmptyView()
         case .error:
             ErrorView()
         }
