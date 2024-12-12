@@ -38,14 +38,14 @@ extension GameState {
             // print("Contact Position: \(collision.position)")
             
             // Handle cell-to-cell collisions
-            if let cellA = entities.itemA.components[CancerCellComponent.self],
-               let cellB = entities.itemB.components[CancerCellComponent.self] {
+            if let _ = entities.itemA.components[CancerCellComponent.self],
+               let _ = entities.itemB.components[CancerCellComponent.self] {
                 // print("\nCell-to-cell collision detected")
                 // print("Cell A ID: \(cellA.cellID ?? -1)")
                 // print("Cell B ID: \(cellB.cellID ?? -1)")
                 
-                if let motionA = entities.itemA.components[PhysicsMotionComponent.self],
-                   let motionB = entities.itemB.components[PhysicsMotionComponent.self] {
+                if let _ = entities.itemA.components[PhysicsMotionComponent.self],
+                   let _ = entities.itemB.components[PhysicsMotionComponent.self] {
                     let impulseStrength = impulse * 0.2
                     entities.itemA.components[PhysicsMotionComponent.self]?.linearVelocity += collision.impulseDirection * impulseStrength
                     entities.itemB.components[PhysicsMotionComponent.self]?.linearVelocity -= collision.impulseDirection * impulseStrength

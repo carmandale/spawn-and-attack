@@ -12,7 +12,7 @@ import RealityKit
 final class GameState: HitCountTracking {
     // MARK: - Core Properties
     var appModel: AppModel!
-    var maxCancerCells: Int = 2
+    var maxCancerCells: Int = 15
     var score: Int = 0
     
     // MARK: - Game Stats and Tracking
