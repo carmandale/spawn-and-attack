@@ -8,11 +8,25 @@
 import SwiftUI
 
 struct AttackCancerViewerButton: View {
+    @Environment(AppModel.self) private var appModel
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Button {
+            Task {
+                await appModel.transitionToPhase(.playing)
+            }
+        } label: {
+            Text("Attack Cancer")
+                .font(.title)
+                .fontWeight(.bold)
+                .padding()
+                .frame(minWidth: 200)
+        }
+        .padding()
+        .glassBackgroundEffect()
     }
 }
 
-#Preview {
-    AttackCancerViewerButton()
-}
+//#Preview {
+//    AttackCancerViewerButton()
+//}

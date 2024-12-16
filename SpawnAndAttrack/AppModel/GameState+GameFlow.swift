@@ -11,10 +11,15 @@ extension GameState {
         cellsDestroyed = 0
         hasFirstADCBeenFired = false
         completedDeaths.removeAll()
+        
+        // Start hope meter
+        hopeMeterTimeLeft = GameState.hopeMeterDuration
+        isHopeMeterRunning = true
     }
     
     func endGame() {
         appModel.currentPhase = .completed
+        isHopeMeterRunning = false
     }
     
     func resetGameState() {
@@ -25,6 +30,10 @@ extension GameState {
         hitCounts.removeAll()
         cancerCells.removeAll()
         completedDeaths.removeAll()
+        
+        // Reset hope meter
+        hopeMeterTimeLeft = GameState.hopeMeterDuration
+        isHopeMeterRunning = false
         
         appModel.currentPhase = .playing
     }

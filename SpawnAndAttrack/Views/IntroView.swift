@@ -9,6 +9,10 @@ import SwiftUI
 import RealityKit
 import RealityKitContent
 
+extension Notification.Name {
+    static let changeToLabNotification = Notification.Name("ChangeToLab")
+}
+
 /// A RealityView that creates an immersive lab environment with spatial audio and IBL lighting
 struct IntroView: View {
     @Environment(AppModel.self) private var appModel
@@ -28,6 +32,11 @@ struct IntroView: View {
     /// The root entity for other entities within the scene.
     private let root = Entity()
     
+    // Create publisher for the notification
+    private let changeToLabReceived = NotificationCenter.default.publisher(
+        for: .changeToLabNotification
+    )
+
     var body: some View {
         RealityView { content in
             // Add the intro environment to the immersiveSceneRoot
@@ -40,26 +49,43 @@ struct IntroView: View {
             portal.position = [0, 0, -2.5]
             immersiveSceneRoot.addChild(portal)
             
+            do {
+                let entity = try await appModel.assetLoadingManager.loadEntity(named: "IntroAudio")
+                print("Successfully loaded IntroAudio")
+                immersiveSceneRoot.addChild(entity)
+            } catch {
+                print("Failed to load IntroAudio: \(error)")
+            }
+           
+            
             // Add the immersiveSceneRoot to content
             content.add(immersiveSceneRoot)
-//            print("Initial immersiveSceneRoot position: \(immersiveSceneRoot.position(relativeTo: nil))")
             
             // Create head anchor for initial Y position only
-            let headAnchor = AnchorEntity(.head)
-            headAnchor.anchoring.trackingMode = .once
-            headAnchor.name = "headAnchor"
-            content.add(headAnchor)
+            // let headAnchor = AnchorEntity(.head)
+            // headAnchor.anchoring.trackingMode = .once
+            // headAnchor.name = "headAnchor"
+            // content.add(headAnchor)
             
-//            headAnchor.addChild(immersiveSceneRoot)
+            //            headAnchor.addChild(immersiveSceneRoot)
             
             // Get head Y position and offset the entire immersiveSceneRoot
-            let headY = headAnchor.position.y
-            print("Head anchor Y position: \(headY)")
-            print("Current immersiveSceneRoot position before setPosition: \(immersiveSceneRoot.position(relativeTo: nil))")
-            immersiveSceneRoot.setPosition([0, headY, 0], relativeTo: nil)
-            print("Final immersiveSceneRoot position after setPosition: \(immersiveSceneRoot.position(relativeTo: nil))")
+            // let headY = headAnchor.position.y
+            // print("Head anchor Y position: \(headY)")
+            // print("Current immersiveSceneRoot position before setPosition: \(immersiveSceneRoot.position(relativeTo: nil))")
+            // immersiveSceneRoot.setPosition([0, headY, 0], relativeTo: nil)
+            // print("Final immersiveSceneRoot position after setPosition: \(immersiveSceneRoot.position(relativeTo: nil))")
             
-        } 
+        }
+    
+        .onReceive(changeToLabReceived) { _ in
+            // Only transition if we're still in the intro phase
+            guard appModel.currentPhase == .intro else { return }
+            guard !appModel.isTransitioning else { return }
+            Task {
+                await appModel.transitionToPhase(.lab)
+            }
+        }
     }
 }
 

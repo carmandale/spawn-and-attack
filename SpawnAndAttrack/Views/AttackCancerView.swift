@@ -43,8 +43,8 @@ struct AttackCancerView: View {
         
         // Environment
         if let attackCancerScene = await appModel.assetLoadingManager.instantiateEntity("attack_cancer_environment") {
-            print("\n=== Loading Attack Cancer Environment ===")
-            appModel.assetLoadingManager.inspectEntityHierarchy(attackCancerScene)
+//            print("\n=== Loading Attack Cancer Environment ===")
+//            appModel.assetLoadingManager.inspectEntityHierarchy(attackCancerScene)
             root.addChild(attackCancerScene)
             setupCollisions(in: attackCancerScene)
         }
@@ -79,15 +79,17 @@ struct AttackCancerView: View {
                 
                 // ADC Template
                 if let adcEntity = await appModel.assetLoadingManager.instantiateEntity("adc") {
-                    print("\n=== Loading ADC Template ===")
-                    appModel.assetLoadingManager.inspectEntityHierarchy(adcEntity)
+//                    print("\n=== Loading ADC Template ===")
+//                    appModel.assetLoadingManager.inspectEntityHierarchy(adcEntity)
                     adcTemplate = adcEntity
                 }
                 
+                
+                
                 // Cancer Cells
                 if let cancerCellTemplate = await appModel.assetLoadingManager.instantiateEntity("cancer_cell") {
-                    print("\n=== Cancer Cell Template ===")
-                    appModel.assetLoadingManager.inspectEntityHierarchy(cancerCellTemplate)
+//                    print("\n=== Cancer Cell Template ===")
+//                    appModel.assetLoadingManager.inspectEntityHierarchy(cancerCellTemplate)
                     spawnCancerCells(in: root, from: cancerCellTemplate, count: appModel.gameState.maxCancerCells)
                     
                     // Setup UI attachments after cells are spawned
@@ -279,7 +281,7 @@ struct AttackCancerView: View {
     private func configureCellPosition(_ cell: Entity) {
         // Generate random orbit parameters
         // REF: Asteroids use radius 1...3 in reference ImmersiveViewModel+AstronomicalObjects.swift
-        let radius = Float.random(in: 2.0...4.0)  // Orbit radius range
+        let radius = Float.random(in: 1.5...3.5)  // Orbit radius range
         let theta = Float.random(in: 0...(2 * .pi))  // Random angle
         
         // Place cell on orbit

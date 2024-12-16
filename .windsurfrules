@@ -6,3 +6,12 @@
 6. if you get a great idea to make the code "better", you MUST talk about it and ask permission first
 7. always look in /Documentation for RealityKit_Documentation_*
 8. look in /REFERENCE_PROJECTS for the reference project
+9. NO NEW CODE until we talk it through
+10. Before making ANY code changes, first show and explain the relevant reference code
+11. When looking at reference code, explain each part you plan to use and why
+12. Break down complex changes into smaller steps and get approval for each
+13. Show both documentation AND reference code before proposing changes
+14. Follow instructions exactly as given
+15. Only deviate if explicitly asked
+16. Ask questions before making assumptions
+17. Treat documentation as authoritative when it's specifically referenced

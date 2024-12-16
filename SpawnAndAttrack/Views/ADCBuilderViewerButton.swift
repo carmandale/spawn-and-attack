@@ -8,11 +8,28 @@
 import SwiftUI
 
 struct ADCBuilderViewerButton: View {
+    @Environment(AppModel.self) private var appModel
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Button {
+            Task {
+                await appModel.transitionToPhase(.building)
+            }
+        } label: {
+            Text("ADC Builder")
+                .font(.title)
+                .fontWeight(.bold)
+                .padding()
+                .frame(minWidth: 200)
+        }
+        .padding()
+        .glassBackgroundEffect()
     }
+    
+       
+
 }
 
-#Preview {
-    ADCBuilderViewerButton()
-}
+//#Preview {
+//    ADCBuilderViewerButton()
+//}

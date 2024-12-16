@@ -4,12 +4,16 @@ import RealityKitContent
 
 extension AssetLoadingManager {
     internal func loadIntroEnvironmentAssets(group: inout ThrowingTaskGroup<LoadResult, Error>, taskCount: inout Int) {
-        group.addTask { [weak self] in
-            guard let self = self else { throw AssetLoadError.loadFailed("AssetLoadingManager deallocated") }
+        group.addTask {
             print("Starting to load IntroEnvironment")
-            let entity = try await self.loadEntity(named: "IntroEnvironment")
-            print("Successfully loaded IntroEnvironment")
-            return LoadResult(entity: entity, key: "intro_environment", category: .introEnvironment)
+            do {
+                let entity = try await self.loadEntity(named: "IntroEnvironment")
+                print("Successfully loaded IntroEnvironment")
+                return .success(entity: entity, key: "intro_environment", category: .introEnvironment)
+            } catch {
+                print("Failed to load IntroEnvironment: \(error)")
+                return .failure(key: "intro_environment", category: .introEnvironment, error: error)
+            }
         }
         taskCount += 1
     }

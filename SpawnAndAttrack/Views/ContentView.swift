@@ -13,10 +13,12 @@ struct ContentView: View {
                     await appModel.startLoading()
                     await appModel.transitionToPhase(.intro)
                 }
+                .frame(width: 800, height: 300)
         case .intro:
             VStack {
                 Text("Let's Outdo Cancer")
-                    .font(.largeTitle)
+                    .font(.extraLargeTitle)
+                    .fontWeight(.bold)
                     .padding()
             }
         case .playing, .completed, .lab, .building:
@@ -25,4 +27,9 @@ struct ContentView: View {
             ErrorView()
         }
     }
+}
+
+#Preview(windowStyle: .automatic) {
+    ContentView()
+        .environment(AppModel())
 }

@@ -4,27 +4,31 @@ import RealityKitContent
 
 extension AssetLoadingManager {
     internal func loadLabEnvironmentAssets(group: inout ThrowingTaskGroup<LoadResult, Error>, taskCount: inout Int) {
-        group.addTask { [weak self] () async throws -> LoadResult in
-            guard let self = self else { throw AssetLoadError.loadFailed("AssetLoadingManager deallocated") }
+        group.addTask { () async throws -> LoadResult in
             print("Starting to load and assemble LabEnvironment")
             let assetRoot = await Entity()
             
-            // Load lab environment base
-            print("Loading base LabEnvironment")
-            let labEnvironmentScene = try await self.loadEntity(named: "LabEnvironment")
-            await assetRoot.addChild(labEnvironmentScene)
-            
-            // Load and add lab equipment
-            print("Assembling lab equipment")
-            let equipmentScene = try await self.loadPopulatedLabScene()
-            await assetRoot.addChild(equipmentScene)
-            
-            // Setup IBL lighting
-            print("Setting up IBL lighting")
-            try await IBLUtility.addImageBasedLighting(to: assetRoot, imageName: "lab_v005")
-            
-            print("Successfully assembled complete LabEnvironment")
-            return LoadResult(entity: assetRoot, key: "lab_environment", category: .labEnvironment)
+            do {
+                // Load lab environment base
+                print("Loading base LabEnvironment")
+                let labEnvironmentScene = try await self.loadEntity(named: "LabEnvironment")
+                await assetRoot.addChild(labEnvironmentScene)
+                
+                // Load and add lab equipment
+                print("Assembling lab equipment")
+                let equipmentScene = try await self.loadPopulatedLabScene()
+                await assetRoot.addChild(equipmentScene)
+                
+                // Setup IBL lighting
+                print("Setting up IBL lighting")
+                try await IBLUtility.addImageBasedLighting(to: assetRoot, imageName: "lab_v005")
+                
+                print("Successfully assembled complete LabEnvironment")
+                return .success(entity: assetRoot, key: "lab_environment", category: .labEnvironment)
+            } catch {
+                print("Failed to load LabEnvironment: \(error)")
+                return .failure(key: "lab_environment", category: .labEnvironment, error: error)
+            }
         }
         taskCount += 1
     }
@@ -47,9 +51,14 @@ extension AssetLoadingManager {
         for assetName in labAssets {
             group.addTask {
                 print("Starting to load asset: \(assetName)")
-                let entity = try await Entity(named: "\(self.labObjectsPath)/\(assetName)", in: realityKitContentBundle)
-                print("Successfully loaded asset: \(assetName)")
-                return LoadResult(entity: entity, key: assetName, category: .labEquipment)
+                do {
+                    let entity = try await Entity(named: "\(self.labObjectsPath)/\(assetName)", in: realityKitContentBundle)
+                    print("Successfully loaded asset: \(assetName)")
+                    return .success(entity: entity, key: assetName, category: .labEquipment)
+                } catch {
+                    print("Failed to load asset: \(assetName), error: \(error)")
+                    return .failure(key: assetName, category: .labEquipment, error: error)
+                }
             }
             taskCount += 1
         }

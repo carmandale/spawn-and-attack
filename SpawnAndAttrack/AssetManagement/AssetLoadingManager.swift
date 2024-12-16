@@ -3,10 +3,16 @@ import RealityKit
 import RealityKitContent
 
 /// Represents the result of loading an asset
-struct LoadResult {
-    let entity: Entity
+enum LoadResult {
+    case success(entity: Entity, key: String, category: AssetCategory)
+    case failure(key: String, category: AssetCategory, error: Error)
+}
+
+/// Structure to track failed asset loads
+struct FailedAsset {
     let key: String
     let category: AssetCategory
+    let error: Error
 }
 
 /// Categories of assets in the lab environment
@@ -31,6 +37,7 @@ enum LoadingState {
 /// Add at the top level, before the AssetLoadingManager class
 enum AssetError: Error {
     case resourceNotFound
+    case criticalAssetsMissing(String)
     // Add other asset-related errors as needed
 }
 
@@ -44,6 +51,12 @@ final class AssetLoadingManager {
     
     /// Cached entity templates for efficient cloning
     internal var entityTemplates: [String: Entity] = [:]
+    
+    /// Track failed asset loads
+    private var failedAssets: [FailedAsset] = []
+    
+    /// Public accessor for failed assets
+    var loadingFailures: [FailedAsset] { failedAssets }
     
     /// Path to lab objects in RealityKitContent bundle
     internal let labObjectsPath = "Assets/Lab/Objects"
@@ -65,6 +78,7 @@ final class AssetLoadingManager {
     /// Load all assets required for the entire app
     func loadAssets() async throws {
         loadingState = .loading(progress: 0)
+        failedAssets.removeAll() // Clear previous failures
         
         var completedAssets = 0
         var totalAssets = 0  // Initialize task count
@@ -80,31 +94,42 @@ final class AssetLoadingManager {
                 loadCancerCellAssets(group: &group, taskCount: &totalAssets)
                 loadTreatmentAssets(group: &group, taskCount: &totalAssets)
                 
-                // Process results as they come in
+                // Process results with error handling
                 for try await result in group {
-                    processLoadedAsset(result)
                     completedAssets += 1
+                    
+                    switch result {
+                    case .success(let entity, let key, let category):
+                        entityTemplates[key] = entity
+                        print("Successfully loaded asset: \(key)")
+                        
+                    case .failure(let key, let category, let error):
+                        failedAssets.append(FailedAsset(key: key, category: category, error: error))
+                        print("Failed to load asset: \(key), error: \(error)")
+                    }
+                    
                     let progress = Float(completedAssets) / Float(totalAssets)
                     loadingState = .loading(progress: progress)
                 }
             }
+            
+            // After loading completes, report failures
+            if !failedAssets.isEmpty {
+                print("\n=== Asset Loading Report ===")
+                print("Failed to load \(failedAssets.count) assets:")
+                for failure in failedAssets {
+                    print("- \(failure.key) (\(failure.category)): \(failure.error)")
+                }
+                print("========================\n")
+            }
+            
+            loadingState = .completed
+            
         } catch {
             print("Error in task group: \(error)")
             loadingState = .error(error)
             throw error
         }
-        
-        // Verify critical assets were loaded
-        guard entityTemplates["lab_environment"] != nil,
-              entityTemplates["attack_cancer_environment"] != nil else {
-            let error = NSError(domain: "AssetLoadingManager",
-                              code: 1,
-                              userInfo: [NSLocalizedDescriptionKey: "Critical environments not found in loaded assets"])
-            loadingState = .error(error)
-            throw error
-        }
-        
-        loadingState = .completed
     }
     
     /// Get the current loading progress
@@ -134,7 +159,12 @@ final class AssetLoadingManager {
     }
     
     internal func processLoadedAsset(_ result: LoadResult) {
-        entityTemplates[result.key] = result.entity
+        switch result {
+        case .success(let entity, let key, _):
+            entityTemplates[key] = entity
+        case .failure(_, _, _):
+            break
+        }
     }
     
     // MARK: - Memory Management

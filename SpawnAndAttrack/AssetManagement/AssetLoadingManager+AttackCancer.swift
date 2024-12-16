@@ -4,25 +4,30 @@ import RealityKitContent
 
 enum AssetLoadError: Error {
     case loadFailed(String)
+    case missingComponent
 }
 
 extension AssetLoadingManager {
     
     internal func loadAttackCancerEnvironmentAssets(group: inout ThrowingTaskGroup<LoadResult, Error>, taskCount: inout Int) {
-        group.addTask { [weak self] in
-            guard let self = self else { throw AssetLoadError.loadFailed("AssetLoadingManager deallocated") }
+        group.addTask {
             print("Starting to load and assemble AttackCancerEnvironment")
             let assetRoot = await Entity()
             
-            // Load base environment
-            let attackCancerScene = try await self.loadEntity(named: "AttackCancerEnvironment")
-            await assetRoot.addChild(attackCancerScene)
-            
-            // Add IBL
-            try await IBLUtility.addImageBasedLighting(to: assetRoot, imageName: "metro_noord_2k")
-            
-            print("Successfully assembled AttackCancerEnvironment")
-            return LoadResult(entity: assetRoot, key: "attack_cancer_environment", category: .attackCancerEnvironment)
+            do {
+                // Load base environment
+                let attackCancerScene = try await self.loadEntity(named: "AttackCancerEnvironment")
+                await assetRoot.addChild(attackCancerScene)
+                
+                // Add IBL
+//                try await IBLUtility.addImageBasedLighting(to: assetRoot, imageName: "metro_noord_2k")
+                
+                print("Successfully assembled AttackCancerEnvironment")
+                return .success(entity: assetRoot, key: "attack_cancer_environment", category: .attackCancerEnvironment)
+            } catch {
+                print("Failed to load AttackCancerEnvironment: \(error)")
+                return .failure(key: "attack_cancer_environment", category: .attackCancerEnvironment, error: error)
+            }
         }
         taskCount += 1
     }
@@ -30,10 +35,14 @@ extension AssetLoadingManager {
     internal func loadCancerCellAssets(group: inout ThrowingTaskGroup<LoadResult, Error>, taskCount: inout Int) {
         group.addTask {
             print("Starting to load CancerCell-spawn")
-            let entity = try await Entity(named: "CancerCell-spawn", in: realityKitContentBundle)
-            
-            print("Successfully loaded CancerCell-spawn")
-            return LoadResult(entity: entity, key: "cancer_cell", category: .cancerCell)
+            do {
+                let entity = try await Entity(named: "CancerCell-spawn", in: realityKitContentBundle)
+                print("Successfully loaded CancerCell-spawn")
+                return .success(entity: entity, key: "cancer_cell", category: .cancerCell)
+            } catch {
+                print("Failed to load CancerCell-spawn: \(error)")
+                return .failure(key: "cancer_cell", category: .cancerCell, error: error)
+            }
         }
         taskCount += 1
     }
@@ -41,14 +50,20 @@ extension AssetLoadingManager {
     internal func loadTreatmentAssets(group: inout ThrowingTaskGroup<LoadResult, Error>, taskCount: inout Int) {
         group.addTask {
             print("Starting to load ADC-spawn")
-            let adc = try await Entity(named: "ADC-spawn", in: realityKitContentBundle)
-            print("Successfully loaded ADC-spawn")
-            // Store the inner root with audio like in the original
-            if let innerRoot = await adc.children.first {
-                return LoadResult(entity: innerRoot, key: "adc", category: .adc)
+            do {
+                let adc = try await Entity(named: "ADC-spawn", in: realityKitContentBundle)
+                print("Successfully loaded ADC-spawn")
+                if let innerRoot = await adc.children.first {
+                    print("ADC template loaded (using inner Root with audio)")
+                    return .success(entity: innerRoot, key: "adc", category: .adc)
+                }
+                return .failure(key: "adc", category: .adc, error: AssetLoadError.loadFailed("No inner Root found"))
+            } catch {
+                print("Failed to load ADC-spawn: \(error)")
+                return .failure(key: "adc", category: .adc, error: error)
             }
-            return LoadResult(entity: adc, key: "adc", category: .adc)
         }
         taskCount += 1
     }
 } 
+

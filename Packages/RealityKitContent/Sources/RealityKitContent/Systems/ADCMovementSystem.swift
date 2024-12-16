@@ -85,14 +85,14 @@ public class ADCMovementSystem: System {
                 let t = adcComponent.movementProgress / Self.accelerationPhase
                 speedMultiplier = Self.mix(Self.minSpeedMultiplier, 1.0, t: Self.smoothstep(0, 1, t))
                 if Int(t * 100) % 50 == 0 { // Print at 0% and 50% of acceleration
-                    print("🏃‍♂️ Acceleration - Speed Multiplier: \(String(format: "%.2f", speedMultiplier))")
+//                    print("🏃‍♂️ Acceleration - Speed Multiplier: \(String(format: "%.2f", speedMultiplier))")
                 }
             } else if adcComponent.movementProgress > (1.0 - Self.decelerationPhase) {
                 // Deceleration phase: gradually decrease from 1.0 to minSpeedMultiplier
                 let t = (adcComponent.movementProgress - (1.0 - Self.decelerationPhase)) / Self.decelerationPhase
                 speedMultiplier = Self.mix(1.0, Self.minSpeedMultiplier, t: Self.smoothstep(0, 1, t))
                 if Int(t * 100) % 50 == 0 { // Print at 0% and 50% of deceleration
-                    print("🛑 Deceleration - Speed Multiplier: \(String(format: "%.2f", speedMultiplier))")
+//                    print("🛑 Deceleration - Speed Multiplier: \(String(format: "%.2f", speedMultiplier))")
                 }
             } else {
                 // Cruising phase: full speed
@@ -101,10 +101,10 @@ public class ADCMovementSystem: System {
             
             // Debug print for movement phase and speed (at key points)
             if Int(adcComponent.movementProgress * 100) % 25 == 0 { // Print at 0%, 25%, 50%, 75%
-                print("\n🚀 === ADC Progress [Entity: \(entity.name)] ===")
-                print("⏱️ Progress: \(String(format: "%.2f", adcComponent.movementProgress))")
-                print("💨 Speed Factor: \(String(format: "%.2f", speedFactor))")
-                print("🎚️ Speed Multiplier: \(String(format: "%.2f", speedMultiplier))")
+//                print("\n🚀 === ADC Progress [Entity: \(entity.name)] ===")
+//                print("⏱️ Progress: \(String(format: "%.2f", adcComponent.movementProgress))")
+//                print("💨 Speed Factor: \(String(format: "%.2f", speedFactor))")
+//                print("🎚️ Speed Multiplier: \(String(format: "%.2f", speedMultiplier))")
             }
             
             // Update progress with randomized speed and phase-based multiplier
@@ -112,15 +112,15 @@ public class ADCMovementSystem: System {
             
             if adcComponent.movementProgress >= 1.0 {
                 // Movement complete
-                print("\n=== ADC Impact ===")
+//                print("\n=== ADC Impact ===")
                 let impactDirection = normalize(target - start)
-                print("💥 Direction: (\(String(format: "%.2f, %.2f, %.2f", impactDirection.x, impactDirection.y, impactDirection.z)))")
+//                print("💥 Direction: (\(String(format: "%.2f, %.2f, %.2f", impactDirection.x, impactDirection.y, impactDirection.z)))")
                 
                 // Find the parent cancer cell using our utility function
                 if let cancerCell = Self.findParentCancerCell(for: targetEntity, in: context.scene),
                    var cellPhysics = cancerCell.components[PhysicsMotionComponent.self] {
-                    print("Found cancer cell: \(cancerCell.name)")
-                    print("Initial velocity: \(cellPhysics.linearVelocity)")
+//                    print("Found cancer cell: \(cancerCell.name)")
+//                    print("Initial velocity: \(cellPhysics.linearVelocity)")
                     
                     // Apply impulse
                     cellPhysics.linearVelocity += impactDirection * 0.05
@@ -129,11 +129,11 @@ public class ADCMovementSystem: System {
                     let randomSign: Float = Bool.random() ? 1.0 : -1.0
                     cellPhysics.angularVelocity += SIMD3<Float>(0, randomSign * 0.1, 0)
                     
-                    print("New velocity: \(cellPhysics.linearVelocity)")
-                    print("New angular velocity: \(cellPhysics.angularVelocity)")
+//                    print("New velocity: \(cellPhysics.linearVelocity)")
+//                    print("New angular velocity: \(cellPhysics.angularVelocity)")
                     
                     cancerCell.components[PhysicsMotionComponent.self] = cellPhysics
-                    print("Updated physics on cancer cell")
+//                    print("Updated physics on cancer cell")
                     
                 } else {
                     print("Could not find parent cancer cell with physics component")
@@ -142,7 +142,38 @@ public class ADCMovementSystem: System {
                 // Remove from current parent and add to target entity
                 entity.removeFromParent()
                 targetEntity.addChild(entity)
-                
+
+                // Start antigen retraction
+//                print("\n=== Antigen Retraction Setup ===")
+                if let offsetEntity = targetEntity.parent {
+//                    print("📍 Found offset entity: \(offsetEntity.name)")
+                    
+                    if var antigenComponent = offsetEntity.components[AntigenComponent.self] {
+//                        print("✅ Found AntigenComponent on offset")
+                        // Start retraction
+                        antigenComponent.isRetracting = true
+                        offsetEntity.components[AntigenComponent.self] = antigenComponent
+//                        print("🔄 Started antigen retraction")
+                        
+                        // Start particle emission
+                        // if let antigenParent = offsetEntity.parent,
+                        //    let particleEntity = antigenParent.findEntity(named: "particle"),
+                        //    let emitterEntity = particleEntity.findEntity(named: "ParticleEmitter"),
+                        //    var emitter = emitterEntity.components[ParticleEmitterComponent.self] {
+                        //     print("✨ Found particle emitter component")
+                        //     emitter.isEmitting = true
+                        //     emitterEntity.components[ParticleEmitterComponent.self] = emitter
+                        //     print("💫 Started particle emission")
+                        // } else {
+                        //     print("⚠️ Could not find particle emitter in hierarchy")
+                        // }
+                    } else {
+                        print("⚠️ No AntigenComponent found on offset entity")
+                    }
+                } else {
+                    print("⚠️ Could not find offset entity (parent of attachment point)")
+                }
+
                 // Align orientation with target and set position with slight offset
                 entity.orientation = targetEntity.orientation(relativeTo: nil)
                 entity.position = SIMD3<Float>(0, -0.08, 0)
@@ -193,6 +224,7 @@ public class ADCMovementSystem: System {
                         
                         var updatedComponent = cellComponent
                         updatedComponent.hitCount += 1
+                        updatedComponent.wasJustHit = true  // Set wasJustHit flag to trigger particle effect
                         cellEntity.components[CancerCellComponent.self] = updatedComponent
                         
                         // Update the AppModel's cancerCells array
@@ -237,12 +269,12 @@ public class ADCMovementSystem: System {
                 
                 // Debug prints every 10% progress
                 if Int(adcComponent.movementProgress * 100) % 10 == 0 {
-                    print("🚀 Movement State:")
-                    print("Entity: \(entity.name)")
-                    print("Progress: \(String(format: "%.2f", adcComponent.movementProgress))")
-                    print("Speed Factor: \(String(format: "%.2f", speedFactor))")
-                    print("Position: (\(String(format: "%.2f, %.2f, %.2f", position.x, position.y, position.z)))")
-                    print("Target: (\(String(format: "%.2f, %.2f, %.2f", target.x, target.y, target.z)))")
+//                    print("🚀 Movement State:")
+//                    print("Entity: \(entity.name)")
+//                    print("Progress: \(String(format: "%.2f", adcComponent.movementProgress))")
+//                    print("Speed Factor: \(String(format: "%.2f", speedFactor))")
+//                    print("Position: (\(String(format: "%.2f, %.2f, %.2f", position.x, position.y, position.z)))")
+//                    print("Target: (\(String(format: "%.2f, %.2f, %.2f", target.x, target.y, target.z)))")
                     
                     // Calculate banking parameters
                     let flatTangent = SIMD3<Float>(tangent.x, 0, tangent.z)
@@ -250,13 +282,13 @@ public class ADCMovementSystem: System {
                     let crossProduct = cross(normalizedFlatTangent, tangent)
                     let verticalComponent = abs(tangent.y)
                     
-                    print("🔄 Rotation State:")
-                    print("Position: (\(String(format: "%.2f, %.2f, %.2f", position.x, position.y, position.z)))")
-                    print("Tangent: (\(String(format: "%.2f, %.2f, %.2f", tangent.x, tangent.y, tangent.z)))")
-                    print("Bank Angle: \(String(format: "%.2f", 0))")
-                    print("Vertical Component: \(String(format: "%.2f", verticalComponent))")
-                    print("Current Orientation: \(entity.orientation)")
-                    print("Target Orientation: \(simd_quatf(from: SIMD3<Float>(0, 0, 1), to: tangent))")
+//                    print("🔄 Rotation State:")
+//                    print("Position: (\(String(format: "%.2f, %.2f, %.2f", position.x, position.y, position.z)))")
+//                    print("Tangent: (\(String(format: "%.2f, %.2f, %.2f", tangent.x, tangent.y, tangent.z)))")
+//                    print("Bank Angle: \(String(format: "%.2f", 0))")
+//                    print("Vertical Component: \(String(format: "%.2f", verticalComponent))")
+//                    print("Current Orientation: \(entity.orientation)")
+//                    print("Target Orientation: \(simd_quatf(from: SIMD3<Float>(0, 0, 1), to: tangent))")
                 }
                 
                 // Calculate and apply orientation with spin
@@ -305,12 +337,12 @@ public class ADCMovementSystem: System {
     
     @MainActor
     public static func startMovement(entity: Entity, from start: SIMD3<Float>, to targetPoint: Entity) {
-        print("\n=== Starting ADC Movement ===")
-        print("ADC Entity: \(entity.name)")
-        print("Start Position: \(start)")
-        print("Target Entity: \(targetPoint.name)")
-        print("Target Position: \(targetPoint.position(relativeTo: nil))")
-        print("ADC Components: \(entity.components)")
+//        print("\n=== Starting ADC Movement ===")
+//        print("ADC Entity: \(entity.name)")
+//        print("Start Position: \(start)")
+//        print("Target Entity: \(targetPoint.name)")
+//        print("Target Position: \(targetPoint.position(relativeTo: nil))")
+//        print("ADC Components: \(entity.components)")
         
         guard var adcComponent = entity.components[ADCComponent.self] else {
             print("ERROR: No ADCComponent found on entity")

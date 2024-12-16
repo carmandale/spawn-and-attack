@@ -41,6 +41,12 @@ final class AppModel {
     var gameState: GameState
     var isDebugWindowOpen = false
 
+    // MARK: - Immersion Style
+    var introStyle: ImmersionStyle = .mixed
+    var labStyle: ImmersionStyle = .full
+    var buildingStyle: ImmersionStyle = .mixed
+    var attackStyle: ImmersionStyle = .full
+
     // MARK: - Asset Management
     let assetLoadingManager = AssetLoadingManager.shared
     var loadingProgress: Float = 0
@@ -58,6 +64,7 @@ final class AppModel {
     
     // MARK: - Space Management
     @ObservationIgnored private var currentImmersiveSpace: String?
+    @ObservationIgnored private(set) var isTransitioning = false
     
     var isInImmersiveSpace: Bool {
         return currentImmersiveSpace != nil
@@ -71,8 +78,11 @@ final class AppModel {
     
     // MARK: - Phase Management
     func transitionToPhase(_ newPhase: AppPhase) async {
+        guard !isTransitioning else { return }
+        isTransitioning = true
         print("Transitioning to phase: \(newPhase)")
         currentPhase = newPhase
         currentImmersiveSpace = newPhase.spaceId
+        isTransitioning = false
     }
 }

@@ -11,110 +11,129 @@ struct AttackCancerView: View {
     @State private var rootEntity: Entity?
     @State private var adcTemplate: Entity?
     
+    // Debug counters
+    @State private var totalTaps: Int = 0
+    @State private var successfulADCLaunches: Int = 0
+    
     // Hand tracking view model
     @State private var handTracking = HandTrackingViewModel()
     
     // Store subscription to prevent deallocation
     @State private var subscription: EventSubscription?
     
+    // MARK: - Setup Functions
+    private func setupRoot() -> Entity {
+        let root = Entity()
+        rootEntity = root
+        return root
+    }
+
+    private func setupHandTracking(in content: RealityViewContent) {
+        let handTrackingContent = handTracking.setupContentEntity()
+        content.add(handTrackingContent)
+    }
+
+    private func setupEnvironment(in root: Entity) async {
+        // IBL
+        do {
+            try await IBLUtility.addImageBasedLighting(to: root, imageName: "metro_noord_2k")
+        } catch {
+            print("Failed to setup IBL: \(error)")
+        }
+        
+        // Environment
+        if let attackCancerScene = await appModel.assetLoadingManager.instantiateEntity("attack_cancer_environment") {
+//            print("\n=== Loading Attack Cancer Environment ===")
+//            appModel.assetLoadingManager.inspectEntityHierarchy(attackCancerScene)
+            root.addChild(attackCancerScene)
+            setupCollisions(in: attackCancerScene)
+        }
+    }
+
+    private func setupCollisions(in scene: Entity) {
+        if let scene = scene.scene {
+            let query = EntityQuery(where: .has(BloodVesselWallComponent.self))
+            let objectsToModify = scene.performQuery(query)
+            
+            for object in objectsToModify {
+                if var collision = object.components[CollisionComponent.self] {
+                    collision.filter.group = .cancerCell
+                    collision.filter.mask = .adc
+                    object.components[CollisionComponent.self] = collision
+                }
+            }
+        }
+    }
+
+    // We will use this to show an way to restore the main window when it is closed.
+    @State var handTrackedEntity: Entity = {
+        let handAnchor = AnchorEntity(.hand(.left, location: .aboveHand))
+        return handAnchor
+    }()
+
     var body: some View {
         RealityView { content, attachments in
             print("\n=== RealityView Make Closure Start ===")
-            let root = Entity()
+            let root = setupRoot()
             content.add(root)
-            rootEntity = root
             
-            // Add hand tracking content
-            let handTrackingContent = handTracking.setupContentEntity()
-            
-            content.add(handTrackingContent)
-            
-            // Add Image-Based Lighting
-            do {
-                try await IBLUtility.addImageBasedLighting(to: root, imageName: "metro_noord_2k")
-            } catch {
-                print("Failed to setup IBL: \(error)")
-            }
-            
-            // Load Attack Cancer Environment from pre-loaded assets
-            if let attackCancerScene = await appModel.assetLoadingManager.instantiateEntity("attack_cancer_environment") {
-                print("\n=== Loading Attack Cancer Environment ===")
-                appModel.assetLoadingManager.inspectEntityHierarchy(attackCancerScene)
-                root.addChild(attackCancerScene)
+            setupHandTracking(in: content)
 
-                if let scene = attackCancerScene.scene {
-                    let query = EntityQuery(where: .has(BloodVesselWallComponent.self))
-                    let objectsToModify = scene.performQuery(query)
+            content.add(handTrackedEntity)
+                if let attachmentEntity = attachments.entity(for: "HopeMeter") {
+                    attachmentEntity.components[BillboardComponent.self] = .init()
+                    handTrackedEntity.addChild(attachmentEntity)
+                }
+            
+            Task {
+                // Environment setup
+                await setupEnvironment(in: root)
+                
+                // ADC Template
+                if let adcEntity = await appModel.assetLoadingManager.instantiateEntity("adc") {
+                   print("\n=== Loading ADC Template ===")
+                   print("Template components: \(adcEntity.components)")
+                   print("Has ADCComponent: \(adcEntity.components[ADCComponent.self] != nil)")
+                   appModel.assetLoadingManager.inspectEntityHierarchy(adcEntity)
+                    adcTemplate = adcEntity
+                }
+                
+                
+                
+                // Cancer Cells
+                if let cancerCellTemplate = await appModel.assetLoadingManager.instantiateEntity("cancer_cell") {
+//                    print("\n=== Cancer Cell Template ===")
+//                    appModel.assetLoadingManager.inspectEntityHierarchy(cancerCellTemplate)
+                    spawnCancerCells(in: root, from: cancerCellTemplate, count: appModel.gameState.maxCancerCells)
                     
-                    for object in objectsToModify {
-                        if var collision = object.components[CollisionComponent.self] {
-                            collision.filter.group = .cancerCell
-                            collision.filter.mask = .adc
-                            object.components[CollisionComponent.self] = collision
+                    // Setup UI attachments after cells are spawned
+                    for i in 0..<appModel.gameState.maxCancerCells {
+                        if let meter = attachments.entity(for: "\(i)"),
+                           root.findEntity(named: "cancer_cell_\(i)") != nil {
+                            root.addChild(meter)
+                            
+                            // Add UIAttachmentComponent to the UI entity (meter)
+                            let uiAttachment = UIAttachmentComponent(attachmentID: i)
+                            meter.components[UIAttachmentComponent.self] = uiAttachment
+                            
+                            // Add BillboardComponent to make the hit counter face the camera
+                            meter.components.set(BillboardComponent())
                         }
                     }
                 }
-
-
-            } else {
-                print("Failed to load AttackCancerEnvironment from asset manager")
             }
             
-            Task {
-                // Retrieve ADC template from asset manager
-                if let adcEntity = await appModel.assetLoadingManager.instantiateEntity("adc") {
-                    print("\n=== Loading ADC Template ===")
-                    appModel.assetLoadingManager.inspectEntityHierarchy(adcEntity)
-                    adcTemplate = adcEntity
-                } else {
-                    print("Failed to retrieve ADC template from asset manager")
-                }
-                
-                // Retrieve Cancer Cell template from asset manager
-                guard let cancerCellTemplate = await appModel.assetLoadingManager.instantiateEntity("cancer_cell") else {
-                    print("Failed to retrieve Cancer Cell template from asset manager")
-                    return
-                }
-                print("\n=== Cancer Cell Template ===")
-                appModel.assetLoadingManager.inspectEntityHierarchy(cancerCellTemplate)
-                
-                spawnCancerCells(in: root, from: cancerCellTemplate, count: appModel.maxCancerCells)
-                
-                for i in 0..<appModel.maxCancerCells {
-                    if let meter = attachments.entity(for: "\(i)"),
-                       let root = rootEntity,
-                       root.findEntity(named: "cancer_cell_\(i)") != nil {
-                        root.addChild(meter)
-                        
-                        // Add UIAttachmentComponent to the UI entity (meter)
-                        let uiAttachment = UIAttachmentComponent(attachmentID: i)
-                        meter.components[UIAttachmentComponent.self] = uiAttachment
-                        
-                        // Add BillboardComponent to make the hit counter face the camera
-                        meter.components.set(BillboardComponent())
-                    }
-                }
-            }
-            
-            // Subscribe to collision events
             subscription = content.subscribe(to: CollisionEvents.Began.self) { [weak appModel] event in
-                appModel?.handleCollisionBegan(event)
+                appModel?.gameState.handleCollisionBegan(event)
             }
         } attachments: {
-            Attachment(id: "DebugNavigation") {
-                HStack(spacing: 12) {  // Match reference spacing
-                    DebugNavigationWindow()
-                }
-                .padding()  // Add padding like reference
-            }
-            
             // Existing cancer cell counter attachments
-            ForEach(0..<appModel.maxCancerCells, id: \.self) { i in
+            ForEach(0..<appModel.gameState.maxCancerCells, id: \.self) { i in
                 Attachment(id: "\(i)") {
                     HitCounterView(
                         hits: Binding(
                             get: {
-                                appModel.cancerCells
+                                appModel.gameState.cancerCells
                                     .first(where: { cell in
                                         cell.components[CancerCellComponent.self]?.cellID == i
                                     })?
@@ -123,14 +142,17 @@ struct AttackCancerView: View {
                             },
                             set: { _ in }
                         ),
-                        requiredHits: appModel.cancerCells
+                        requiredHits: appModel.gameState.cancerCells
                             .first(where: { cell in
                                 cell.components[CancerCellComponent.self]?.cellID == i
                             })?
                             .components[CancerCellComponent.self]?
-                            .requiredHits ?? 18  // Fallback to 18 if component not found
+                            .requiredHits ?? 18
                     )
                 }
+            }
+            Attachment(id: "HopeMeter") {
+                HopeMeterView()
             }
         }
         .gesture(
@@ -138,25 +160,14 @@ struct AttackCancerView: View {
                 .targetedToAnyEntity()
                 .onEnded { value in
                     let location3D = value.convert(value.location3D, from: .local, to: .scene)
-                    print("\n=== Tap Location ===")
-                    print("Location: \(location3D)")
-                    print("========================")
+                    totalTaps += 1
+                    print("\n👆 TAP #\(totalTaps) on \(value.entity.name)")
                     
                     Task {
                         await handleTap(on: value.entity, location: location3D)
                     }
                 }
         )
-        .onChange(of: scenePhase, initial: true) {
-            switch scenePhase {
-            case .inactive, .background:
-                appModel.attackSpaceActive = false
-            case .active:
-                appModel.attackSpaceActive = true
-            @unknown default:
-                appModel.attackSpaceActive = false
-            }
-        }
     }
     
     // MARK: - Private Methods 
@@ -202,55 +213,49 @@ struct AttackCancerView: View {
     private func spawnADC(from position: SIMD3<Float>, targetPoint: Entity, forCellID cellID: Int) async {
         guard let template = adcTemplate,
               let root = rootEntity else {
-            print("No ADC template, root entity, or scene available")
+            print("❌ ADC #\(successfulADCLaunches + 1) Failed - Missing template or root")
             return
         }
         
+        print("\n=== Spawning ADC ===")
+        print("Template components before clone: \(template.components)")
+        
+        successfulADCLaunches += 1
+        print("✅ ADC #\(successfulADCLaunches) Launched (Total Taps: \(totalTaps))")
+        
         // Set the flag for first ADC fired
-        if !appModel.hasFirstADCBeenFired {
-            appModel.hasFirstADCBeenFired = true
+        if !appModel.gameState.hasFirstADCBeenFired {
+            appModel.gameState.hasFirstADCBeenFired = true
         }
+        
+        // Increment ADC count
+        appModel.gameState.incrementADCsDeployed()
         
         // Clone the template
         let adc = template.clone(recursive: true)
+        
+        // Set initial position
+        adc.position = position
+        
+        // Add to scene
+        root.addChild(adc)
         
         // Update ADCComponent properties
-        guard var adcComponent = adc.components[ADCComponent.self] else { return }
-        adcComponent.targetCellID = cellID
-        adcComponent.startWorldPosition = position  // Use the hand position
-        adc.components[ADCComponent.self] = adcComponent
-        
-        // Set initial position
-        adc.position = position
-        
-        // Add to scene
-        root.addChild(adc)
-        
-        // Start movement
-        ADCMovementSystem.startMovement(entity: adc, from: position, to: targetPoint)
-    }
-    
-    private func spawnADC(at position: SIMD3<Float>) async {
-        guard let template = adcTemplate,
-              let root = rootEntity else {
-            print("No ADC template, root entity, or scene available")
-            return
+        if let innerRoot = adc.children.first(where: { $0.name == "Root" }),
+           var adcComponent = innerRoot.components[ADCComponent.self] {
+            print("Found ADCComponent: \(adcComponent)")
+            adcComponent.targetCellID = cellID
+            adcComponent.startWorldPosition = position
+            innerRoot.components[ADCComponent.self] = adcComponent
+            print("Updated ADCComponent: \(adcComponent)")
+            
+            // Start movement on the inner Root entity that has the ADCComponent
+            ADCMovementSystem.startMovement(entity: innerRoot, from: position, to: targetPoint)
+        } else {
+            print("❌ No ADCComponent found on inner Root")
         }
-        
-        // Set the flag for first ADC fired
-        if !appModel.hasFirstADCBeenFired {
-            appModel.hasFirstADCBeenFired = true
-        }
-        
-        // Clone the template
-        let adc = template.clone(recursive: true)
-        
-        // Set initial position
-        adc.position = position
-        
-        // Add to scene
-        root.addChild(adc)
     }
+
     
     private func spawnCancerCells(in root: Entity, from template: Entity, count: Int) {
         // Create force entity with central gravity
@@ -291,7 +296,7 @@ struct AttackCancerView: View {
             setupCellIdentification(complexCell, cellID: index)
             
             root.addChild(cell)
-            appModel.registerCancerCell(cell)
+            appModel.gameState.registerCancerCell(cell)
             
             setupAttachmentPoints(for: cell, complexCell: complexCell, cellID: index)
         } else {
@@ -302,7 +307,7 @@ struct AttackCancerView: View {
     private func configureCellPosition(_ cell: Entity) {
         // Generate random orbit parameters
         // REF: Asteroids use radius 1...3 in reference ImmersiveViewModel+AstronomicalObjects.swift
-        let radius = Float.random(in: 2.0...4.0)  // Orbit radius range
+        let radius = Float.random(in: 1.5...3.5)  // Orbit radius range
         let theta = Float.random(in: 0...(2 * .pi))  // Random angle
         
         // Place cell on orbit
@@ -407,7 +412,7 @@ struct AttackCancerView: View {
                         var attachPoint = entity.components[AttachmentPoint.self]!
                         attachPoint.cellID = cellID
                         entity.components[AttachmentPoint.self] = attachPoint
-                        print("Set cellID \(cellID) for attachment point \(entity.name)")
+                        // print("Set cellID \(cellID) for attachment point \(entity.name)")
                         break
                     }
                     current = parent.parent

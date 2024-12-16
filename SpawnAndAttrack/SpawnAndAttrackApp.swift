@@ -28,6 +28,7 @@ struct SpawnAndAttrackApp: App {
         RealityKitContent.CellPhysicsComponent.registerComponent()
         RealityKitContent.MicroscopeViewerComponent.registerComponent()
         RealityKitContent.GestureComponent.registerComponent()
+        RealityKitContent.AntigenComponent.registerComponent()
         
         /// Register systems
         RealityKitContent.AttachmentSystem.registerSystem()
@@ -37,6 +38,7 @@ struct SpawnAndAttrackApp: App {
         RealityKitContent.UIAttachmentSystem.registerSystem()
         RealityKitContent.ADCMovementSystem.registerSystem()
         RealityKitContent.UIStabilizerSystem.registerSystem()
+        RealityKitContent.AntigenSystem.registerSystem()
         
         // Add ClosureSystem registration
         ClosureSystem.registerSystem()
@@ -46,7 +48,7 @@ struct SpawnAndAttrackApp: App {
         FollowComponent.registerComponent()
     }
     
-    let heightModifier: CGFloat = 0.25
+
 
     var body: some Scene {
         // Main Content Window
@@ -54,7 +56,8 @@ struct SpawnAndAttrackApp: App {
             ContentView()
                 .environment(appModel)
         }
-        .windowStyle(.plain)
+        .defaultSize(CGSize(width: 600, height: 600))
+        
 
         // Debug Navigation Window 
         WindowGroup(id: AppModel.WindowID.debugNavigation) {
@@ -62,14 +65,14 @@ struct SpawnAndAttrackApp: App {
                 .environment(appModel)
         }
         .windowResizability(.contentMinSize)
-        .defaultSize(CGSize(width: 150, height: 400))
+
         
         // Completed View
         WindowGroup(id: AppModel.WindowID.gameCompleted) {
             CompletedView()
                 .environment(appModel)
         }
-        .windowStyle(.plain)
+
         
         /// MARK: - Immersive Spaces
         // Immersive Spaces
@@ -77,26 +80,26 @@ struct SpawnAndAttrackApp: App {
             IntroView()
                 .environment(appModel)
         }
-        .immersionStyle(selection: .constant(.full), in: .mixed)
+        .immersionStyle(selection: $appModel.introStyle, in: .mixed)
 
         ImmersiveSpace(id: "LabSpace") {
             LabView()
                 .environment(appModel)
         }
-        .immersionStyle(selection: .constant(.full), in: .full)
+        .immersionStyle(selection: $appModel.labStyle, in: .full)
         .upperLimbVisibility(.visible)
 
         ImmersiveSpace(id: "BuildingSpace") {
             BuildADCEnvironmentView()
                 .environment(appModel)
         }
-        .immersionStyle(selection: .constant(.full), in: .mixed)
+        .immersionStyle(selection: $appModel.buildingStyle, in: .mixed)
 
         ImmersiveSpace(id: "AttackSpace") {
             AttackCancerView()
                 .environment(appModel)
         }
-        .immersionStyle(selection: .constant(.full), in: .full)
+        .immersionStyle(selection: $appModel.attackStyle, in: .full)
         .upperLimbVisibility(.automatic)
 
         // Single onChange handler for phase transitions
@@ -164,5 +167,11 @@ struct SpawnAndAttrackApp: App {
                 }
             }
         }
+    }
+}
+
+class AppDelegate: NSObject, UIApplicationDelegate {
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: UIApplication) -> Bool {
+        return true
     }
 }

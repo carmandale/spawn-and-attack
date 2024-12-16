@@ -5,6 +5,13 @@ struct LoadingView: View {
 
     var body: some View {
         VStack {
+            Image("Pfizer_Logo_Color_RGB")
+                .resizable()
+                .scaledToFit()
+                .padding(80)
+            Text("Let’s Outdo Cancer")
+                .font(.extraLargeTitle)
+                
             Text("Loading Assets...")
                 .font(.title)
                 .padding()
@@ -17,6 +24,13 @@ struct LoadingView: View {
                 .foregroundStyle(.secondary)
                 .padding()
         }
+        .frame(width: 800, height: 600)
 
     }
+}
+
+
+#Preview(windowStyle: .automatic) {
+    LoadingView()
+        .environment(AppModel())
 }

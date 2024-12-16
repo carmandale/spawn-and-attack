@@ -11,12 +11,31 @@ public class CancerCellSystem: System {
     private var destructionAudioResource: AudioFileResource?
     
     /// Initialize the system with the RealityKit scene
-    public required init(scene: Scene) { }
+    public required init(scene: Scene) {
+    }
     
     /// Update cancer cell entities
     public func update(context: SceneUpdateContext) {
         for entity in context.entities(matching: Self.query, updatingSystemWhen: .rendering) {
             guard var component = entity.components[CancerCellComponent.self] else { continue }
+            
+            // // set up initial particle system state
+            // if component.hitCount <= 0 {
+            //     component.isEmittingParticles = false
+            //     print("✨ setup initial particle system state isEmittingParticles to: \(component.isEmittingParticles)")
+            //     entity.components[CancerCellComponent.self] = component
+                
+            //     // Find and toggle particle emitter
+            //     if let particleSystem = entity.findEntity(named: "ParticleEmitter"),
+            //        var emitter = particleSystem.components[ParticleEmitterComponent.self] {
+            //         // Toggle emission state based on component state
+            //         emitter.isEmitting = component.isEmittingParticles
+            //         particleSystem.components.set(emitter)
+            //         print("✨ Updated INITIAL particle emitter isEmitting to: \(emitter.isEmitting)")
+            //     } else {
+            //         print("⚠️ Could not find particle emitter")
+            //     }
+            // }
             
             // Check for destruction first - highest priority
             if component.hitCount >= component.requiredHits && !component.isDestroyed {
@@ -26,26 +45,75 @@ public class CancerCellSystem: System {
                 
                 print("=== Cancer Cell Death Triggered ===")
                 
-                // Play death animation immediately
-                if let animLib = entity.components[AnimationLibraryComponent.self] {
+                // Find and toggle particle emitter
+                // Toggle particle emitter state
+//                print("✨ Current isEmittingParticles value: \(component.isEmittingParticles)")
+                component.isEmittingParticles = true
+//                print("✨ Toggled isEmittingParticles to: \(component.isEmittingParticles)")
+                entity.components[CancerCellComponent.self] = component
+                
+                // Find and toggle particle emitter
+                if let particleSystem = entity.findEntity(named: "ParticleEmitter"),
+                   var emitter = particleSystem.components[ParticleEmitterComponent.self] {
+                    // Toggle emission state based on component state
+//                    emitter.isEmitting = component.isEmittingParticles
+                    emitter.burst()
+                    particleSystem.components.set(emitter)
+                    print("✨ Updated particle emitter isEmitting to: \(emitter.isEmitting)")
+                } else {
+                    print("⚠️ Could not find particle emitter")
+                }
+
+
+                
+                // Attempt to play the default subtree animation
+                if let animationResource = entity.availableAnimations.first {
+                    entity.playAnimation(animationResource, transitionDuration: 0.0, startsPaused: false)
+                } else if let animLib = entity.components[AnimationLibraryComponent.self] {
+                    // Fallback to a specific animation in the AnimationLibraryComponent
                     if let deathAnimation = animLib.animations["death"] {
                         entity.playAnimation(deathAnimation)
                     }
                 }
+
                 
-                // Play audio
+                // Play audio and wait for particle effect
                 if let audioComponent = entity.components[AudioLibraryComponent.self],
-                   let deathSound = audioComponent.resources["Kill_Cell_2.wav"] {
+                   let deathSound = audioComponent.resources["Kill_Cell_5.wav"] {
                     let controller = entity.playAudio(deathSound)
                     
-                    // Remove after animation and audio completes
+                    // Remove after animation and particles complete
                     Task {
                         try? await Task.sleep(for: .seconds(2)) // Wait for animation
+                        try? await Task.sleep(for: .seconds(3)) // Wait for particles
+                        
+                        // turn the particles off
+                        component.isEmittingParticles = false
+                        print("FINISH ✨ Toggled isEmittingParticles to: \(component.isEmittingParticles)")
+                        entity.components[CancerCellComponent.self] = component
+                        
+                        // Find and toggle particle emitter
+                        if let particleSystem = entity.findEntity(named: "ParticleEmitter"),
+                           var emitter = particleSystem.components[ParticleEmitterComponent.self] {
+                            // Toggle emission state based on component state
+                            emitter.isEmitting = component.isEmittingParticles
+                            particleSystem.components.set(emitter)
+                            print("FINISH ✨ Updated particle emitter isEmitting to: \(emitter.isEmitting)")
+                        } else {
+                            print("⚠️ Could not find particle emitter")
+                        }
+                        
+                        if entity.scene != nil {
+                            print("✨ Removed \(entity) SUCCESSFULLY!!")
+                            entity.removeFromParent()
+                        }
                         
                         // Create a continuation to wait for audio completion
+                        // this does not appear to be happening
                         await withCheckedContinuation { continuation in
                             controller.completionHandler = {
                                 if entity.scene != nil {
+                                    print("✨ Removed \(entity)")
                                     entity.removeFromParent()
                                 }
                                 continuation.resume()
@@ -55,6 +123,29 @@ public class CancerCellSystem: System {
                 }
                 continue
             }
+            
+            // Handle hit count changes and particle effects
+            // if component.wasJustHit {
+            //     print("🎯 Cancer cell was just hit")
+            //     // Reset the hit flag
+            //     component.wasJustHit = false
+                
+            //     // Toggle particle emitter state
+            //     component.isEmittingParticles = !component.isEmittingParticles
+            //     print("✨ Toggled isEmittingParticles to: \(component.isEmittingParticles)")
+            //     entity.components[CancerCellComponent.self] = component
+                
+            //     // Find and toggle particle emitter
+            //     if let particleSystem = entity.findEntity(named: "ParticleEmitter"),
+            //        var emitter = particleSystem.components[ParticleEmitterComponent.self] {
+            //         // Toggle emission state based on component state
+            //         emitter.isEmitting = component.isEmittingParticles
+            //         particleSystem.components.set(emitter)
+            //         print("✨ Updated particle emitter isEmitting to: \(emitter.isEmitting)")
+            //     } else {
+            //         print("⚠️ Could not find particle emitter")
+            //     }
+            // }
             
             // Handle sudden scale changes based on hit count
             if component.isScaling {

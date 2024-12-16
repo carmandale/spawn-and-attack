@@ -36,6 +36,11 @@ final class GameState: HitCountTracking {
     var debounce: [UnorderedPair<Entity>: TimeInterval] = [:]
     static let debounceThreshold: TimeInterval = 0.1
     
+    // MARK: - Hope Meter
+    static let hopeMeterDuration: TimeInterval = 60 // 1 minute
+    var hopeMeterTimeLeft: TimeInterval = hopeMeterDuration
+    var isHopeMeterRunning = false
+    
     // MARK: - Callbacks
     var onGameStateChanged: ((AppPhase) -> Void)?
     var onScoreChanged: ((Int) -> Void)?
