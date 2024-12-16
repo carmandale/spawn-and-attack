@@ -49,12 +49,12 @@ extension ADCMovementSystem {
             return false
         }
         
-        // Check if cancer cell is still valid (not being destroyed)
+        // Check if cancer cell is still valid (not being destroyed or dying)
         guard let cellComponent = cancerCell.components[CancerCellComponent.self],
               let cellID = adcComponent.targetCellID,
               cellComponent.cellID == cellID,
-              !cellComponent.isDestroyed else {
-            print("⚠️ Cancer cell is destroyed or invalid")
+              !cellComponent.isDestroyed else {  // Only target alive cells
+            print("⚠️ Cancer cell is no longer valid (destroyed or dying)")
             return false
         }
         
@@ -70,7 +70,7 @@ extension ADCMovementSystem {
         for cellEntity in scene.performQuery(cellQuery) {
             guard let cellComponent = cellEntity.components[CancerCellComponent.self],
                   let cellID = cellComponent.cellID,
-                  !cellComponent.isDestroyed else { continue }
+                  !cellComponent.isDestroyed else { continue }  // Only consider alive cells
             
             // Skip if cell is already at or past required hits
             if cellComponent.hitCount >= cellComponent.requiredHits {

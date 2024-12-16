@@ -83,6 +83,8 @@ final class AppModel {
         print("Transitioning to phase: \(newPhase)")
         currentPhase = newPhase
         currentImmersiveSpace = newPhase.spaceId
+        // Add delay to ensure space is loaded before allowing another transition
+        try? await Task.sleep(for: .seconds(0.5))
         isTransitioning = false
     }
 }

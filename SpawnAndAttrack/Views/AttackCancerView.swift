@@ -6,6 +6,7 @@ struct AttackCancerView: View {
     @Environment(AppModel.self) private var appModel
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.realityKitScene) private var scene
+    @Environment(HandTrackingViewModel.self) private var handTracking
     
     // Store entities
     @State private var rootEntity: Entity?
@@ -15,9 +16,6 @@ struct AttackCancerView: View {
     @State private var totalTaps: Int = 0
     @State private var successfulADCLaunches: Int = 0
     
-    // Hand tracking view model
-    @State private var handTracking = HandTrackingViewModel()
-    
     // Store subscription to prevent deallocation
     @State private var subscription: EventSubscription?
     
@@ -26,11 +24,6 @@ struct AttackCancerView: View {
         let root = Entity()
         rootEntity = root
         return root
-    }
-
-    private func setupHandTracking(in content: RealityViewContent) {
-        let handTrackingContent = handTracking.setupContentEntity()
-        content.add(handTrackingContent)
     }
 
     private func setupEnvironment(in root: Entity) async {
@@ -43,8 +36,6 @@ struct AttackCancerView: View {
         
         // Environment
         if let attackCancerScene = await appModel.assetLoadingManager.instantiateEntity("attack_cancer_environment") {
-//            print("\n=== Loading Attack Cancer Environment ===")
-//            appModel.assetLoadingManager.inspectEntityHierarchy(attackCancerScene)
             root.addChild(attackCancerScene)
             setupCollisions(in: attackCancerScene)
         }
@@ -65,13 +56,25 @@ struct AttackCancerView: View {
         }
     }
 
+    @State var handTrackedEntity: Entity = {
+        let handAnchor = AnchorEntity(.hand(.left, location: .aboveHand))
+        return handAnchor
+    }()
+
     var body: some View {
         RealityView { content, attachments in
             print("\n=== RealityView Make Closure Start ===")
             let root = setupRoot()
             content.add(root)
             
-            setupHandTracking(in: content)
+            // Setup hand tracking using the shared view model
+            content.add(handTracking.setupContentEntity())
+            
+            content.add(handTrackedEntity)
+            if let attachmentEntity = attachments.entity(for: "HopeMeter") {
+                attachmentEntity.components[BillboardComponent.self] = .init()
+                handTrackedEntity.addChild(attachmentEntity)
+            }
             
             Task {
                 // Environment setup
@@ -79,8 +82,6 @@ struct AttackCancerView: View {
                 
                 // ADC Template
                 if let adcEntity = await appModel.assetLoadingManager.instantiateEntity("adc") {
-//                    print("\n=== Loading ADC Template ===")
-//                    appModel.assetLoadingManager.inspectEntityHierarchy(adcEntity)
                     adcTemplate = adcEntity
                 }
                 
@@ -88,8 +89,6 @@ struct AttackCancerView: View {
                 
                 // Cancer Cells
                 if let cancerCellTemplate = await appModel.assetLoadingManager.instantiateEntity("cancer_cell") {
-//                    print("\n=== Cancer Cell Template ===")
-//                    appModel.assetLoadingManager.inspectEntityHierarchy(cancerCellTemplate)
                     spawnCancerCells(in: root, from: cancerCellTemplate, count: appModel.gameState.maxCancerCells)
                     
                     // Setup UI attachments after cells are spawned
@@ -133,9 +132,23 @@ struct AttackCancerView: View {
                                 cell.components[CancerCellComponent.self]?.cellID == i
                             })?
                             .components[CancerCellComponent.self]?
-                            .requiredHits ?? 18
+                            .requiredHits ?? 18,
+                        isDestroyed: Binding(
+                            get: {
+                                appModel.gameState.cancerCells
+                                    .first(where: { cell in
+                                        cell.components[CancerCellComponent.self]?.cellID == i
+                                    })?
+                                    .components[CancerCellComponent.self]?
+                                    .isDestroyed ?? false
+                            },
+                            set: { _ in }
+                        )
                     )
                 }
+            }
+            Attachment(id: "HopeMeter") {
+                HopeMeterView()
             }
         }
         .gesture(
@@ -151,6 +164,10 @@ struct AttackCancerView: View {
                     }
                 }
         )
+        .onAppear {
+            // Start the game when view appears
+            appModel.gameState.startGame()
+        }
     }
     
     // MARK: - Private Methods 

@@ -11,7 +11,6 @@ struct ContentView: View {
             LoadingView()
                 .task {
                     await appModel.startLoading()
-                    await appModel.transitionToPhase(.intro)
                 }
                 .frame(width: 800, height: 300)
         case .intro:

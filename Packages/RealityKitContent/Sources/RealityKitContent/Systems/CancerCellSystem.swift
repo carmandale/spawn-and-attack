@@ -37,13 +37,13 @@ public class CancerCellSystem: System {
             //     }
             // }
             
-            // Check for destruction first - highest priority
+            // Check if cell should be destroyed
             if component.hitCount >= component.requiredHits && !component.isDestroyed {
-                // Mark as destroyed immediately
                 component.isDestroyed = true
                 entity.components[CancerCellComponent.self] = component
                 
                 print("=== Cancer Cell Death Triggered ===")
+                print("💀 Cell is destroyed")
                 
                 // Find and toggle particle emitter
                 // Toggle particle emitter state
@@ -84,40 +84,35 @@ public class CancerCellSystem: System {
                     
                     // Remove after animation and particles complete
                     Task {
-                        try? await Task.sleep(for: .seconds(2)) // Wait for animation
-                        try? await Task.sleep(for: .seconds(3)) // Wait for particles
+                        // Wait for animation and initial particle burst
+                        try? await Task.sleep(for: .seconds(2))
                         
-                        // turn the particles off
-                        component.isEmittingParticles = false
-                        print("FINISH ✨ Toggled isEmittingParticles to: \(component.isEmittingParticles)")
-                        entity.components[CancerCellComponent.self] = component
-                        
-                        // Find and toggle particle emitter
+                        // First, ensure particles are stopped
                         if let particleSystem = entity.findEntity(named: "ParticleEmitter"),
                            var emitter = particleSystem.components[ParticleEmitterComponent.self] {
-                            // Toggle emission state based on component state
-                            emitter.isEmitting = component.isEmittingParticles
+                            emitter.isEmitting = false
                             particleSystem.components.set(emitter)
-                            print("FINISH ✨ Updated particle emitter isEmitting to: \(emitter.isEmitting)")
-                        } else {
-                            print("⚠️ Could not find particle emitter")
+                            print("FINISH ✨ Stopped particle emitter")
                         }
                         
+                        // Wait a bit for particles to settle
+                        try? await Task.sleep(for: .seconds(1))
+                        
+                        // Remove all components in a specific order
+                        if let particleSystem = entity.findEntity(named: "ParticleEmitter") {
+                            // Remove particle component first
+                            particleSystem.components.remove(ParticleEmitterComponent.self)
+                            print("FINISH ✨ Removed particle emitter component")
+                        }
+                        
+                        // Remove the cancer cell component
+                        entity.components.remove(CancerCellComponent.self)
+                        print("FINISH ✨ Removed cancer cell component")
+                        
+                        // Finally remove the entity
                         if entity.scene != nil {
-                            print("✨ Removed \(entity) SUCCESSFULLY!!")
+                            print("✨ Removing entity from scene")
                             entity.removeFromParent()
-                        }
-                        
-                        // Create a continuation to wait for audio completion
-                        // this does not appear to be happening
-                        await withCheckedContinuation { continuation in
-                            controller.completionHandler = {
-                                if entity.scene != nil {
-                                    print("✨ Removed \(entity)")
-                                    entity.removeFromParent()
-                                }
-                                continuation.resume()
-                            }
                         }
                     }
                 }

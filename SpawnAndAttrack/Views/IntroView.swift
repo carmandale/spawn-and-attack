@@ -53,10 +53,10 @@ struct IntroView: View {
                 let entity = try await appModel.assetLoadingManager.loadEntity(named: "IntroAudio")
                 print("Successfully loaded IntroAudio")
                 immersiveSceneRoot.addChild(entity)
+                print("Added IntroAudio to immersiveSceneRoot")
             } catch {
                 print("Failed to load IntroAudio: \(error)")
             }
-           
             
             // Add the immersiveSceneRoot to content
             content.add(immersiveSceneRoot)
@@ -77,12 +77,27 @@ struct IntroView: View {
             // print("Final immersiveSceneRoot position after setPosition: \(immersiveSceneRoot.position(relativeTo: nil))")
             
         }
+        .installGestures()
     
-        .onReceive(changeToLabReceived) { _ in
-            // Only transition if we're still in the intro phase
-            guard appModel.currentPhase == .intro else { return }
-            guard !appModel.isTransitioning else { return }
+        .onReceive(changeToLabReceived) { output in
+            print("🎯 Received changeToLab notification")
+            guard let entity = output.userInfo?["RealityKit.NotifyAction.SourceEntity"] as? Entity else {
+                print("⚠️ No source entity found in notification")
+                return
+            }
+            print("✅ Found source entity: \(entity.name)")
+            
+            guard appModel.currentPhase == .intro else {
+                print("❌ Wrong phase: \(appModel.currentPhase)")
+                return
+            }
+            guard !appModel.isTransitioning else {
+                print("❌ Already transitioning")
+                return
+            }
+            
             Task {
+                print("🔄 Transitioning to Lab phase")
                 await appModel.transitionToPhase(.lab)
             }
         }

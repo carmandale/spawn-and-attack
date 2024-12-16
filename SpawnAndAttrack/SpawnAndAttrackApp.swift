@@ -11,6 +11,7 @@ import RealityKitContent
 @main
 struct SpawnAndAttrackApp: App {
     @State private var appModel = AppModel()
+    @State private var handTracking = HandTrackingViewModel()
     
     @Environment(\.openImmersiveSpace) private var openImmersiveSpace
     @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
@@ -98,6 +99,7 @@ struct SpawnAndAttrackApp: App {
         ImmersiveSpace(id: "AttackSpace") {
             AttackCancerView()
                 .environment(appModel)
+                .environment(handTracking)
         }
         .immersionStyle(selection: $appModel.attackStyle, in: .full)
         .upperLimbVisibility(.automatic)
@@ -105,7 +107,7 @@ struct SpawnAndAttrackApp: App {
         // Single onChange handler for phase transitions
         .onChange(of: appModel.currentPhase) { oldPhase, newPhase in
             if oldPhase == newPhase { return }  // Skip if no actual change
-            print("Transitioning to phase: \(newPhase)")
+            print("SpawnAndAttrackApp: Changing phase from \(oldPhase) to \(newPhase)")
             
             Task {
                 // Handle window visibility based on phase

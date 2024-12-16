@@ -101,11 +101,11 @@ final class AssetLoadingManager {
                     switch result {
                     case .success(let entity, let key, let category):
                         entityTemplates[key] = entity
-                        print("Successfully loaded asset: \(key)")
+                        // Success already logged by the loader
                         
                     case .failure(let key, let category, let error):
                         failedAssets.append(FailedAsset(key: key, category: category, error: error))
-                        print("Failed to load asset: \(key), error: \(error)")
+                        // Failure already logged by the loader
                     }
                     
                     let progress = Float(completedAssets) / Float(totalAssets)
@@ -200,8 +200,8 @@ final class AssetLoadingManager {
             return cachedEntity.clone(recursive: true)
         }
 
+        // Only load, don't cache - caching should be handled by the caller
         let entity = try await Entity(named: name, in: realityKitContentBundle)
-        entityTemplates[name] = entity
         return entity.clone(recursive: true)
     }
 }

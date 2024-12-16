@@ -38,10 +38,8 @@ extension AppModel {
                     
                     try await assetLoadingManager.loadAssets()
                     isLoading = false
+                    await transitionToPhase(.intro)
 
-                    // Update gamePhase to indicate loading is complete
-                    currentPhase = .playing
-                    
                 } catch {
                     print("Error loading assets: \(error)")
                     isLoading = false

@@ -4,6 +4,7 @@ struct HitCounterView: View {
     @Environment(AppModel.self) private var appModel: AppModel
     @Binding var hits: Int
     let requiredHits: Int
+    @Binding var isDestroyed: Bool
     private let lineWidth: CGFloat = 12
     private let fontSize: CGFloat = 75
     
@@ -12,7 +13,7 @@ struct HitCounterView: View {
     }
     
     var body: some View {
-        if hits < requiredHits {
+        if hits < requiredHits && !isDestroyed {
             ZStack {
                 // Background circle
                 Circle()
@@ -41,4 +42,3 @@ struct HitCounterView: View {
         }
     }
 }
-

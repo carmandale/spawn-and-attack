@@ -50,14 +50,15 @@ extension AssetLoadingManager {
         
         for assetName in labAssets {
             group.addTask {
-                print("Starting to load asset: \(assetName)")
+                let fullPath = "\(self.labObjectsPath)/\(assetName)"
+                print("Starting to load asset: \(fullPath)")
                 do {
-                    let entity = try await Entity(named: "\(self.labObjectsPath)/\(assetName)", in: realityKitContentBundle)
-                    print("Successfully loaded asset: \(assetName)")
-                    return .success(entity: entity, key: assetName, category: .labEquipment)
+                    let entity = try await Entity(named: fullPath, in: realityKitContentBundle)
+                    print("Successfully loaded asset: \(fullPath)")
+                    return .success(entity: entity, key: fullPath, category: .labEquipment)
                 } catch {
-                    print("Failed to load asset: \(assetName), error: \(error)")
-                    return .failure(key: assetName, category: .labEquipment, error: error)
+                    print("Failed to load asset: \(fullPath), error: \(error)")
+                    return .failure(key: fullPath, category: .labEquipment, error: error)
                 }
             }
             taskCount += 1
