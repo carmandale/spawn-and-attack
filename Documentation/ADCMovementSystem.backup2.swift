@@ -5,39 +5,27 @@ import Foundation
 @MainActor
 public final class ADCMovementSystem: System {
     // MARK: - Properties
-    /// Query to find entities that have an ADC component in moving state
     static let query = EntityQuery(where: .has(ADCComponent.self))
     
-    // Movement parameters
-    private static let numSteps: Double = 120  // Increased for even smoother motion
+    // MARK: - Configuration
+    private static let numSteps: Double = 120
     private static let baseArcHeight: Float = 1.2
-    private static let arcHeightRange: ClosedRange<Float> = 0.6...1.2  // Slightly increased range
-    private static let baseStepDuration: TimeInterval = 0.016  // ~60fps for smoother updates
-    private static let speedRange: ClosedRange<Float> = 1.2...3.0  // Adjusted for more consistent speed
-    private static let spinSpeedRange: ClosedRange<Float> = 4.0...8.0  // Reduced for smoother rotation
+    private static let arcHeightRange: ClosedRange<Float> = 0.6...1.2
+    private static let baseStepDuration: TimeInterval = 0.016
+    private static let speedRange: ClosedRange<Float> = 1.2...3.0
+    private static let spinSpeedRange: ClosedRange<Float> = 4.0...8.0
     private static let totalDuration: TimeInterval = numSteps * baseStepDuration
     private static let minDistance: Float = 0.5
     private static let maxDistance: Float = 3.0
+    private static let proteinSpinSpeed: Float = Float.random(in: 8.0...10.0)
+    private static let impactForce: Float = 0.05
+    private static let angularImpact: Float = 0.1
+    private static let attachmentOffset = SIMD3<Float>(0, -0.08, 0)
     
-    // Rotation parameters
-    private static let rotationSmoothingFactor: Float = 12.0  // Increased for smoother rotation
-    private static let maxBankAngle: Float = .pi / 8  // Reduced maximum banking angle
-    private static let bankingSmoothingFactor: Float = 6.0  // New parameter for banking smoothing
-    
-    // Spin configuration
-    private static let proteinSpinSpeed: Float = Float.random(in: 8.0...10.0)  // Random spin speed between 8-15
-    private static let landingTransitionStart: Float = 0.85  // Start transition earlier
-    
-    // Acceleration parameters
-    private static let accelerationPhase: Float = 0.2  // First 20% of movement
-    private static let decelerationPhase: Float = 0.2  // Last 20% of movement
-    private static let minSpeedMultiplier: Float = 0.4  // Minimum speed during accel/decel
-    
-    // MARK: - Configuration
-    private static let baseSpeed: Float = 2.0
-    private static let heightFactor: Float = 0.5
-    private static let retargetingRotationSpeed: Float = 2.0
-    private static let retargetInterval: TimeInterval = 1.0
+    // Movement phases
+    private static let accelerationPhase: Float = 0.2
+    private static let decelerationPhase: Float = 0.2
+    private static let minSpeedMultiplier: Float = 0.4
     
     // Animation timing
     private static let scaleUpDuration: TimeInterval = 0.15
@@ -50,20 +38,48 @@ public final class ADCMovementSystem: System {
     // MARK: - Public API
     @MainActor
     public static func startMovement(entity: Entity, from start: SIMD3<Float>, to targetPoint: Entity) {
-        guard var adcComponent = entity.components[ADCComponent.self] else { return }
+        guard var adcComponent = entity.components[ADCComponent.self] else {
+            print("ERROR: No ADCComponent found on entity")
+            return
+        }
         
-        // Update component with target information
-        adcComponent.targetEntityID = targetPoint.id
-        adcComponent.startWorldPosition = start
-        adcComponent.targetWorldPosition = targetPoint.position(relativeTo: nil)
-        
-        // Reset movement state
+        // Set up movement
         adcComponent.state = .moving
         adcComponent.movementProgress = 0
-        adcComponent.needsRetarget = false
+        adcComponent.targetEntityID = targetPoint.id
+        adcComponent.startWorldPosition = start
         
-        // Apply the updated component
+        // Set target cell ID if available
+        if let cancerCell = ADCMovementSystem.findParentCancerCell(for: targetPoint, in: entity.scene!) {
+            if let cellComponent = cancerCell.components[CancerCellComponent.self] {
+                adcComponent.targetCellID = cellComponent.cellID
+            }
+        }
+        
+        // Calculate distance-based speed adjustment
+        let distance = length(targetPoint.position(relativeTo: nil) - start)
+        let normalizedDistance = (distance - minDistance) / (maxDistance - minDistance)
+        let clampedDistance = max(0, min(1, normalizedDistance))
+        
+        // For close distances, increase the minimum speed
+        let adjustedSpeedRange = clampedDistance < 0.3 
+            ? ClosedRange(uncheckedBounds: (lower: 1.5, upper: 2.0))
+            : speedRange
+        
+        adcComponent.speed = Float.random(in: adjustedSpeedRange)
+        
+        // Update the component
         entity.components[ADCComponent.self] = adcComponent
+        
+        // Set initial position
+        entity.position = start
+        
+        // Stop any existing sounds and start drone
+        entity.stopAllAudio()
+        if let audioComponent = entity.components[AudioLibraryComponent.self],
+           let droneSound = audioComponent.resources["Drones_01.wav"] {
+            entity.playAudio(droneSound)
+        }
     }
     
     // MARK: - System Update
@@ -78,256 +94,436 @@ public final class ADCMovementSystem: System {
             let query = EntityQuery(where: .has(AttachmentPoint.self))
             let entities = context.scene.performQuery(query)
             guard let targetEntity = entities.first(where: { $0.id == Entity.ID(targetID) }) else {
-                print("⚠️ Target entity not found - aborting ADC movement")
-                adcComponent.state = .idle
-                entity.components[ADCComponent.self] = adcComponent
-                continue
-            }
-            
-            // Validate target before proceeding
-            if !validateTarget(targetEntity, adcComponent, in: context.scene) {
-                print("⚠️ Target no longer valid - attempting to find new target")
-                
-                // Try to find new target
-                if findAndSetNewTarget(entity: entity, 
+                print("⚠️ Target entity not found - attempting retarget")
+                if Self.findAndSetNewTarget(entity: entity, 
                                      component: &adcComponent, 
                                      currentPosition: entity.position(relativeTo: nil),
                                      scene: context.scene) {
-                    // Successfully retargeted - update component and continue
                     entity.components[ADCComponent.self] = adcComponent
-                    continue
                 } else {
-                    // No valid targets found - reset ADC
                     print("⚠️ No valid targets found - resetting ADC")
-                    resetADC(entity: entity, component: &adcComponent)
-                    continue
+                    Self.resetADC(entity: entity, component: &adcComponent)
                 }
+                continue
             }
             
-            // Get current target position
+            // Validate target and handle retargeting if needed
+            if !Self.validateTarget(targetEntity, adcComponent, in: context.scene) {
+                print("⚠️ Target no longer valid - attempting retarget")
+                if Self.findAndSetNewTarget(entity: entity, 
+                                     component: &adcComponent, 
+                                     currentPosition: entity.position(relativeTo: nil),
+                                     scene: context.scene) {
+                    entity.components[ADCComponent.self] = adcComponent
+                } else {
+                    print("⚠️ No valid targets found - resetting ADC")
+                    Self.resetADC(entity: entity, component: &adcComponent)
+                }
+                continue
+            }
+            
             let target = targetEntity.position(relativeTo: nil)
             
-            // Use the randomized factors
-            let speedFactor = adcComponent.speed / baseSpeed
-            let arcHeightFactor = 1.0  // Use constant for now
-            
-            // Calculate speed multiplier based on movement phase
-            let speedMultiplier: Float
-            if adcComponent.movementProgress < accelerationPhase {
-                // Acceleration phase: gradually increase from minSpeedMultiplier to 1.0
-                let t = adcComponent.movementProgress / accelerationPhase
-                speedMultiplier = mix(minSpeedMultiplier, 1.0, t: smoothstep(0, 1, t))
-            } else if adcComponent.movementProgress > (1.0 - decelerationPhase) {
-                // Deceleration phase: gradually decrease from 1.0 to minSpeedMultiplier
-                let t = (adcComponent.movementProgress - (1.0 - decelerationPhase)) / decelerationPhase
-                speedMultiplier = mix(1.0, minSpeedMultiplier, t: smoothstep(0, 1, t))
-            } else {
-                // Cruising phase: full speed
-                speedMultiplier = 1.0
-            }
-            
-            // Update progress with randomized speed and phase-based multiplier
-            adcComponent.movementProgress += Float(context.deltaTime / (baseStepDuration * TimeInterval(1/speedFactor) * numSteps)) * speedMultiplier
+            // Update movement progress
+            adcComponent.movementProgress += Float(context.deltaTime) / Float(Self.totalDuration)
             
             if adcComponent.movementProgress >= 1.0 {
-                // Movement complete
-                handleImpact(entity: entity, component: &adcComponent)
+                Self.handleImpact(entity: entity, 
+                           component: &adcComponent, 
+                           target: targetEntity,
+                           context: context)
             } else {
-                // Calculate current position on curve using Bezier curve
-                let p = adcComponent.movementProgress
-                let distance = length(target - start)
-                let midPoint = mix(start, target, t: 0.5)
-                let height = distance * Float(heightFactor) * Float(arcHeightFactor)
-                let controlPoint = midPoint + SIMD3<Float>(0, height, 0)
-                
-                // Calculate position on Bezier curve
-                let pos1 = mix(start, controlPoint, t: p)
-                let pos2 = mix(controlPoint, target, t: p)
-                let currentPosition = mix(pos1, pos2, t: p)
-                
-                // Update entity position
-                entity.position = currentPosition
-                
-                // Calculate and update orientation
-                let direction = normalize(pos2 - pos1)
-                if !direction.x.isNaN && !direction.y.isNaN && !direction.z.isNaN {
-                    let up = SIMD3<Float>(0, 1, 0)
-                    let rotation = simd_quatf(from: SIMD3<Float>(0, 0, -1), to: direction)
-                    if validateQuaternion(rotation) {
-                        entity.orientation = rotation
-                    }
-                }
+                Self.updateMovement(entity: entity,
+                             start: start,
+                             target: target,
+                             progress: adcComponent.movementProgress,
+                             deltaTime: context.deltaTime)
             }
             
-            // Apply updated component
             entity.components[ADCComponent.self] = adcComponent
-            
-            // Update protein spin
-            updateProteinSpin(entity: entity, deltaTime: context.deltaTime)
         }
     }
-
-    // MARK: - Helpers
     
-    private func validateTarget(_ targetEntity: Entity, _ adcComponent: ADCComponent, in scene: Scene) -> Bool {
-        // Check if target entity still exists and is valid
-        if targetEntity.parent == nil {
-            print("⚠️ Target attachment point has been removed from scene")
+    private static func validateTarget(_ target: Entity, _ component: ADCComponent, in scene: Scene) -> Bool {
+        // Check if target attachment point is still valid
+        guard let attachComponent = target.components[AttachmentPoint.self],
+              attachComponent.cellID == component.targetCellID else {
+            print("⚠️ Attachment point no longer valid")
             return false
         }
         
-        // Check if parent cancer cell still exists
-        guard let cancerCell = findParentCancerCell(for: targetEntity, in: scene) else {
-            print("⚠️ Parent cancer cell no longer exists")
-            return false
-        }
-        
-        // Check if cancer cell is still valid (not being destroyed)
-        guard let cellComponent = cancerCell.components[CancerCellComponent.self],
-              let cellID = adcComponent.targetCellID,
-              cellComponent.cellID == cellID else {
-            print("⚠️ Cancer cell component mismatch or missing")
-            return false
-        }
-        
-        return true
-    }
-    
-    private func findParentCancerCell(for attachmentPoint: Entity, in scene: Scene) -> Entity? {
-        let cancerCellQuery = EntityQuery(where: .has(CancerCellComponent.self))
-        let cancerCells = scene.performQuery(cancerCellQuery)
-        
-        // Check each cancer cell to see if it's an ancestor of our attachment point
-        for cell in cancerCells {
-            var current: Entity? = attachmentPoint
-            while let parent = current?.parent {
-                if parent == cell {
-                    return parent
-                }
-                current = parent
+        // Find parent cancer cell to check hit count
+        var current = target
+        while let parent = current.parent {
+            if let cellComponent = parent.components[CancerCellComponent.self],
+               cellComponent.hitCount < cellComponent.requiredHits {
+                return true
             }
+            current = parent
         }
-        return nil
+        
+        print("⚠️ Cancer cell no longer valid")
+        return false
     }
     
-    private func findAndSetNewTarget(entity: Entity, 
+    private static func findAndSetNewTarget(entity: Entity, 
                                    component: inout ADCComponent, 
                                    currentPosition: SIMD3<Float>,
                                    scene: Scene) -> Bool {
-        // Find new target
-        guard let (newTarget, newCellID) = findNewTarget(for: entity, currentPosition: currentPosition, in: scene) else {
-            print("⚠️ No valid targets found for retargeting")
-            return false
+        // Query for all attachment points
+        let attachmentQuery = EntityQuery(where: .has(AttachmentPoint.self))
+        var closestDistance = Float.infinity
+        var bestTarget: (Entity, Int)? = nil
+        
+        // Find all attachment points
+        for attachPoint in scene.performQuery(attachmentQuery) {
+            guard let attachComponent = attachPoint.components[AttachmentPoint.self],
+                  !attachComponent.isOccupied,
+                  let cellID = attachComponent.cellID else { continue }
+            
+            // Calculate distance to this attachment point
+            let attachPosition = attachPoint.position(relativeTo: nil)
+            let distance = simd_length(attachPosition - currentPosition)
+            
+            // Update if this is the closest valid target
+            if distance < closestDistance {
+                closestDistance = distance
+                bestTarget = (attachPoint, cellID)
+            }
         }
         
-        print("🎯 Retargeting ADC to new cancer cell (ID: \(newCellID))")
+        // Set new target if found
+        if let (newTarget, newCellID) = bestTarget {
+            print("🎯 Retargeting ADC to new cancer cell (ID: \(newCellID))")
+            
+            // Mark the chosen point as occupied
+            if let attachComponent = newTarget.components[AttachmentPoint.self] {
+                var updatedAttach = attachComponent
+                updatedAttach.isOccupied = true
+                newTarget.components[AttachmentPoint.self] = updatedAttach
+            }
+            
+            component.targetEntityID = newTarget.id
+            component.targetCellID = newCellID
+            component.startWorldPosition = currentPosition
+            component.movementProgress = 0
+            component.speed = Float.random(in: Self.speedRange)
+            return true
+        }
         
-        // Update component with new target
-        component.targetEntityID = newTarget.id
-        component.targetCellID = newCellID
-        component.startWorldPosition = currentPosition  // Start from current position
-        component.movementProgress = 0  // Reset progress for new path
-        
-        // Generate new random factors for variety
-        component.speedFactor = Float.random(in: Self.speedRange)
-        component.arcHeightFactor = Float.random(in: Self.arcHeightRange)
-        
-        return true
+        return false
     }
     
-    private func resetADC(entity: Entity, component: inout ADCComponent) {
+    private static func resetADC(entity: Entity, component: inout ADCComponent) {
         component.state = .idle
         component.targetEntityID = nil
         component.targetCellID = nil
         component.movementProgress = 0
-        entity.components[ADCComponent.self] = component
-        
-        // Stop any ongoing animations/audio
-        entity.stopAllAnimations()
         entity.stopAllAudio()
+        entity.components[ADCComponent.self] = component
     }
     
-    private func handleImpact(entity: Entity, component: inout ADCComponent) {
-        // Find target entity
-        guard let targetID = component.targetEntityID,
-              let scene = entity.scene else { return }
+    private static func handleImpact(entity: Entity, 
+                            component: inout ADCComponent,
+                            target: Entity,
+                            context: SceneUpdateContext) {
+        // Stop movement audio
+        entity.stopAllAudio()
         
-        let query = EntityQuery(where: .has(AttachmentPoint.self))
-        guard let targetEntity = scene.performQuery(query).first(where: { $0.id == Entity.ID(targetID) }) else {
-            print("⚠️ Target entity not found during impact")
+        // Play impact sound
+        if let audioComponent = entity.components[AudioLibraryComponent.self],
+           let impactSound = audioComponent.resources["Impact_01.wav"] {
+            entity.playAudio(impactSound)
+        }
+        
+        // Update cancer cell hit count
+        if let cellID = component.targetCellID {
+            Self.updateCancerCellHitCount(cellID: cellID, context: context)
+        }
+        
+        // Attach ADC to target point
+        entity.position = target.position(relativeTo: nil) + Self.attachmentOffset
+        component.state = .attached
+    }
+    
+    private static func updateMovement(entity: Entity,
+                              start: SIMD3<Float>,
+                              target: SIMD3<Float>,
+                              progress: Float,
+                              deltaTime: TimeInterval) {
+        // Calculate Bezier curve position
+        let distance = length(target - start)
+        let midPoint = Self.mix(start, target, t: 0.5)
+        let heightOffset = distance * 0.5 * Self.baseArcHeight
+        let controlPoint = midPoint + SIMD3<Float>(0, heightOffset, 0)
+        
+        let t1 = 1.0 - progress
+        let position = t1 * t1 * start + 2 * t1 * progress * controlPoint + progress * progress * target
+        
+        // Update position
+        entity.position = position
+        
+        // Set initial orientation
+        if progress <= 0.01 {
+            let direction = normalize(target - start)
+            let baseOrientation = simd_quatf(from: [0, 0, 1], to: direction)
+            entity.orientation = baseOrientation
+        }
+        
+        // Update protein spin
+        if let proteinComplex = entity.findEntity(named: "antibodyProtein_complex") {
+            let spinRotation = simd_quatf(angle: Float(deltaTime) * Self.proteinSpinSpeed,
+                                        axis: [-1, 0, 0])
+            proteinComplex.orientation = proteinComplex.orientation * spinRotation
+        }
+        
+        // Calculate and update orientation
+        let tangentStep1 = (controlPoint - start) * (1 - progress)
+        let tangentStep2 = (target - controlPoint) * progress
+        let tangent = normalize(2 * (tangentStep1 + tangentStep2))
+        entity.orientation = simd_quatf(from: SIMD3<Float>(0, 0, 1), to: tangent)
+    }
+    
+    // MARK: - State Handlers
+    private func handleIdleState(entity: Entity, component: inout ADCComponent, context: SceneUpdateContext) {
+        // If we have no target, try to find one
+        if component.targetEntityID == nil {
+            if let target = findNearestValidTarget(for: entity, in: context) {
+                component.targetEntityID = target.id
+                component.startWorldPosition = entity.position(relativeTo: nil)
+                
+                // Set target cell ID if available
+                if let cancerCell = ADCMovementSystem.findParentCancerCell(for: target, in: context.scene),
+                   let cellComponent = cancerCell.components[CancerCellComponent.self] {
+                    component.targetCellID = cellComponent.cellID
+                }
+                
+                component.state = .moving
+                component.movementProgress = 0
+                
+                // Start movement from current position
+                ADCMovementSystem.startMovement(entity: entity, from: entity.position(relativeTo: nil), to: target)
+            }
+        }
+    }
+    
+    private func handleRetargetingState(entity: Entity, component: inout ADCComponent, context: SceneUpdateContext) {
+        // Stop any existing sounds
+        entity.stopAllAudio()
+        
+        // Clear existing target
+        component.targetEntityID = nil
+        component.targetCellID = nil
+        
+        // Try to find a new target
+        if let newTarget = findNearestValidTarget(for: entity, in: context) {
+            component.targetEntityID = newTarget.id
+            component.startWorldPosition = entity.position(relativeTo: nil)
+            
+            // Set new target cell ID
+            if let cancerCell = ADCMovementSystem.findParentCancerCell(for: newTarget, in: context.scene),
+                   let cellComponent = cancerCell.components[CancerCellComponent.self] {
+                component.targetCellID = cellComponent.cellID
+            }
+            
+            component.state = .moving
+            component.movementProgress = 0
+            
+            // Start new movement
+            ADCMovementSystem.startMovement(entity: entity, from: entity.position(relativeTo: nil), to: newTarget)
+        } else {
+            // No valid target found, go to idle
+            component.state = .idle
+        }
+        
+        entity.components[ADCComponent.self] = component
+    }
+    
+    private func handleMovingState(entity: Entity, component: inout ADCComponent, context: SceneUpdateContext) {
+        guard let start = component.startWorldPosition,
+              let targetID = component.targetEntityID,
+              let target = context.scene.findEntity(id: targetID) else {
+            // Target no longer exists, enter retargeting state
+            component.state = .retargeting
+            entity.components[ADCComponent.self] = component
             return
         }
         
-        // Find parent cancer cell
-        if let cancerCell = findParentCancerCell(for: targetEntity, in: scene) {
-            // Update hit count on cancer cell
-            if var cellComponent = cancerCell.components[CancerCellComponent.self] {
-                cellComponent.hitCount += 1
-                cancerCell.components[CancerCellComponent.self] = cellComponent
-                
-                // Post notification for UI update
-                NotificationCenter.default.post(
-                    name: Notification.Name("UpdateCancerCell"),
-                    object: nil,
-                    userInfo: ["entity": cancerCell]
-                )
+        // Validate target is still valid
+        if let cancerCell = Self.findParentCancerCell(for: target, in: context.scene),
+           let cellComponent = cancerCell.components[CancerCellComponent.self] {
+            if cellComponent.cellID != component.targetCellID {
+                // Target cell changed, enter retargeting state
+                component.state = .retargeting
+                entity.components[ADCComponent.self] = component
+                return
             }
+        } else {
+            // Cancer cell no longer exists, enter retargeting state
+            component.state = .retargeting
+            entity.components[ADCComponent.self] = component
+            return
         }
         
-        // Remove from current parent and add to target entity
-        entity.removeFromParent()
-        targetEntity.addChild(entity)
+        // Update progress with phase-based speed multiplier
+        let speedMultiplier = calculateSpeedMultiplier(progress: component.movementProgress)
+        component.movementProgress += Float(context.deltaTime) * component.speed * speedMultiplier
         
-        // Align orientation with target and set position with slight offset
-        entity.orientation = targetEntity.orientation(relativeTo: nil)
-        entity.position = SIMD3<Float>(0, -0.08, 0)
+        if component.movementProgress >= 1.0 {
+            handleArrival(entity: entity, component: &component, target: target, context: context)
+            return
+        }
         
-        // Scale up animation
-        var scaleUpTransform = entity.transform
-        scaleUpTransform.scale = SIMD3<Float>(repeating: 1.2)
+        // Calculate current position and update entity
+        updateEntityPosition(entity: entity, 
+                           progress: component.movementProgress,
+                           start: start,
+                           target: target.position(relativeTo: nil),
+                           deltaTime: context.deltaTime)
         
-        // Animate scale up and back down
-        entity.move(
-            to: scaleUpTransform,
-            relativeTo: entity.parent,
-            duration: 0.15,
-            timingFunction: .easeInOut
-        )
+        entity.components[ADCComponent.self] = component
+    }
+    
+    private func calculateSpeedMultiplier(progress: Float) -> Float {
+        if progress < Self.accelerationPhase {
+            let t = progress / Self.accelerationPhase
+            return Self.mix(Self.minSpeedMultiplier, 1.0, t: Self.smoothstep(0, 1, t))
+        } else if progress > (1.0 - Self.decelerationPhase) {
+            let t = (progress - (1.0 - Self.decelerationPhase)) / Self.decelerationPhase
+            return Self.mix(1.0, Self.minSpeedMultiplier, t: Self.smoothstep(0, 1, t))
+        }
+        return 1.0
+    }
+    
+    private func updateEntityPosition(entity: Entity, progress: Float, start: SIMD3<Float>, target: SIMD3<Float>, deltaTime: TimeInterval) {
+        // Calculate bezier path position
+        let distance = length(target - start)
+        let midPoint = Self.mix(start, target, t: 0.5)
+        let heightOffset = distance * 0.5 * Float.random(in: Self.arcHeightRange)
+        let controlPoint = midPoint + SIMD3<Float>(0, heightOffset, 0)
         
-        // After small delay, scale back to original
-        Task {
-            try? await Task.sleep(for: .milliseconds(150))
-            var originalTransform = entity.transform
-            originalTransform.scale = SIMD3<Float>(repeating: 1.0)
+        let t1 = 1.0 - progress
+        let position = t1 * t1 * start + 2 * t1 * progress * controlPoint + progress * progress * target
+        
+        // Update position
+        entity.position = position
+        
+        // Update protein spin
+        if let proteinComplex = entity.findEntity(named: "antibodyProtein_complex") {
+            let spinRotation = simd_quatf(angle: Float(deltaTime) * Self.proteinSpinSpeed, axis: [-1, 0, 0])
+            proteinComplex.orientation = proteinComplex.orientation * spinRotation
+        }
+        
+        // Update orientation to face movement direction
+        let direction = simd_normalize(target - position)
+        entity.orientation = simd_quatf(from: [0, 0, 1], to: direction)
+    }
+    
+    private func handleArrival(entity: Entity, component: inout ADCComponent, target: Entity, context: SceneUpdateContext) {
+        // Apply impact physics to cancer cell
+        if let cancerCell = ADCMovementSystem.findParentCancerCell(for: target, in: context.scene),
+           var cellPhysics = cancerCell.components[PhysicsMotionComponent.self] {
+            // Calculate impact direction and force
+            let impactDirection = normalize(target.position(relativeTo: nil) - entity.position(relativeTo: nil))
+            cellPhysics.linearVelocity += impactDirection * Self.impactForce
             
-            entity.move(
-                to: originalTransform,
-                relativeTo: entity.parent,
-                duration: 0.15,
-                timingFunction: .easeInOut
-            )
+            // Add random angular velocity
+            let randomSign: Float = Bool.random() ? 1.0 : -1.0
+            cellPhysics.angularVelocity += SIMD3<Float>(0, randomSign * Self.angularImpact, 0)
+            
+            cancerCell.components[PhysicsMotionComponent.self] = cellPhysics
         }
         
-        // Stop drone sound and play attach sound
+        // Stop movement sounds
         entity.stopAllAudio()
+        
+        // Attach to target
+        entity.removeFromParent()
+        target.addChild(entity)
+        entity.orientation = target.orientation(relativeTo: nil)
+        entity.position = Self.attachmentOffset
+        
+        // Scale animation
+        let scaleUpTransform = Transform(scale: SIMD3<Float>(repeating: Self.scaleUpFactor))
+        entity.move(to: scaleUpTransform, relativeTo: entity.parent, duration: Self.scaleUpDuration, timingFunction: .easeInOut)
+        
+        Task {
+            try? await Task.sleep(for: .milliseconds(Int(Self.scaleUpDuration * 1000)))
+            let originalTransform = Transform(scale: SIMD3<Float>(repeating: 1.0))
+            entity.move(to: originalTransform, relativeTo: entity.parent, duration: Self.scaleDownDuration, timingFunction: .easeInOut)
+        }
+        
+        // Play attach sound
         if let audioComponent = entity.components[AudioLibraryComponent.self],
            let attachSound = audioComponent.resources["ADC_Attach.wav"] {
             entity.playAudio(attachSound)
         }
         
-        // Update component state
+        // Update state
         component.state = .attached
         entity.components[ADCComponent.self] = component
         
-        // Increment hit count for target cell
+        // Update cancer cell hit count
         if let cellID = component.targetCellID {
-            updateCancerCellHitCount(cellID: cellID, scene: scene)
+            Self.updateCancerCellHitCount(cellID: cellID, context: context)
         }
     }
     
-    private func updateCancerCellHitCount(cellID: Int, scene: Scene) {
+    private func handleAttachedState(entity: Entity, component: inout ADCComponent, context: SceneUpdateContext) {
+        guard let targetID = component.targetEntityID,
+              let targetEntity = context.scene.findEntity(id: targetID) else {
+            // Target is gone, go back to retargeting
+            component.state = .retargeting
+            entity.components[ADCComponent.self] = component
+            return
+        }
+        
+        // Maintain attachment
+        entity.position = Self.attachmentOffset
+        entity.orientation = targetEntity.orientation(relativeTo: nil)
+    }
+    
+    // MARK: - Target Validation and Retargeting
+    private static func findParentCancerCell(for entity: Entity, in scene: Scene) -> Entity? {
+        var current = entity
+        while let parent = current.parent {
+            if parent.components[CancerCellComponent.self] != nil {
+                return parent
+            }
+            current = parent
+        }
+        return nil
+    }
+    
+    private func findNearestValidTarget(for entity: Entity, in context: SceneUpdateContext) -> Entity? {
+        let cancerCellQuery = EntityQuery(where: .has(CancerCellComponent.self))
+        let potentialTargets = context.scene.performQuery(cancerCellQuery)
+        
+        return potentialTargets
+            .filter { target in
+                validateTarget(target, for: entity)
+            }
+            .min(by: { a, b in
+                let distA = length(a.position(relativeTo: nil) - entity.position(relativeTo: nil))
+                let distB = length(b.position(relativeTo: nil) - entity.position(relativeTo: nil))
+                return distA < distB
+            })
+    }
+    
+    private func validateTarget(_ target: Entity, for entity: Entity) -> Bool {
+        // Must have cancer cell component
+        guard target.components[CancerCellComponent.self] != nil else { 
+            return false 
+        }
+        
+        // Check distance
+        let distance = length(target.position(relativeTo: nil) - entity.position(relativeTo: nil))
+        return distance >= Self.minDistance && distance <= Self.maxDistance
+    }
+    
+    private static func updateCancerCellHitCount(cellID: Int, context: SceneUpdateContext) {
         let cellQuery = EntityQuery(where: .has(CancerCellComponent.self))
-        for cellEntity in scene.performQuery(cellQuery) {
+        for cellEntity in context.scene.performQuery(cellQuery) {
             guard let cellComponent = cellEntity.components[CancerCellComponent.self],
                   cellComponent.cellID == cellID else { continue }
             
@@ -345,33 +541,16 @@ public final class ADCMovementSystem: System {
     }
     
     // MARK: - Math Helpers
-    
-    private func mix(_ a: Float, _ b: Float, t: Float) -> Float {
+    private static func mix(_ a: Float, _ b: Float, t: Float) -> Float {
         return a * (1 - t) + b * t
     }
     
-    private func mix(_ a: SIMD3<Float>, _ b: SIMD3<Float>, t: Float) -> SIMD3<Float> {
+    private static func mix(_ a: SIMD3<Float>, _ b: SIMD3<Float>, t: Float) -> SIMD3<Float> {
         return a * (1 - t) + b * t
     }
     
-    private func smoothstep(_ edge0: Float, _ edge1: Float, _ x: Float) -> Float {
+    private static func smoothstep(_ edge0: Float, _ edge1: Float, _ x: Float) -> Float {
         let t = max(0, min((x - edge0) / (edge1 - edge0), 1))
         return t * t * (3 - 2 * t)
-    }
-    
-    private func normalize(_ vector: SIMD3<Float>) -> SIMD3<Float> {
-        let length = sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z)
-        return length > 0 ? vector / length : vector
-    }
-    
-    private func length(_ vector: SIMD3<Float>) -> Float {
-        return sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z)
-    }
-    
-    private func updateProteinSpin(entity: Entity, deltaTime: TimeInterval) {
-        if let proteinComplex = entity.findEntity(named: "antibodyProtein_complex") {
-            let spinRotation = simd_quatf(angle: Float(deltaTime) * Self.proteinSpinSpeed, axis: [-1, 0, 0])
-            proteinComplex.orientation = proteinComplex.orientation * spinRotation
-        }
     }
 }

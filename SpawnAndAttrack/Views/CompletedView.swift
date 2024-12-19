@@ -2,11 +2,23 @@ import SwiftUI
 import RealityKit
 import RealityKitContent
 
+// TODO improve the look of this view and confirm when it should appear and how it appears
+
 struct CompletedView: View {
     @Environment(AppModel.self) private var appModel
     @Environment(\.dismissWindow) private var dismissWindow
     @State private var showConfetti = false
     @State private var animateStats = false
+    
+    // Get stats from AttackCancerViewModel
+    private var stats: (destroyed: Int, deployed: Int, score: Int) {
+        let gameState = appModel.gameState
+        return (
+            destroyed: gameState.cellsDestroyed,
+            deployed: gameState.totalADCsDeployed,
+            score: gameState.score
+        )
+    }
     
     var body: some View {
         ZStack {
@@ -44,7 +56,6 @@ struct CompletedView: View {
                     statsGrid
                         .background(
                             RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                .fill(Material.ultraThinMaterial)
                                 .shadow(radius: 5)
                         )
                         .padding()
@@ -57,7 +68,6 @@ struct CompletedView: View {
                 VStack(spacing: 15) {
                     ActionButton(title: "Start New Session", icon: "arrow.triangle.2.circlepath") {
                         resetAndStartNew()
-                        dismissWindow(id: AppModel.WindowID.gameCompleted)
                         Task {
                             await appModel.transitionToPhase(.intro)
                         }
@@ -65,7 +75,6 @@ struct CompletedView: View {
                     
                     ActionButton(title: "Replay Attack Cancer", icon: "arrow.clockwise") {
                         resetAndStartNew()
-                        dismissWindow(id: AppModel.WindowID.gameCompleted)
                         Task {
                             await appModel.transitionToPhase(.playing)
                         }
@@ -122,7 +131,7 @@ struct CompletedView: View {
             GridRow {
                 Label("Cancer Cells Destroyed", systemImage: "target")
                     .foregroundStyle(.secondary)
-                Text("\(appModel.gameState.cellsDestroyed)")
+                Text("\(stats.destroyed)")
                     .monospacedDigit()
                     .foregroundStyle(.primary)
                     .contentTransition(.numericText())
@@ -132,7 +141,7 @@ struct CompletedView: View {
             GridRow {
                 Label("ADCs Deployed", systemImage: "arrow.up.forward")
                     .foregroundStyle(.secondary)
-                Text("\(appModel.gameState.totalADCsDeployed)")
+                Text("\(stats.deployed)")
                     .monospacedDigit()
                     .foregroundStyle(.primary)
                     .contentTransition(.numericText())
@@ -142,7 +151,7 @@ struct CompletedView: View {
             GridRow {
                 Label("Final Score", systemImage: "star.fill")
                     .foregroundStyle(.secondary)
-                Text("\(appModel.gameState.score)")
+                Text("\(stats.score)")
                     .monospacedDigit()
                     .foregroundStyle(.primary)
                     .contentTransition(.numericText())

@@ -3,23 +3,26 @@ import RealityKit
 import RealityKitContent
 
 extension AttackCancerViewModel {
+    // MARK: - ADC Setup
+    func setADCTemplate(_ template: Entity) {
+        adcTemplate = template
+        print("✅ ADC template set successfully")
+    }
+    
+    // MARK: - ADC Spawning
     func spawnADC(from position: SIMD3<Float>, targetPoint: Entity, forCellID cellID: Int) async {
         guard let template = adcTemplate,
               let root = rootEntity else {
-            print("❌ ADC #\(successfulADCLaunches + 1) Failed - Missing template or root")
             return
         }
         
-        successfulADCLaunches += 1
-        print("✅ ADC #\(successfulADCLaunches) Launched (Total Taps: \(totalTaps))")
+        totalADCsDeployed += 1
+        print("✅ ADC #\(totalADCsDeployed) Launched (Total Taps: \(totalTaps))")
         
         // Set the flag for first ADC fired
-        if !appModel.gameState.hasFirstADCBeenFired {
-            appModel.gameState.hasFirstADCBeenFired = true
+        if !hasFirstADCBeenFired {
+            hasFirstADCBeenFired = true
         }
-        
-        // Increment ADC count
-        appModel.gameState.incrementADCsDeployed()
         
         // Clone the template
         let adc = template.clone(recursive: true)
@@ -39,4 +42,4 @@ extension AttackCancerViewModel {
         // Start movement
         ADCMovementSystem.startMovement(entity: adc, from: position, to: targetPoint)
     }
-} 
+}

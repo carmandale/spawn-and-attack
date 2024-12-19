@@ -45,18 +45,18 @@ struct IntroView: View {
             }
             
             // Create portal and add to immersiveSceneRoot
-            let portal = await PortalManager.createPortal(appModel: appModel)
-            portal.position = [0, 0, -2.5]
-            immersiveSceneRoot.addChild(portal)
+            // let portal = await PortalManager.createPortal(appModel: appModel)
+            // portal.position = [0, 0, -2.5]
+            // immersiveSceneRoot.addChild(portal)
             
-            do {
-                let entity = try await appModel.assetLoadingManager.loadEntity(named: "IntroAudio")
-                print("Successfully loaded IntroAudio")
-                immersiveSceneRoot.addChild(entity)
-                print("Added IntroAudio to immersiveSceneRoot")
-            } catch {
-                print("Failed to load IntroAudio: \(error)")
-            }
+            // do {
+            //     let entity = try await appModel.assetLoadingManager.loadEntity(named: "IntroAudio")
+            //     print("Successfully loaded IntroAudio")
+            //     immersiveSceneRoot.addChild(entity)
+            //     print("Added IntroAudio to immersiveSceneRoot")
+            // } catch {
+            //     print("Failed to load IntroAudio: \(error)")
+            // }
             
             // Add the immersiveSceneRoot to content
             content.add(immersiveSceneRoot)

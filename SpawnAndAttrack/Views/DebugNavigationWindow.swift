@@ -1,8 +1,11 @@
 import SwiftUI
+import RealityKitContent
 
 struct DebugNavigationWindow: View {
     @Environment(AppModel.self) private var appModel
     @State private var numberOfCancerCells: Double = 15  // Default value to match GameState
+    @State private var testParams = CancerCellParameters()  // Test our Observable class
+    @State private var testValue: Int = 0  // Local state for test value
 
     var body: some View {
         ZStack {
@@ -24,6 +27,22 @@ struct DebugNavigationWindow: View {
                             endPoint: .bottomTrailing
                         )
                     )
+
+                // Test Parameters Section
+                VStack(alignment: .leading) {
+                    Text("Test Parameters")
+                        .font(.headline)
+                    Text("Value: \(testValue)")
+                    Button("Increment") {
+                        testValue += 1
+                        testParams.testValue = testValue
+                    }
+                }
+                .padding()
+                .background(
+                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                        .fill(.white.opacity(0.1))
+                )
 
                 // Slider Section
                 VStack(alignment: .leading, spacing: 20) {

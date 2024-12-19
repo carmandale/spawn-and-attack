@@ -10,7 +10,7 @@ struct HopeMeterView: View {
     private let fontSize: CGFloat = 75
     
     var progress: CGFloat {
-        CGFloat(appModel.gameState.hopeMeterTimeLeft) / CGFloat(GameState.hopeMeterDuration)
+        CGFloat(appModel.gameState.hopeMeterTimeLeft) / CGFloat(appModel.gameState.hopeMeterDuration)
     }
     
     var body: some View {

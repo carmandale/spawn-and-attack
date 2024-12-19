@@ -2,118 +2,122 @@ import SwiftUI
 import RealityKit
 import RealityKitContent
 
-@Observable @MainActor
+@Observable
+@MainActor
 final class AttackCancerViewModel {
-    // MARK: - State
-    var totalTaps: Int = 0
-    var successfulADCLaunches: Int = 0
-    var rootEntity: Entity?
-    var adcTemplate: Entity?
+    // MARK: - Collision Filters
+    static var adcFilter: CollisionFilter {
+        let adcMask = CollisionGroup.all.subtracting(adcGroup)
+        return CollisionFilter(group: adcGroup, mask: adcMask)
+    }
     
-    // MARK: - Dependencies
-    let appModel: AppModel
-    let handTracking: HandTrackingViewModel
+    static var cancerCellFilter: CollisionFilter {
+        let cellMask = CollisionGroup.all.subtracting(cancerCellGroup)
+        return CollisionFilter(group: cancerCellGroup, mask: cellMask)
+    }
+    
+    static var microscopeFilter: CollisionFilter {
+        let microscopeMask = CollisionGroup.all
+        return CollisionFilter(group: microscopeGroup, mask: microscopeMask)
+    }
+    
+    // MARK: - Collision Groups
+    static let adcGroup = CollisionGroup(rawValue: 1 << 0)
+    static let cancerCellGroup = CollisionGroup(rawValue: 1 << 1)
+    static let microscopeGroup = CollisionGroup(rawValue: 1 << 2)
+    
+    // MARK: - Collision Properties
+    var debounce: [UnorderedPair<Entity>: TimeInterval] = [:]
+    let debounceThreshold: TimeInterval = 0.1
+    
+    // MARK: - Properties
+    var rootEntity: Entity?
+    var scene: RealityKit.Scene?
+    var handTrackedEntity: Entity?
     
     // Store subscription to prevent deallocation
-    private var subscription: EventSubscription?
+    internal var subscription: EventSubscription?
     
-    // Additional properties from view
-    var handTrackedEntity: Entity
-    var scene: RealityKit.Scene?
+    // Dependencies
+    var appModel: AppModel!
+    var handTracking: HandTrackingViewModel!
+    
+    // MARK: - Game Stats
+    var maxCancerCells: Int = 20
+    var cellsDestroyed: Int = 0
+    var totalADCsDeployed: Int = 0
+    var totalTaps: Int = 0
+    var totalHits: Int = 0
+    
+    // MARK: - Hope Meter
+    let hopeMeterDuration: TimeInterval = 60
+    var hopeMeterTimeLeft: TimeInterval
+    var isHopeMeterRunning = false
+    
+    // MARK: - ADC Properties
+    var adcTemplate: Entity?
+    var hasFirstADCBeenFired = false
+    
+    // MARK: - Cell State Properties
+    var cellParameters: [CancerCellParameters] = []
     
     // MARK: - Initialization
-    init(appModel: AppModel, handTracking: HandTrackingViewModel) {
-        self.appModel = appModel
-        self.handTracking = handTracking
-        
+    init() {
         // Initialize handTrackedEntity
         self.handTrackedEntity = {
             let handAnchor = AnchorEntity(.hand(.left, location: .aboveHand))
             return handAnchor
         }()
-    }
-    
-    // MARK: - Setup Functions
-    func setupRoot() -> Entity {
-        let root = Entity()
-        rootEntity = root
-        return root
-    }
-    
-    func setupEnvironment(in root: Entity) async {
-        // IBL
-        do {
-            try await IBLUtility.addImageBasedLighting(to: root, imageName: "metro_noord_2k")
-        } catch {
-            print("Failed to setup IBL: \(error)")
-        }
         
-        // Environment
-        if let attackCancerScene = await appModel.assetLoadingManager.instantiateEntity("attack_cancer_environment") {
-            root.addChild(attackCancerScene)
-            setupCollisions(in: attackCancerScene)
-        }
+        // Initialize hopeMeterTimeLeft
+        self.hopeMeterTimeLeft = hopeMeterDuration
     }
-    
-    private func setupCollisions(in scene: Entity) {
-        if let scene = scene.scene {
-            let query = EntityQuery(where: .has(BloodVesselWallComponent.self))
-            let objectsToModify = scene.performQuery(query)
-            
-            for object in objectsToModify {
-                if var collision = object.components[CollisionComponent.self] {
-                    collision.filter.group = .cancerCell
-                    collision.filter.mask = .adc
-                    object.components[CollisionComponent.self] = collision
-                }
+
+    var progressiveAttack: ImmersionStyle = .progressive(
+        0.1...0.8,
+        initialAmount: 0.3
+    )
+
+    func findCancerCell(withID id: Int) -> Entity? {
+        // First check if ID is valid
+        guard id >= 0 && id < cellParameters.count else { return nil }
+        
+        guard let root = rootEntity else { return nil }
+        
+        // Find the cell entity
+        if let cell = root.findEntity(named: "cancer_cell_\(id)") {
+            // Validate it has correct state component
+            guard let stateComponent = cell.components[CancerCellStateComponent.self],
+                  stateComponent.parameters.cellID == id else {
+                print("⚠️ Found cell \(id) but state component mismatch")
+                return nil
             }
+            return cell
         }
+        
+        print("⚠️ Could not find cancer cell with ID: \(id)")
+        return nil
     }
-    
-    // MARK: - Tap Handling
-    func handleTap(on entity: Entity, location: SIMD3<Float>) async {
-        print("Tapped entity: \(entity.name)")
-        
-        // Get pinch distances for both hands to determine which hand tapped
-        let leftPinchDistance = handTracking.getPinchDistance(.left) ?? Float.infinity
-        let rightPinchDistance = handTracking.getPinchDistance(.right) ?? Float.infinity
-        
-        // Determine which hand's position to use
-        let handPosition: SIMD3<Float>?
-        if leftPinchDistance < rightPinchDistance {
-            handPosition = handTracking.getFingerPosition(.left)
-            print("Left hand tap detected")
-        } else{
-            handPosition = handTracking.getFingerPosition(.right)
-            print("Right hand tap detected")
+
+    func validateCellAlignment() {
+        print("\n=== Validating Cell Alignment ===")
+        for (index, parameters) in cellParameters.enumerated() {
+            // Validate cellID matches index
+            assert(parameters.cellID == index, "Cell parameter ID mismatch: expected \(index), got \(parameters.cellID)")
+            
+            // Validate entity exists and has matching state
+            guard let cell = findCancerCell(withID: index),
+                  let stateComponent = cell.components[CancerCellStateComponent.self] else {
+                assertionFailure("Missing cell or state component for index \(index)")
+                continue
+            }
+            
+            // Validate state component references same parameters
+            assert(stateComponent.parameters.cellID == parameters.cellID, 
+                   "State component parameter mismatch for cell \(index)")
+            
+            print("✅ Cell \(index) alignment validated")
         }
-        
-        // Proceed with existing cancer cell logic
-        guard let scene = scene,
-              let cellComponent = entity.components[CancerCellComponent.self],
-              let cellID = cellComponent.cellID else {
-            print("No scene available or no cell component/ID")
-            return
-        }
-        print("Found cancer cell with ID: \(cellID)")
-        
-        guard let attachPoint = AttachmentSystem.getAvailablePoint(in: scene, forCellID: cellID) else {
-            print("No available attach point found")
-            return
-        }
-        print("Found attach point: \(attachPoint.name)")
-        
-        AttachmentSystem.markPointAsOccupied(attachPoint)
-        
-        // Use the detected hand position if available, otherwise fall back to tap location
-        let spawnPosition = handPosition ?? location
-        await spawnADC(from: spawnPosition, targetPoint: attachPoint, forCellID: cellID)
+        print("=== Alignment Validation Complete ===\n")
     }
-    
-    // MARK: - Collision Subscription
-    func setupCollisionSubscription(in content: RealityViewContent) {
-        subscription = content.subscribe(to: CollisionEvents.Began.self) { [weak appModel] event in
-            appModel?.gameState.handleCollisionBegan(event)
-        }
-    }
-} 
+}

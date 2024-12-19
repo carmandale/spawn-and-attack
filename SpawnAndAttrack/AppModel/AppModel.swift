@@ -3,6 +3,20 @@ import RealityKit
 import RealityKitContent
 import ARKit
 
+// MARK: - App Constants
+extension AppModel {
+    static let mainWindowId = "MainWindow"
+    static let introWindowId = "IntroWindow"
+    static let libraryWindowId = "Library"
+    static let debugNavigationWindowId = "DebugNavigation"
+    static let gameCompletedWindowId = "Completed"
+    
+    static let introSpaceId = "IntroSpace"
+    static let labSpaceId = "LabSpace"
+    static let buildingSpaceId = "BuildingSpace"
+    static let attackSpaceId = "AttackSpace"
+}
+
 enum AppPhase: String, CaseIterable, Codable, Sendable, Equatable {
     case loading
     case intro
@@ -18,34 +32,43 @@ enum AppPhase: String, CaseIterable, Codable, Sendable, Equatable {
     
     var spaceId: String {
         switch self {
-        case .intro: return "IntroSpace"
-        case .lab: return "LabSpace"
-        case .building: return "BuildingSpace"
-        case .playing, .completed: return "AttackSpace"  // Both use attack space
+        case .intro: return AppModel.introSpaceId
+        case .lab: return AppModel.labSpaceId
+        case .building: return AppModel.buildingSpaceId
+        case .playing, .completed: return AppModel.attackSpaceId
         case .loading, .error: return ""
+        }
+    }
+    
+    var windowId: String {
+        switch self {
+        case .loading: return AppModel.mainWindowId
+        case .intro: return AppModel.introWindowId
+        case .completed: return AppModel.gameCompletedWindowId
+        case .lab: return AppModel.libraryWindowId
+        case .building, .playing, .error: return ""
         }
     }
 }
 
 @Observable @MainActor
 final class AppModel {
-    // MARK: - Window IDs
-    enum WindowID {
-        static let debugNavigation = "DebugNavigation"
-        static let gameCompleted = "Completed"
-        static let main = "MainWindow"
-    }
-
     // MARK: - Properties
     var currentPhase: AppPhase = .loading
-    var gameState: GameState
+    var gameState: AttackCancerViewModel
+    var handTracking: HandTrackingViewModel
     var isDebugWindowOpen = false
+    var isLibraryWindowOpen = false
+    var isIntroWindowOpen = false
 
     // MARK: - Immersion Style
     var introStyle: ImmersionStyle = .mixed
     var labStyle: ImmersionStyle = .full
     var buildingStyle: ImmersionStyle = .mixed
-    var attackStyle: ImmersionStyle = .full
+    var attackStyle: ImmersionStyle = .progressive(
+        0.1...1.0,
+        initialAmount: 0.65
+    )
 
     // MARK: - Asset Management
     let assetLoadingManager = AssetLoadingManager.shared
@@ -72,8 +95,10 @@ final class AppModel {
     
     // MARK: - Initialization
     init() {
-        self.gameState = GameState()
+        self.handTracking = HandTrackingViewModel()
+        self.gameState = AttackCancerViewModel()
         self.gameState.appModel = self
+        self.gameState.handTracking = self.handTracking
     }
     
     // MARK: - Phase Management
@@ -81,7 +106,18 @@ final class AppModel {
         guard !isTransitioning else { return }
         isTransitioning = true
         print("Transitioning to phase: \(newPhase)")
+        
+        let oldPhase = currentPhase
         currentPhase = newPhase
+        
+        // Handle window transitions
+        if !oldPhase.windowId.isEmpty {
+            // Removed window management implementation
+        }
+        if !newPhase.windowId.isEmpty {
+            // Removed window management implementation
+        }
+        
         currentImmersiveSpace = newPhase.spaceId
         // Add delay to ensure space is loaded before allowing another transition
         try? await Task.sleep(for: .seconds(0.5))

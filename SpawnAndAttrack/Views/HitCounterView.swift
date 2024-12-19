@@ -2,9 +2,9 @@ import SwiftUI
 
 struct HitCounterView: View {
     @Environment(AppModel.self) private var appModel: AppModel
-    @Binding var hits: Int
+    let hits: Int
     let requiredHits: Int
-    @Binding var isDestroyed: Bool
+    let isDestroyed: Bool
     private let lineWidth: CGFloat = 12
     private let fontSize: CGFloat = 75
     
@@ -13,7 +13,7 @@ struct HitCounterView: View {
     }
     
     var body: some View {
-        if hits < requiredHits && !isDestroyed {
+        if !isDestroyed && hits < requiredHits {
             ZStack {
                 // Background circle
                 Circle()
@@ -39,6 +39,11 @@ struct HitCounterView: View {
             .frame(width: 160, height: 160)
             .padding(30)
             .background(.clear)
+            .onChange(of: hits) { _, newValue in
+                if newValue >= requiredHits {
+                    appModel.gameState.cellsDestroyed += 1
+                }
+            }
         }
     }
 }

@@ -41,7 +41,6 @@ struct LabView: View {
                     return
                 }
                 
-                
                 root.addChild(labEnvironment)
                 
                 
@@ -75,29 +74,12 @@ struct LabView: View {
                 // content.add(collisionRoot)
                 
                 // setup attachment views
-                if let library = attachments.entity(for: "LibraryView") {
-                    print("📚 LibraryView attachment created")
-                    if let libraryTarget = root.findEntity(named: "LibraryAttachment") {
-                        print("📚 Found LibraryAttachment entity at position: \(libraryTarget.position)")
-                        libraryTarget.addChild(library)
-                        // Add offset relative to parent
-                        library.setPosition(SIMD3<Float>(-0.125, 0.125, 0.35), relativeTo: libraryTarget)
-                       library.components.set(BillboardComponent())
-                    } else {
-                        print("❌ LibraryAttachment entity not found in scene")
-                    }
-                } else {
-                    print("❌ Failed to create LibraryView attachment")
-                }
-
                 if let adbBuilderView = attachments.entity(for: "ADCBuilderViewerButton") {
                     print("🔧 ADCBuilderViewerButton attachment created")
                     if let builderTarget = root.findEntity(named: "ADCBuilderAttachment") {
                         print("🔧 Found ADCBuilderAttachment entity at position: \(builderTarget.position)")
                         builderTarget.addChild(adbBuilderView)
-                        // Add offset relative to parent
-                        // adbBuilderView.setPosition(SIMD3<Float>(0, 0.5, 0), relativeTo: builderTarget)
-                       adbBuilderView.components.set(BillboardComponent())
+                        adbBuilderView.components.set(BillboardComponent())
                     } else {
                         print("❌ ADCBuilderAttachment entity not found in scene")
                     }
@@ -110,9 +92,7 @@ struct LabView: View {
                     if let attackTarget = root.findEntity(named: "AttackCancerAttachment") {
                         print("🎯 Found AttackCancerAttachment entity at position: \(attackTarget.position)")
                         attackTarget.addChild(attackCancerView)
-                        // Add offset relative to parent
-                        // attackCancerView.setPosition(SIMD3<Float>(0, 0.5, 0), relativeTo: attackTarget)
-                       attackCancerView.components.set(BillboardComponent())
+                        attackCancerView.components.set(BillboardComponent())
                     } else {
                         print("❌ AttackCancerAttachment entity not found in scene")
                     }
@@ -125,15 +105,9 @@ struct LabView: View {
                     appModel?.gameState.handleCollisionBegan(event)
                 }
             }
-            //            } catch {
-            //                print("Failed to load lab environment: \(error)")
-            //            }
         } update: { content, attachments in
             // Update content
         } attachments: {
-            Attachment(id: "LibraryView") {
-                LibraryView()
-            }
             Attachment(id: "ADCBuilderViewerButton") {
                 ADCBuilderViewerButton()
             }
@@ -143,31 +117,6 @@ struct LabView: View {
         }
         .installGestures()
         .task {
-            // await headTracker.startTracking()
-        }
-        .onAppear {
-            // When lab space becomes active, open ADC builder
-            //     openWindow(id: AppModel.WindowState.adcBuilder.windowId)
-            //     appModel.isShowingADCBuilder = true
-            // }
-            //        .onDisappear {
-            //            // Stop head tracking
-            //            // headTracker.stopTracking()
-            //
-            //            // Clear collision subscription
-            //            subscription?.cancel()
-            //            subscription = nil
-            //
-            //            // When lab space becomes inactive, close all associated windows
-            //            // if appModel.isShowingADCVolumetric {
-            //            //     dismissWindow(id: AppModel.WindowState.adcVolumetric.windowId)
-            //            //     appModel.isShowingADCVolumetric = false
-            //            // }
-            //            // if appModel.isShowingADCBuilder {
-            //            //     dismissWindow(id: AppModel.WindowState.adcBuilder.windowId)
-            //            //     appModel.isShowingADCBuilder = false
-            //            // }
-            //        }
         }
     }
 }

@@ -2,7 +2,6 @@ import SwiftUI
 
 struct ContentView: View {
     @Environment(AppModel.self) private var appModel
-    @Environment(\.openWindow) private var openWindow
     @Environment(\.scenePhase) private var scenePhase
 
     var body: some View {
@@ -13,17 +12,8 @@ struct ContentView: View {
                     await appModel.startLoading()
                 }
                 .frame(width: 800, height: 300)
-        case .intro:
-            VStack {
-                Text("Let's Outdo Cancer")
-                    .font(.extraLargeTitle)
-                    .fontWeight(.bold)
-                    .padding()
-            }
-        case .playing, .completed, .lab, .building:
-            EmptyView()
-        case .error:
-            ErrorView()
+        case .intro, .playing, .completed, .lab, .building, .error:
+            EmptyView()  // No content needed for other phases as they use different windows
         }
     }
 }

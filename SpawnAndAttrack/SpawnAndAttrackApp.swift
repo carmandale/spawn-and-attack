@@ -22,6 +22,7 @@ struct SpawnAndAttrackApp: App {
         /// Register components and systems
         RealityKitContent.AttachmentPoint.registerComponent()
         RealityKitContent.CancerCellComponent.registerComponent()
+        RealityKitContent.CancerCellStateComponent.registerComponent()
         RealityKitContent.MovementComponent.registerComponent()
         RealityKitContent.UIAttachmentComponent.registerComponent()
         RealityKitContent.ADCComponent.registerComponent()
@@ -31,18 +32,23 @@ struct SpawnAndAttrackApp: App {
         RealityKitContent.GestureComponent.registerComponent()
         RealityKitContent.AntigenComponent.registerComponent()
         
+        // Register UI sync components and system
+        HitCountComponent.registerComponent()
+        UIStateSyncSystem.registerSystem()
+
         /// Register systems
-        RealityKitContent.AttachmentSystem.registerSystem()
-        RealityKitContent.BreathingSystem.registerSystem()
-        RealityKitContent.CancerCellSystem.registerSystem()
-        RealityKitContent.MovementSystem.registerSystem()
-        RealityKitContent.UIAttachmentSystem.registerSystem()
-        RealityKitContent.ADCMovementSystem.registerSystem()
-        RealityKitContent.UIStabilizerSystem.registerSystem()
-        RealityKitContent.AntigenSystem.registerSystem()
+        AttachmentSystem.registerSystem()
+        BreathingSystem.registerSystem()
+        CancerCellSystem.registerSystem()
+        MovementSystem.registerSystem()
+        UIAttachmentSystem.registerSystem()
+        ADCMovementSystem.registerSystem()
+        UIStabilizerSystem.registerSystem()
+        AntigenSystem.registerSystem()
         
         // Add ClosureSystem registration
         ClosureSystem.registerSystem()
+        ClosureComponent.registerComponent()
         
         // Add HeadTracking FollowSystem
         FollowSystem.registerSystem()
@@ -53,28 +59,42 @@ struct SpawnAndAttrackApp: App {
 
     var body: some Scene {
         // Main Content Window
-        WindowGroup(id: AppModel.WindowID.main) {
+        WindowGroup(id: AppModel.mainWindowId) {
             ContentView()
                 .environment(appModel)
         }
-        .defaultSize(CGSize(width: 600, height: 600))
-        
+        .defaultSize(CGSize(width: 800, height: 600))
+        .windowStyle(.plain)
+        .windowResizability(.contentSize)
 
+        // Intro Window
+        WindowGroup(id: AppModel.introWindowId) {
+            IntroWindowView()
+        }
+        .defaultSize(CGSize(width: 600, height: 300))
+        .windowStyle(.plain)
+        
         // Debug Navigation Window 
-        WindowGroup(id: AppModel.WindowID.debugNavigation) {
+        WindowGroup(id: AppModel.debugNavigationWindowId) {
             DebugNavigationWindow()
                 .environment(appModel)
         }
-        .windowResizability(.contentMinSize)
+        .defaultSize(CGSize(width: 400, height: 800))
 
         
         // Completed View
-        WindowGroup(id: AppModel.WindowID.gameCompleted) {
+        WindowGroup(id: AppModel.gameCompletedWindowId) {
             CompletedView()
                 .environment(appModel)
         }
 
-        
+        // Library Window
+        WindowGroup(id: AppModel.libraryWindowId) {
+            LibraryView()
+                .environment(appModel)
+        }
+        .defaultSize(CGSize(width: 800, height: 600))
+
         /// MARK: - Immersive Spaces
         // Immersive Spaces
         ImmersiveSpace(id: "IntroSpace") {
@@ -101,7 +121,7 @@ struct SpawnAndAttrackApp: App {
                 .environment(appModel)
                 .environment(handTracking)
         }
-        .immersionStyle(selection: $appModel.attackStyle, in: .full)
+        .immersionStyle(selection: $appModel.attackStyle, in: .progressive)
         .upperLimbVisibility(.automatic)
 
         // Single onChange handler for phase transitions
@@ -110,42 +130,110 @@ struct SpawnAndAttrackApp: App {
             print("SpawnAndAttrackApp: Changing phase from \(oldPhase) to \(newPhase)")
             
             Task {
+                // If transitioning from loading, dismiss main window
+                if oldPhase == .loading {
+                    dismissWindow(id: AppModel.mainWindowId)
+                }
+                
                 // Handle window visibility based on phase
                 switch newPhase {
+                case .loading:
+                    // Close other windows
+                    if appModel.isIntroWindowOpen {
+                        dismissWindow(id: AppModel.introWindowId)
+                        appModel.isIntroWindowOpen = false
+                    }
+                    if appModel.isLibraryWindowOpen {
+                        dismissWindow(id: AppModel.libraryWindowId)
+                        appModel.isLibraryWindowOpen = false
+                    }
+                    if appModel.isDebugWindowOpen {
+                        dismissWindow(id: AppModel.debugNavigationWindowId)
+                        appModel.isDebugWindowOpen = false
+                    }
+                    
                 case .intro:
-                    // Show main window in intro phase
-                    openWindow(id: AppModel.WindowID.main)
+                    // Show intro window in intro phase
+                    if !appModel.isIntroWindowOpen {
+                        openWindow(id: AppModel.introWindowId)
+                        appModel.isIntroWindowOpen = true
+                    }
                     if !appModel.isDebugWindowOpen {
-                        openWindow(id: AppModel.WindowID.debugNavigation)
+                        openWindow(id: AppModel.debugNavigationWindowId)
                         appModel.isDebugWindowOpen = true
+                    }
+                    // Ensure library is closed
+                    if appModel.isLibraryWindowOpen {
+                        dismissWindow(id: AppModel.libraryWindowId)
+                        appModel.isLibraryWindowOpen = false
                     }
                 
                 case .playing:
-                    // Hide main window and debug navigation in attack phase
-                    dismissWindow(id: AppModel.WindowID.main)
-                    dismissWindow(id: AppModel.WindowID.debugNavigation)
-                    appModel.isDebugWindowOpen = false
+                    // Hide all windows except game windows in attack phase
+                    if appModel.isIntroWindowOpen {
+                        dismissWindow(id: AppModel.introWindowId)
+                        appModel.isIntroWindowOpen = false
+                    }
+                    if appModel.isDebugWindowOpen {
+                        dismissWindow(id: AppModel.debugNavigationWindowId)
+                        appModel.isDebugWindowOpen = false
+                    }
+                    if appModel.isLibraryWindowOpen {
+                        dismissWindow(id: AppModel.libraryWindowId)
+                        appModel.isLibraryWindowOpen = false
+                    }
+                    
                 case .completed:
-                    // Hide main window, show debug navigation and completed window
-                    dismissWindow(id: AppModel.WindowID.main)
+                    // Hide windows and show completed window
+                    if appModel.isIntroWindowOpen {
+                        dismissWindow(id: AppModel.introWindowId)
+                        appModel.isIntroWindowOpen = false
+                    }
+                    if appModel.isLibraryWindowOpen {
+                        dismissWindow(id: AppModel.libraryWindowId)
+                        appModel.isLibraryWindowOpen = false
+                    }
                     if !appModel.isDebugWindowOpen {
-                        openWindow(id: AppModel.WindowID.debugNavigation)
+                        openWindow(id: AppModel.debugNavigationWindowId)
                         appModel.isDebugWindowOpen = true
                     }
-                    openWindow(id: AppModel.WindowID.gameCompleted)
+                    openWindow(id: AppModel.gameCompletedWindowId)
                     return // Don't dismiss or change immersive space during completion
-                default:
-                    // Hide main window, show debug navigation in all other phases
-                    dismissWindow(id: AppModel.WindowID.main)
+                    
+                case .lab:
+                    // Open library window in lab phase
+                    if appModel.isIntroWindowOpen {
+                        dismissWindow(id: AppModel.introWindowId)
+                        appModel.isIntroWindowOpen = false
+                    }
+                    if !appModel.isLibraryWindowOpen {
+                        openWindow(id: AppModel.libraryWindowId)
+                        appModel.isLibraryWindowOpen = true
+                    }
                     if !appModel.isDebugWindowOpen {
-                        openWindow(id: AppModel.WindowID.debugNavigation)
+                        openWindow(id: AppModel.debugNavigationWindowId)
+                        appModel.isDebugWindowOpen = true
+                    }
+                    
+                default:
+                    // Hide all windows except debug navigation in all other phases
+                    if appModel.isIntroWindowOpen {
+                        dismissWindow(id: AppModel.introWindowId)
+                        appModel.isIntroWindowOpen = false
+                    }
+                    if appModel.isLibraryWindowOpen {
+                        dismissWindow(id: AppModel.libraryWindowId)
+                        appModel.isLibraryWindowOpen = false
+                    }
+                    if !appModel.isDebugWindowOpen {
+                        openWindow(id: AppModel.debugNavigationWindowId)
                         appModel.isDebugWindowOpen = true
                     }
                 }
                 
                 // Always dismiss the completed window if not in completed phase
                 if newPhase != .completed {
-                    dismissWindow(id: AppModel.WindowID.gameCompleted)
+                    dismissWindow(id: AppModel.gameCompletedWindowId)
                 }
                 
                 // Always dismiss the current space first
